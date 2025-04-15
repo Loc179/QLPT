@@ -11,6 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLPT.Data", "QLPT.Data\QLPT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLPT.Models", "QLPT.Models\QLPT.Models.csproj", "{178EFCEA-D87F-4126-84F9-6FFFBE7E00E6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appendix", "Appendix", "{ADEC5AA1-6DDE-8C5C-433C-6412976FCAC4}"
+	ProjectSection(SolutionItems) = preProject
+		MigrationCommand.md = MigrationCommand.md
+		PackageCommand.md = PackageCommand.md
+		RunCommand.md = RunCommand.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
