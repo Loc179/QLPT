@@ -1,11 +1,24 @@
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using QLPT.API.Config;
+using QLPT.Business;
+using QLPT.Business.Handlers.Auth;
+using QLPT.Business.Mappings;
+using QLPT.Business.Services;
 using QLPT.Data;
+using QLPT.Data.UnitOfWorks;
 using QLPT.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection("VNPay"));
+builder.Services.Configure<AppSetting>(builder.Configuration);
+var appSetting = builder.Configuration.Get<AppSetting>();
 
 
 builder.Services.AddCors(options =>
@@ -22,10 +35,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<QlptDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<QlptDbContext>()
-    .AddDefaultTokenProviders();
 
 
 builder.Services.AddControllers();
@@ -65,6 +74,48 @@ builder.Services.AddSwaggerGen(options =>
     // options.IncludeXmlComments(xmlPath);
 });
 
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
+
+
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<QlptDbContext>()
+    .AddDefaultTokenProviders();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = appSetting!.Jwt.ValidIssuer,
+            ValidAudience = appSetting!.Jwt.ValidAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSetting.Jwt.Secret)
+                ?? throw new InvalidOperationException("JWT:Secret is not configured.")),
+        };
+    });
+
 
 var app = builder.Build();
 
@@ -74,6 +125,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<QlptDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await SeedData.SeedAsync(dbContext, userManager, roleManager);
+}
+
 
 app.UseHttpsRedirection();
 

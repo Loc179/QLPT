@@ -21,5 +21,6 @@ public class QlptDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<RoomService> RoomServices { get; set; }
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 }
