@@ -20,8 +20,5 @@ public class Advertisement
     public int UserId { get; set; }
     public User User { get; set; } = default!;
 
-    public int HouseId { get; set; }
-    public House House { get; set; } = default!;
-
     public ICollection<AdvertisementImage> Images { get; set; } = new List<AdvertisementImage>();
 }

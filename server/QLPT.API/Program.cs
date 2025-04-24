@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QLPT.API.Config;
 using QLPT.Business;
-using QLPT.Business.Handlers.Auth;
+using QLPT.Business.Handlers;
 using QLPT.Business.Mappings;
 using QLPT.Business.Services;
 using QLPT.Data;

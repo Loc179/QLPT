@@ -20,6 +20,7 @@ public class QlptDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<RoomService> RoomServices { get; set; }
+    public DbSet<ServicePackageInvoice> ServicePackageInvoices { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 

@@ -12,5 +12,8 @@ public class House
     public int Status { get; set; }
     public DateTime CreatedAt { get; set; }
 
+    public int UserId { get; set; }
+    public User? User { get; set; }
+
     public ICollection<Room> Rooms { get; set; } = new List<Room>();
 }

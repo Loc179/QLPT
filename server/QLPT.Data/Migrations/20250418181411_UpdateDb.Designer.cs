@@ -12,8 +12,8 @@ using QLPT.Data;
 namespace QLPT.Data.Migrations
 {
     [DbContext(typeof(QlptDbContext))]
-    [Migration("20250415172320_CreateDb")]
-    partial class CreateDb
+    [Migration("20250418181411_UpdateDb")]
+    partial class UpdateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,9 +162,6 @@ namespace QLPT.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -188,8 +185,6 @@ namespace QLPT.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HouseId");
 
                     b.HasIndex("UserId");
 
@@ -246,7 +241,12 @@ namespace QLPT.Data.Migrations
                     b.Property<int>("TotalRooms")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Houses");
                 });
@@ -265,6 +265,12 @@ namespace QLPT.Data.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<double>("TaxAmount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TaxRate")
+                        .HasColumnType("float");
+
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
@@ -273,6 +279,29 @@ namespace QLPT.Data.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("QLPT.Models.Entities.Role", b =>
@@ -399,6 +428,33 @@ namespace QLPT.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServicePackages");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.ServicePackageInvoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PaymenNexttDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ServicePackageInvoices");
                 });
 
             modelBuilder.Entity("QLPT.Models.Entities.SupportRequest", b =>
@@ -609,19 +665,11 @@ namespace QLPT.Data.Migrations
 
             modelBuilder.Entity("QLPT.Models.Entities.Advertisement", b =>
                 {
-                    b.HasOne("QLPT.Models.Entities.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QLPT.Models.Entities.User", "User")
                         .WithMany("Advertisements")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("House");
 
                     b.Navigation("User");
                 });
@@ -635,6 +683,17 @@ namespace QLPT.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Advertisement");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.House", b =>
+                {
+                    b.HasOne("QLPT.Models.Entities.User", "User")
+                        .WithMany("Houses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QLPT.Models.Entities.Invoice", b =>
@@ -668,6 +727,17 @@ namespace QLPT.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.ServicePackageInvoice", b =>
+                {
+                    b.HasOne("QLPT.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QLPT.Models.Entities.SupportRequest", b =>
@@ -733,6 +803,8 @@ namespace QLPT.Data.Migrations
             modelBuilder.Entity("QLPT.Models.Entities.User", b =>
                 {
                     b.Navigation("Advertisements");
+
+                    b.Navigation("Houses");
 
                     b.Navigation("SupportRequests");
 

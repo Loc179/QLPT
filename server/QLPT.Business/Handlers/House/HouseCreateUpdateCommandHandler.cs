@@ -28,7 +28,9 @@ public class HouseCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOf
             Description = request.Description,
             TotalRooms = request.TotalRooms,
             Status = request.Status,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UserId = request.UserId
+            
         };
 
         _unitOfWork.HouseRepository.Add(entity);
@@ -36,7 +38,7 @@ public class HouseCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOf
 
         if (result <= 0)
         {
-            throw new Exception("Failed to create job");
+            throw new Exception("Failed to create house");
         }
 
         var createdEntity = await _unitOfWork.HouseRepository.GetByIdAsync(entity.Id);
@@ -60,7 +62,7 @@ public class HouseCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOf
 
         if (result <= 0)
         {
-            throw new Exception("Update category failed");
+            throw new Exception("Update house failed");
         }
 
         return _mapper.Map<HouseViewModel>(entity);

@@ -12,8 +12,8 @@ using QLPT.Data;
 namespace QLPT.Data.Migrations
 {
     [DbContext(typeof(QlptDbContext))]
-    [Migration("20250416175832_AddRefreshToken")]
-    partial class AddRefreshToken
+    [Migration("20250418165352_CreateDb")]
+    partial class CreateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,9 +162,6 @@ namespace QLPT.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -188,8 +185,6 @@ namespace QLPT.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HouseId");
 
                     b.HasIndex("UserId");
 
@@ -246,7 +241,12 @@ namespace QLPT.Data.Migrations
                     b.Property<int>("TotalRooms")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Houses");
                 });
@@ -632,19 +632,11 @@ namespace QLPT.Data.Migrations
 
             modelBuilder.Entity("QLPT.Models.Entities.Advertisement", b =>
                 {
-                    b.HasOne("QLPT.Models.Entities.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QLPT.Models.Entities.User", "User")
                         .WithMany("Advertisements")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("House");
 
                     b.Navigation("User");
                 });
@@ -658,6 +650,17 @@ namespace QLPT.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Advertisement");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.House", b =>
+                {
+                    b.HasOne("QLPT.Models.Entities.User", "User")
+                        .WithMany("Houses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QLPT.Models.Entities.Invoice", b =>
@@ -756,6 +759,8 @@ namespace QLPT.Data.Migrations
             modelBuilder.Entity("QLPT.Models.Entities.User", b =>
                 {
                     b.Navigation("Advertisements");
+
+                    b.Navigation("Houses");
 
                     b.Navigation("SupportRequests");
 

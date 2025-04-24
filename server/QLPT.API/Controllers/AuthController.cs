@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QLPT.Business.Handlers.Auth;
+using QLPT.Business.Handlers;
 
 namespace QLPT.API.Controllers
 {

@@ -8,7 +8,7 @@ using QLPT.Business.Services;
 using QLPT.Business.ViewModels;
 using QLPT.Models.Entities;
 
-namespace QLPT.Business.Handlers.Auth;
+namespace QLPT.Business.Handlers;
 
 public class RegisterAndPayCommandHandler(UserManager<User> userManager, IVnPayService vnPayService, IHttpContextAccessor httpContextAccessor) : IRequestHandler<RegisterAndPayCommand, string>
 {

@@ -19,7 +19,7 @@ public class VnPayService(IOptions<VNPayConfig> config) : IVnPayService
     pay.AddRequestData("vnp_Amount", (GetAmountByServiceId(model.ServicePackageId) * 100).ToString()); // nhân 100 vì VNPAY dùng đơn vị là đồng
     pay.AddRequestData("vnp_CreateDate", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
     pay.AddRequestData("vnp_CurrCode", "VND");
-    pay.AddRequestData("vnp_IpAddr", httpContext.Connection.RemoteIpAddress?.ToString());
+    pay.AddRequestData("vnp_IpAddr", httpContext.Connection.RemoteIpAddress.ToString());
     pay.AddRequestData("vnp_Locale", "vn");
     pay.AddRequestData("vnp_BankCode", "NCB");
     pay.AddRequestData("vnp_OrderInfo", model.UserId.ToString());

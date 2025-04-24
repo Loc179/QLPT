@@ -6,7 +6,7 @@ using QLPT.Business.DTO;
 using QLPT.Business.Services;
 using QLPT.Models.Entities;
 
-namespace QLPT.Business.Handlers.Auth;
+namespace QLPT.Business.Handlers;
 
 public class LoginCommandHandler(ITokenService tokenService, UserManager<User> userManager, SignInManager<User> signInManager) : IRequestHandler<LoginCommand, LoginResultDto>
 {

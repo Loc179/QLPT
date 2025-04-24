@@ -12,4 +12,5 @@ public class HouseViewModel
     public int TotalRooms { get; set; }
     public int Status { get; set; }
     public DateTime CreatedAt { get; set; }
+    public int UserId { get; set; }
 }

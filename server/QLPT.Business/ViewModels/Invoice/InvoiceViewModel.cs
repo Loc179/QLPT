@@ -7,6 +7,8 @@ public class InvoiceViewModel
 {
     public int Id { get; set; }
     public double Total { get; set; }
+    public double TaxRate { get; set; }
+    public double TaxAmount { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public int RoomId { get; set; }

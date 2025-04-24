@@ -2,7 +2,7 @@ using System;
 using MediatR;
 using QLPT.Business.DTO;
 
-namespace QLPT.Business.Handlers.Auth;
+namespace QLPT.Business.Handlers;
 
 public class LoginCommand : IRequest<LoginResultDto>
 {

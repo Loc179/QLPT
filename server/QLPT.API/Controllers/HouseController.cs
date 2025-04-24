@@ -55,7 +55,7 @@ namespace QLPT.API.Controllers
 
             if (result == null)
             {
-                return NotFound($"Job with ID {id} not found.");
+                return NotFound($"House with ID {id} not found.");
             }
 
             return Ok(result);

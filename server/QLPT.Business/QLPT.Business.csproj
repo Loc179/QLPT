@@ -23,12 +23,6 @@
     <Folder Include="Handlers\AdvertisementImage\" />
     <Folder Include="Handlers\Advertisement\" />
     <Folder Include="Handlers\Invoice\" />
-    <Folder Include="Handlers\RoomService\" />
-    <Folder Include="Handlers\Room\" />
-    <Folder Include="Handlers\ServicePackage\" />
-    <Folder Include="Handlers\SupportRequest\" />
-    <Folder Include="Handlers\Tenant\" />
-    <Folder Include="Handlers\User\" />
   </ItemGroup>
 
 </Project>

@@ -10,4 +10,5 @@ public class HouseCreateUpdateCommand : BaseCreateUpdateCommand<HouseViewModel>
     public string? Description { get; set; }
     public int TotalRooms { get; set; }
     public int Status { get; set; }
+    public int UserId { get; set; }
 }
