@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Khách Thuê</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .checkbox-custom:checked + .check-icon {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Quản Lý Khách Thuê</h1>
+            <div class="flex space-x-2">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Thêm khách thuê
+                </button>
+                <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-file-export mr-2"></i> Xuất dữ liệu
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" placeholder="Tìm kiếm khách thuê..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                        <option value="">Tất cả nhà</option>
+                        <option value="nha-so-1">Nhà Số 1</option>
+                        <option value="nha-so-2">Nhà Số 2</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                        <option value="">Trạng thái</option>
+                        <option value="active">Đang thuê</option>
+                        <option value="inactive">Đã rời đi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full whitespace-nowrap">
+                    <thead>
+                        <tr class="bg-gray-50 text-left">
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">
+                                Tên nhà
+                            </th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Số phòng</th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Họ tên</th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Số điện thoại</th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Email</th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Đại diện</th>
+                            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-gray-50 border-b border-gray-100">
+                            <td class="py-3 px-4">
+                                Nhà Số 1
+                            </td>
+                            <td class="py-3 px-4">101</td>
+                            <td class="py-3 px-4 font-medium">Lê Tuấn Anh</td>
+                            <td class="py-3 px-4">0949562357</td>
+                            <td class="py-3 px-4 text-gray-500">htbwchi1905200@gmail.com</td>
+                            <td class="py-3 px-4">
+                                <div class="flex justify-center">
+                                    <div class="relative inline-block w-5 h-5">
+                                        <input type="checkbox" checked class="checkbox-custom opacity-0 absolute cursor-pointer w-full h-full z-10">
+                                        <div class="check-icon hidden absolute text-white bg-blue-500 rounded-md w-5 h-5 flex items-center justify-center">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <div class="border border-gray-300 rounded-md w-5 h-5"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Sửa</button>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-gray-50 border-b border-gray-100">
+                            <td class="py-3 px-4">
+                                Nhà Số 1
+                            </td>
+                            <td class="py-3 px-4">101</td>
+                            <td class="py-3 px-4 font-medium">Trần Thị B</td>
+                            <td class="py-3 px-4">0987654321</td>
+                            <td class="py-3 px-4 text-gray-500">htbwchi1905200@gmail.com</td>
+                            <td class="py-3 px-4">
+                                <div class="flex justify-center">
+                                    <div class="relative inline-block w-5 h-5">
+                                        <input type="checkbox" class="checkbox-custom opacity-0 absolute cursor-pointer w-full h-full z-10">
+                                        <div class="check-icon hidden absolute text-white bg-blue-500 rounded-md w-5 h-5 flex items-center justify-center">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <div class="border border-gray-300 rounded-md w-5 h-5"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Sửa</button>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 3 -->
+                        <tr class="hover:bg-gray-50 border-b border-gray-100">
+                            <td class="py-3 px-4">
+                                Nhà Số 1
+                            </td>
+                            <td class="py-3 px-4">101</td>
+                            <td class="py-3 px-4 font-medium">Lê Văn C</td>
+                            <td class="py-3 px-4">0123456789</td>
+                            <td class="py-3 px-4 text-gray-500">htbwchi1905200@gmail.com</td>
+                            <td class="py-3 px-4">
+                                <div class="flex justify-center">
+                                    <div class="relative inline-block w-5 h-5">
+                                        <input type="checkbox" class="checkbox-custom opacity-0 absolute cursor-pointer w-full h-full z-10">
+                                        <div class="check-icon hidden absolute text-white bg-blue-500 rounded-md w-5 h-5 flex items-center justify-center">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <div class="border border-gray-300 rounded-md w-5 h-5"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Sửa</button>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 4 -->
+                        <tr class="hover:bg-gray-50 border-b border-gray-100">
+                            <td class="py-3 px-4">
+                                Nhà Số 1
+                            </td>
+                            <td class="py-3 px-4">102</td>
+                            <td class="py-3 px-4 font-medium">Phạm Thị D</td>
+                            <td class="py-3 px-4">0998888777</td>
+                            <td class="py-3 px-4 text-gray-500">htbwchi1905200@gmail.com</td>
+                            <td class="py-3 px-4">
+                                <div class="flex justify-center">
+                                    <div class="relative inline-block w-5 h-5">
+                                        <input type="checkbox" checked class="checkbox-custom opacity-0 absolute cursor-pointer w-full h-full z-10">
+                                        <div class="check-icon hidden absolute text-white bg-blue-500 rounded-md w-5 h-5 flex items-center justify-center">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <div class="border border-gray-300 rounded-md w-5 h-5"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Sửa</button>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 5 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                Nhà Số 1
+                            </td>
+                            <td class="py-3 px-4">102</td>
+                            <td class="py-3 px-4 font-medium">Nguyễn Thị E</td>
+                            <td class="py-3 px-4">0167890123</td>
+                            <td class="py-3 px-4 text-gray-500">htbwchi1905200@gmail.com</td>
+                            <td class="py-3 px-4">
+                                <div class="flex justify-center">
+                                    <div class="relative inline-block w-5 h-5">
+                                        <input type="checkbox" class="checkbox-custom opacity-0 absolute cursor-pointer w-full h-full z-10">
+                                        <div class="check-icon hidden absolute text-white bg-blue-500 rounded-md w-5 h-5 flex items-center justify-center">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <div class="border border-gray-300 rounded-md w-5 h-5"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Sửa</button>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex justify-between items-center px-4 py-3 border-t border-gray-200">
+                <div class="text-sm text-gray-700">
+                    Hiển thị <span class="font-medium">1</span> đến <span class="font-medium">5</span> của <span class="font-medium">25</span> kết quả
+                </div>
+                <div class="flex space-x-1">
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>
+                        <i class="fas fa-chevron-left text-xs"></i>
+                    </button>
+                    <button class="px-3 py-1 rounded border border-gray-300 bg-blue-500 text-white hover:bg-blue-600">1</button>
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-700 hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-700 hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-700 hover:bg-gray-50">4</button>
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-700 hover:bg-gray-50">5</button>
+                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-500 hover:bg-gray-50">
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle "Đại diện" checkboxes
+        document.querySelectorAll('.checkbox-custom').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkIcon = this.nextElementSibling;
+                if (this.checked) {
+                    checkIcon.style.display = 'flex';
+                } else {
+                    checkIcon.style.display = 'none';
+                }
+            });
+
+            // Initialize checkbox states
+            const checkIcon = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                checkIcon.style.display = 'flex';
+            } else {
+                checkIcon.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

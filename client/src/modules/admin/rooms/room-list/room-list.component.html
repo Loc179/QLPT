@@ -1,1 +1,133 @@
-<p>room-list works!</p>
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Quản lý phòng</h1>
+        <button class="flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition duration-200">
+            <i class="fas fa-plus mr-2"></i>
+            Thêm phòng
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex border-b border-gray-200 mb-6">
+        <button class="px-4 py-2 border-b-2 border-green-500 text-green-500 font-medium">Căn hộ 1</button>
+        <button class="px-4 py-2 text-gray-600 hover:text-gray-800">Căn hộ thuê 2</button>
+    </div>
+
+    <!-- Room Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Room 101 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        <i class="fas fa-home mr-2 text-gray-600"></i>101
+                    </h2>
+                    <span class="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full">Có khách</span>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50">
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md transition duration-200 mb-3">
+                    Thêm khách
+                </button>
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Chị Minh</span>
+                    </div>
+                    <span class="text-red-500 font-medium">1,500,000 VND</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <button class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-edit mr-1"></i>
+                        <span class="text-sm">Sửa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-trash mr-1"></i>
+                        <span class="text-sm">Xóa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-teal-500 hover:bg-teal-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        <span class="text-sm">Chi tiết</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room 102 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        <i class="fas fa-home mr-2 text-gray-600"></i>102
+                    </h2>
+                    <span class="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full">Có khách</span>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50">
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md transition duration-200 mb-3">
+                    Thêm khách
+                </button>
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Chị Hương</span>
+                    </div>
+                    <span class="text-red-500 font-medium">1,800,000 VND</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <button class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-edit mr-1"></i>
+                        <span class="text-sm">Sửa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-trash mr-1"></i>
+                        <span class="text-sm">Xóa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-teal-500 hover:bg-teal-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        <span class="text-sm">Chi tiết</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room 103 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        <i class="fas fa-home mr-2 text-gray-600"></i>103
+                    </h2>
+                    <span class="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full">Có khách</span>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50">
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md transition duration-200 mb-3">
+                    Thêm khách
+                </button>
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Chị Bảo Ngọc</span>
+                    </div>
+                    <span class="text-red-500 font-medium">2,000,000 VND</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <button class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-edit mr-1"></i>
+                        <span class="text-sm">Sửa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-trash mr-1"></i>
+                        <span class="text-sm">Xóa</span>
+                    </button>
+                    <button class="flex justify-center items-center bg-teal-500 hover:bg-teal-600 text-white py-2 px-3 rounded transition duration-200">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        <span class="text-sm">Chi tiết</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

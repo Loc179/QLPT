@@ -1,0 +1,14 @@
+<!-- app.component.html -->
+<div class="flex h-screen overflow-hidden">
+    <app-sidebar></app-sidebar>
+    
+    <main class="flex flex-col flex-1 overflow-hidden">
+        <app-header></app-header>
+        
+      <!-- Main content -->
+      <section class="main-content flex-grow p-4 overflow-y-auto bg-gray-100">
+        <router-outlet></router-outlet>
+      </section>
+    </main>
+
+</div>

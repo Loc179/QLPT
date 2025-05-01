@@ -5,90 +5,93 @@
             <p class="text-gray-600 mt-2">Tạo tài khoản mới</p>
         </div>
         
-        <form>
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700">Tên đăng nhập</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-user text-gray-400"></i>
-                    </div>
-                    <input type="text" id="username" 
-                           class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                           placeholder="Nhập tên đăng nhập">
-                </div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="mb-4">
+            <label for="username" class="block text-gray-700">Tên đăng nhập</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-user text-gray-400"></i>
+              </div>
+              <input type="text" id="username" formControlName="username"
+                     class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     placeholder="Nhập tên đăng nhập">
             </div>
-            
-            <div class="mb-4">
-                <label for="password" class="block text-gray-700">Mật khẩu</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-lock text-gray-400"></i>
-                    </div>
-                    <input type="password" id="password" 
-                            class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                            placeholder="Nhập mật khẩu">
-                </div>
+          </div>
+        
+          <!-- Các field khác tương tự, thêm formControlName="..." -->
+          
+          <div class="mb-4">
+            <label for="password" class="block text-gray-700">Mật khẩu</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-lock text-gray-400"></i>
+              </div>
+              <input type="password" id="password" formControlName="password"
+                     class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     placeholder="Nhập mật khẩu">
             </div>
-
-            <div class="mb-4">
-                <label for="fullName" class="block text-gray-700">Họ và tên</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-user text-gray-400"></i>
-                    </div>
-                    <input type="text" id="fullName" 
-                            class="w-full pl-10 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                            placeholder="Nhập họ và tên">
-                </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="fullName" class="block text-gray-700">Họ và tên</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-user text-gray-400"></i>
+              </div>
+              <input type="text" id="fullName" formControlName="fullName"
+                     class="w-full pl-10 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     placeholder="Nhập họ và tên">
             </div>
-            
-            <div class="mb-4">
-                <label for="phone" class="block text-gray-700">Số điện thoại</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-phone text-gray-400"></i>
-                    </div>
-                    <input type="tel" id="phone" 
-                           class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                           placeholder="Nhập số điện thoại">
-                </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="phone" class="block text-gray-700">Số điện thoại</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-phone text-gray-400"></i>
+              </div>
+              <input type="tel" id="phone" formControlName="phoneNumber"
+                     class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     placeholder="Nhập số điện thoại">
             </div>
-            
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700">Email</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-envelope text-gray-400"></i>
-                    </div>
-                    <input type="email" id="email" 
-                           class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                           placeholder="Nhập email">
-                </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="email" class="block text-gray-700">Email</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-envelope text-gray-400"></i>
+              </div>
+              <input type="email" id="email" formControlName="email"
+                     class="w-full pl-10 pr-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     placeholder="Nhập email">
             </div>
-
-            <div class="mb-4">
-                <label for="service" class="block text-gray-700">Dịch vụ đăng ký</label>
-                <div class="relative">
-                    <select id="service"
-                            class="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700">
-                    <option value="">-- Chọn dịch vụ --</option>
-                    <option value="basic">Gói cơ bản</option>
-                    <option value="premium">Gói cao cấp</option>
-                    <option value="enterprise">Gói doanh nghiệp</option>
-                    </select>
-                </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="service" class="block text-gray-700">Dịch vụ đăng ký</label>
+            <div class="relative">
+              <select id="service" formControlName="servicePackageId"
+                      class="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700">
+                <option value="">-- Chọn dịch vụ --</option>
+                <option value="3">Gói cơ bản</option>
+                <option value="4">Gói cao cấp</option>
+                <option value="5">Gói doanh nghiệp</option>
+              </select>
             </div>
-                  
-            
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
-                Đăng ký
-            </button>
-            
-            <div class="mt-4 text-center">
-                <p class="text-gray-600">Đã có tài khoản? 
-                    <a href="login.html" class="text-blue-600 hover:text-blue-800 font-medium">Đăng nhập ngay</a>
-                </p>
-            </div>
+          </div>
+        
+          <button type="submit"
+                  class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
+            Đăng ký
+          </button>
+        
+          <div class="mt-4 text-center">
+            <p class="text-gray-600">Đã có tài khoản?
+              <a [routerLink]="['/login']" class="text-blue-600 hover:text-blue-800 font-medium">Đăng nhập ngay</a>
+            </p>
+          </div>
         </form>
+        
     </div>
 </div>

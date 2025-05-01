@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Toà Nhà</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Quản Lý Toà Nhà</h1>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                Thêm nhà mới
+            </button>
+        </div>
+
+        <!-- Property Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Property 1 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+                <div class="p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg text-gray-800">Tên: Nhà Số 1</h2>
+                        <div class="flex space-x-2">
+                            <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-1">
+                        <i class="fas fa-map-marker-alt mr-2 text-gray-500"></i>
+                        Địa chỉ: Đường Lương Nhữ Học, Phường 11, Quận 5, Hồ Chí Minh
+                    </p>
+                    
+                    <p class="text-gray-600 mb-4">
+                        <i class="fas fa-building mr-2 text-gray-500"></i>
+                        Tổng phòng: 3
+                    </p>
+                    
+                    <div class="flex justify-between items-center">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
+                            <i class="fas fa-user mr-1"></i>
+                            Khách thuê
+                        </button>
+                        <span class="text-green-500 text-sm">Hoạt động</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 2 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+                <div class="p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg text-gray-800">Tên: Nhà Số 2</h2>
+                        <div class="flex space-x-2">
+                            <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-1">
+                        <i class="fas fa-map-marker-alt mr-2 text-gray-500"></i>
+                        Địa chỉ: Đường Ni Sư Huỳnh Liên, Phường 10, Tân Bình, Hồ Chí Minh
+                    </p>
+                    
+                    <p class="text-gray-600 mb-4">
+                        <i class="fas fa-building mr-2 text-gray-500"></i>
+                        Tổng phòng: 1
+                    </p>
+                    
+                    <div class="flex justify-between items-center">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
+                            <i class="fas fa-user mr-1"></i>
+                            Khách thuê
+                        </button>
+                        <span class="text-green-500 text-sm">Hoạt động</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 3 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+                <div class="p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg text-gray-800">Tên: Nhà Số 3</h2>
+                        <div class="flex space-x-2">
+                            <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-1">
+                        <i class="fas fa-map-marker-alt mr-2 text-gray-500"></i>
+                        Địa chỉ: Số 50 Đường số 5, Phạm Hùng, Phường 4, Quận 8, Hồ Chí Minh
+                    </p>
+                    
+                    <p class="text-gray-600 mb-4">
+                        <i class="fas fa-building mr-2 text-gray-500"></i>
+                        Tổng phòng: 5
+                    </p>
+                    
+                    <div class="flex justify-between items-center">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
+                            <i class="fas fa-user mr-1"></i>
+                            Khách thuê
+                        </button>
+                        <span class="text-red-500 text-sm">Đang bảo trì</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -37,20 +37,41 @@ public class RegisterAndPayCommandHandler(UserManager<User> userManager, IVnPayS
             ServicePackageId = request.ServicePackageId
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new Exception($"Failed to create user: {errorMessage}");
-        }
+        // var result = await _userManager.CreateAsync(user, request.Password);
+        // if (!result.Succeeded)
+        // {
+        //     var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+        //     throw new Exception($"Failed to create user: {errorMessage}");
+        // }
 
-        var createdUser = await _userManager.FindByNameAsync(user.UserName);
+        // var createdUser = await _userManager.FindByNameAsync(user.UserName);
 
         var httpContext = _httpContextAccessor.HttpContext;
+        // var paymentModel = new VnPaymentRequestModel
+        // {
+        //     UserId = createdUser.Id,
+        //     ServicePackageId = request.ServicePackageId
+        // };
+
+         // 2. Encode toàn bộ thông tin đăng ký thành chuỗi Base64
+        var registrationInfo = new
+        {
+            request.Username,
+            request.Password,
+            request.FullName,
+            request.Email,
+            request.PhoneNumber,
+            request.ServicePackageId
+        };
+        var json = System.Text.Json.JsonSerializer.Serialize(registrationInfo);
+        var base64Data = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+        // 3. Gửi base64Data đó vào OrderInfo
         var paymentModel = new VnPaymentRequestModel
         {
-            UserId = createdUser.Id,
-            ServicePackageId = request.ServicePackageId
+            OrderInfo = base64Data, // mới
+            ServicePackageId = request.ServicePackageId,
+            // Các thông tin cần thiết khác nếu có
         };
 
         // Tạo URL thanh toán
