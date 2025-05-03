@@ -61,6 +61,19 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("by-user/{id}")]
+        public async Task<IActionResult> GetByUserId(int id)
+        {
+            var result = await _mediator.Send(new HouseGetByUserIdQuery { UserId = id });
+
+            if (result == null)
+            {
+                return NotFound($"House with ID {id} not found.");
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

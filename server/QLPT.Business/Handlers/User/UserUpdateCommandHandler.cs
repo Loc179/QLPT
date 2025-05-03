@@ -8,10 +8,9 @@ using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class UserUpdateCommandHandler(UserManager<User> userManager, IUnitOfWorks unitOfWorks, IMapper mapper) : IRequestHandler<UserUpdateCommand, UserViewModel>
+public class UserUpdateCommandHandler(UserManager<User> userManager, IMapper mapper) : IRequestHandler<UserUpdateCommand, UserViewModel>
 {
     private readonly UserManager<User> _userManager = userManager;
-    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IMapper _mapper = mapper;
 
     public async Task<UserViewModel> Handle(UserUpdateCommand request, CancellationToken cancellationToken)
