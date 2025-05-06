@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AuthService } from '../services/auth/auth.service';
-import { AUTH_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE } from '../constants/injection/injection.constant';
+import { AUTH_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SERVICEPACKAGE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE } from '../constants/injection/injection.constant';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HouseService } from '../services/house/house.service';
 import { InvoiceService } from '../services/invoice/invoice.service';
@@ -13,6 +13,7 @@ import { RoomService } from '../services/room/room.service';
 import { RoomserviceService } from '../services/roomservice/roomservice.service';
 import { SupportrequestService } from '../services/supportrequest/supportrequest.service';
 import { TenantService } from '../services/tenant/tenant.service';
+import { ServicepackageService } from '../services/servicepackage/servicepackage.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +46,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: TENANT_SERVICE,
       useClass: TenantService,
+    },
+    {
+      provide: SERVICEPACKAGE_SERVICE,
+      useClass: ServicepackageService,
     },
     provideHttpClient(
       withFetch(),

@@ -20,6 +20,11 @@ builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection("VNPay"
 builder.Services.Configure<AppSetting>(builder.Configuration);
 var appSetting = builder.Configuration.Get<AppSetting>();
 
+builder.Services.Configure<CloudinarySettings>(
+    builder.Configuration.GetSection("CloudinarySettings"));
+
+builder.Services.AddScoped<IImageHostingService, CloudinaryService>();
+
 
 builder.Services.AddCors(options =>
 {

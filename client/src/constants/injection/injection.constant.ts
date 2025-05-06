@@ -6,6 +6,7 @@ import { IRoomService } from "../../services/room/room.service.interface";
 import { IRoomserviceService } from "../../services/roomservice/roomservice.service.interface";
 import { ISupportrequestService } from "../../services/supportrequest/supportrequest.service.interface";
 import { ITenantService } from "../../services/tenant/tenant.service.interface";
+import { IServicepackageService } from "../../services/servicepackage/servicepackage.service.interface";
 
 export const AUTH_SERVICE = new InjectionToken<IAuthService>('AUTH_SERVICE');
 export const HOUSE_SERVICE = new InjectionToken<IHouseService>('HOUSE_SERVICE');
@@ -14,3 +15,4 @@ export const ROOM_SERVICE = new InjectionToken<IRoomService>('ROOM_SERVICE');
 export const ROOMSERVICE_SERVICE = new InjectionToken<IRoomserviceService>('ROOMSERVICE_SERVICE');
 export const SUPPORTREQUEST_SERVICE = new InjectionToken<ISupportrequestService>('SUPPORTREQUEST_SERVICE');
 export const TENANT_SERVICE = new InjectionToken<ITenantService>('TENANT_SERVICE');
+export const SERVICEPACKAGE_SERVICE = new InjectionToken<IServicepackageService>('SERVICEPACKAGE_SERVICE');

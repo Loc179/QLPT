@@ -1,11 +1,10 @@
 using System;
-using QLPT.Models.Entities;
+using QLPT.Business.ViewModels;
 
-namespace QLPT.Business.ViewModels;
+namespace QLPT.Business.Handlers;
 
-public class AdvertisementViewModel
+public class AdvertisementCreateUpdateCommand : BaseCreateUpdateCommand<AdvertisementViewModel>
 {
-    public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string? Description { get; set; }
@@ -15,9 +14,6 @@ public class AdvertisementViewModel
     public double Longitude { get; set; }
     public int MaxOccupants { get; set; }
     public int Status { get; set; }
-    public int Type { get; set; } // Type of ad
-    public DateTime CreatedAt { get; set; }
-
+    public int Type { get; set; }
     public int UserId { get; set; }
-
 }

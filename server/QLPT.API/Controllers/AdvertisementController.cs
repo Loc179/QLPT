@@ -7,12 +7,12 @@ namespace QLPT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomController(IMediator mediator) : ControllerBase
+    public class AdvertisementController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RoomCreateUpdateCommand command)
+        public async Task<IActionResult> Create([FromBody] AdvertisementCreateUpdateCommand command)
         {
             if (!ModelState.IsValid)
             {
@@ -24,7 +24,7 @@ namespace QLPT.API.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] RoomCreateUpdateCommand command)
+        public async Task<IActionResult> Update(int id, [FromBody] AdvertisementCreateUpdateCommand command)
         {
             command.Id = id;
 
@@ -42,7 +42,7 @@ namespace QLPT.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var request = new RoomDeleteByIdCommand{ Id = id};
+            var request = new AdvertisementDeleteById{ Id = id};
             var result = await _mediator.Send(request);
             return Ok(result);
         }
@@ -51,37 +51,11 @@ namespace QLPT.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _mediator.Send(new RoomGetByIdQuery { Id = id });
+            var result = await _mediator.Send(new AdvertisementGetByIdQuery { Id = id });
 
             if (result == null)
             {
-                return NotFound($"Room with ID {id} not found.");
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("by-house/{id}")]
-        public async Task<IActionResult> GetByHouseId(int id)
-        {
-            var result = await _mediator.Send(new RoomGetByHouseIdQuery { HouseId = id });
-
-            if (result == null)
-            {
-                return NotFound($"Room with ID {id} not found.");
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id)
-        {
-            var result = await _mediator.Send(new RoomGetByUserIdQuery { UserId = id });
-
-            if (result == null)
-            {
-                return NotFound($"Room with ID {id} not found.");
+                return NotFound($"Advertisement with ID {id} not found.");
             }
 
             return Ok(result);
@@ -90,7 +64,7 @@ namespace QLPT.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _mediator.Send(new RoomGetAllQuery());
+            var result = await _mediator.Send(new AdvertisementGetAllQuery());
             return Ok(result);
         }
     }
