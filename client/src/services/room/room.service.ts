@@ -11,6 +11,9 @@ export class RoomService implements IRoomService {
   private readonly apiUrl: string = 'http://localhost:5297/api/room';
 
   constructor(private readonly httpClient: HttpClient) { }
+  getByUserId(userId: number): Observable<RoomModel[]> {
+    return this.httpClient.get<RoomModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  }
 
   getAll(): Observable<RoomModel[]> {
     return this.httpClient.get<RoomModel[]>(this.apiUrl);
