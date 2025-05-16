@@ -1,22 +1,29 @@
 <header class="flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200">
-    <div class="flex items-center">
-      <button class="md:hidden text-gray-500 focus:outline-none">
-        <i class="fas fa-bars"></i>
+  <div class="flex items-center">
+    <button class="md:hidden text-gray-500 focus:outline-none">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <div class="flex items-center space-x-4">
+    <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+      <i class="fas fa-bell"></i>
+    </button>
+
+    <!-- Dropdown -->
+    <div class="relative" (clickOutside)="closeDropdown()" #dropdownRef>
+      <button (click)="toggleDropdown()" class="flex items-center space-x-2 focus:outline-none">
+        <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="hidden md:inline-block font-medium">{{ userInfo?.username }}</span>
       </button>
-    </div>
-  
-    <div class="flex items-center space-x-4">
-      <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
-        <i class="fas fa-bell"></i>
-      </button>
-      <div class="relative">
-        <button class="flex items-center space-x-2 focus:outline-none">
-          <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            <span>AD</span>
-          </div>
-          <span class="hidden md:inline-block font-medium">Admin</span>
-        </button>
+
+      <div
+        *ngIf="isDropdownOpen"
+        class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+        <a (click)="logout()" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">Logout</a>
       </div>
     </div>
+  </div>
 </header>
-  

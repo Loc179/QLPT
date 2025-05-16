@@ -61,11 +61,90 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("by-room/{id}")]
+        public async Task<IActionResult> GetByRoomId(int id)
+        {
+            var result = await _mediator.Send(new InvoiceGetByRoomIdQuery { RoomId = id });
+
+            if (result == null)
+            {
+                return NotFound($"Invoice with ID {id} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("by-house/{id}")]
+        public async Task<IActionResult> GetByHouseId(int id)
+        {
+            var result = await _mediator.Send(new InvoiceGetByHouseIdQuery { HouseId = id });
+
+            if (result == null)
+            {
+                return NotFound($"Invoice with ID {id} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("by-user/{id}")]
+        public async Task<IActionResult> GetByUserId(int id)
+        {
+            var result = await _mediator.Send(new InvoiceGetByUserIdQuery { UserId = id });
+
+            if (result == null)
+            {
+                return NotFound($"Invoice with ID {id} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("paymenturl")]
+        public async Task<IActionResult> PaymentUrl([FromBody] InvoicePaymentUrlCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string paymentUrl = await _mediator.Send(command);
+            return Ok(new { paymentUrl });
+            
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _mediator.Send(new InvoiceGetAllQuery());
             return Ok(result);
+        }
+
+        [HttpPost("vnpay-return")]
+        public async Task<IActionResult> VnPayReturn([FromBody] Dictionary<string, string> vnpayData)
+        {
+            var responseCode = vnpayData["vnp_ResponseCode"];
+            var invoiceCode = vnpayData["vnp_TxnRef"];
+
+            Console.WriteLine($"Response Code: {responseCode}");
+            Console.WriteLine($"Invoice Code: {invoiceCode}");
+
+            if (responseCode == "00" && !string.IsNullOrEmpty(invoiceCode))
+            {
+                var command = new InvoiceConfirmPaymentCommand
+                {
+                    InvoiceCode = invoiceCode
+                };
+
+                var result = await _mediator.Send(command);
+
+                if (result)
+                    return Ok(new { message = "Thanh toán thành công và đã cập nhật trạng thái hóa đơn." });
+                else
+                    return BadRequest(new { message = "Thanh toán thành công nhưng không thể cập nhật trạng thái hóa đơn." });
+            }
+
+            return BadRequest(new { message = "Thanh toán thất bại hoặc dữ liệu không hợp lệ." });
         }
     }
 }

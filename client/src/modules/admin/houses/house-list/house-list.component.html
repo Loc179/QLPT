@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-2xl font-bold text-gray-800">Quản Lý Toà Nhà</h1>
-        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+        <button routerLink="/admin/house/create" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center cursor-pointer">
             <i class="fas fa-plus mr-2"></i>
             Thêm nhà mới
         </button>
@@ -10,25 +10,23 @@
 
     <!-- Property Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let house of houses" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
-            <div class="p-5">
+        <div *ngFor="let house of houses" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition relative">
+
+            <div class="p-5 cursor-pointer" (click)="goToRoom(house.id)">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="font-semibold text-lg text-gray-800">Tên: {{ house.name }}</h2>
-                    <div class="flex space-x-2">
-                        <span class="w-3 h-3" [ngClass]="{'bg-blue-500': house.status === 1, 'bg-red-500': house.status === 0}"></span>
-                    </div>
                 </div>
-                
+
                 <p class="text-gray-600 mb-1">
                     <i class="fas fa-map-marker-alt mr-2 text-gray-500"></i>
                     Địa chỉ: {{ house.address }}
                 </p>
-                
+
                 <p class="text-gray-600 mb-4">
                     <i class="fas fa-building mr-2 text-gray-500"></i>
                     Tổng phòng: {{ house.totalRooms }}
                 </p>
-                
+
                 <div class="flex justify-between items-center">
                     <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
                         <i class="fas fa-user mr-1"></i>
@@ -38,6 +36,17 @@
                     <span class="text-red-500 text-sm" *ngIf="house.status === 0">Đang bảo trì</span>
                 </div>
             </div>
+
+            <!-- Buttons sửa & xoá -->
+            <div class="absolute top-2 right-2 flex space-x-2">
+                <button (click)="editHouse(house.id); $event.stopPropagation()" class="bg-yellow-400 hover:bg-yellow-500 text-white px-2 py-1 rounded-md text-xs cursor-pointer">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteHouse(house.id); $event.stopPropagation()" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs cursor-pointer">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

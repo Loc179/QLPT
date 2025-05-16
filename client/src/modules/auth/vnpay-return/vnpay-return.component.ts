@@ -11,8 +11,8 @@ export class VnpayReturnComponent implements OnInit {
   statusMessage: string = 'Đang xử lý thanh toán...';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
   ) {}
 
@@ -35,7 +35,7 @@ export class VnpayReturnComponent implements OnInit {
         error: (err) => {
           console.log("Error from BE:", err); // Log lỗi từ backend
           this.statusMessage = 'Xác nhận thanh toán thất bại!2';
-          setTimeout(() => this.router.navigate(['/login']), 3000);
+          setTimeout(() => this.router.navigate(['/login']), 30000);
         }
       });
       

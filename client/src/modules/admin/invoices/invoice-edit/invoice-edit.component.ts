@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './invoice-edit.component.css'
 })
 export class InvoiceEditComponent {
-
+  
 }

@@ -11,6 +11,10 @@ export class SupportrequestService implements ISupportrequestService {
   private readonly apiUrl: string = 'http://localhost:5297/api/supportrequest';
 
   constructor(private readonly httpClient: HttpClient) { }
+
+  getByUserId(userId: number): Observable<SupportRequestModel[]> {
+    return this.httpClient.get<SupportRequestModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  }
   
   getAll(): Observable<SupportRequestModel[]> {
     return this.httpClient.get<SupportRequestModel[]>(this.apiUrl);

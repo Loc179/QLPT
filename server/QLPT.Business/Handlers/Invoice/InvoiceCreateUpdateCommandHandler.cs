@@ -23,10 +23,13 @@ public class InvoiceCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unit
     {
         var entity = new Invoice
         {
+            InvoiceCode = request.InvoiceCode,
             Total = request.Total,
             TaxRate = request.TaxRate,
-            TaxAmount = request.TaxAmount,
+            TaxAmount = request.Total * request.TaxRate,
             CreatedAt = DateTime.UtcNow,
+            IsPaid = request.IsPaid,
+            PaymentDate = request.PaymentDate,
             RoomId = request.RoomId
             
         };

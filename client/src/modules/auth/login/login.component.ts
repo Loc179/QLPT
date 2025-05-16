@@ -43,9 +43,18 @@ export class LoginComponent {
     this.errorMessage = '';
 
     this.authService.login(loginRequest, rememberMe).subscribe({
-      next: () => {
+      next: (res) => {
         this.isSubmitting = false;
-        this.router.navigate(['/']); // điều hướng về trang chủ hoặc dashboard
+        if(res.userInfo.roles[0] === 'User')
+        {
+          this.router.navigate(['/admin/house/', res.userInfo.id]); // điều hướng về trang chủ hoặc dashboard
+        }
+
+        if(res.userInfo.roles[0] === 'Admin')
+        {
+          this.router.navigate(['/webadmin/user-manager']);
+        }
+        
       },
       error: err => {
         this.isSubmitting = false;

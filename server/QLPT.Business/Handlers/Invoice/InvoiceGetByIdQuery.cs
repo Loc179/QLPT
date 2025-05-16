@@ -3,7 +3,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class InvoiceGetByIdQuery : BaseGetByIdQuery<InvoiceViewModel>
+public class InvoiceGetByIdQuery : BaseGetByIdQuery<InvoiceListViewModel>
 {
 
 }

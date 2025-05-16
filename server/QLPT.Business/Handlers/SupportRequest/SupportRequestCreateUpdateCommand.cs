@@ -7,8 +7,7 @@ public class SupportRequestCreateUpdateCommand : BaseCreateUpdateCommand<Support
 {
     public string Content { get; set; } = string.Empty;
     public string? AdminReply { get; set; }
-    public int Status { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public int Status { get; set; } = 0;
 
     public int UserId { get; set; }
 }

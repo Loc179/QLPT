@@ -7,6 +7,9 @@ import { IRoomserviceService } from "../../services/roomservice/roomservice.serv
 import { ISupportrequestService } from "../../services/supportrequest/supportrequest.service.interface";
 import { ITenantService } from "../../services/tenant/tenant.service.interface";
 import { IServicepackageService } from "../../services/servicepackage/servicepackage.service.interface";
+import { IEmailService } from "../../services/email/email.service.interface";
+import { IUserService } from "../../services/user/user.service.interface";
+import { IAdvertisementService } from "../../services/advertisement/advertisement.service.interface";
 
 export const AUTH_SERVICE = new InjectionToken<IAuthService>('AUTH_SERVICE');
 export const HOUSE_SERVICE = new InjectionToken<IHouseService>('HOUSE_SERVICE');
@@ -16,3 +19,6 @@ export const ROOMSERVICE_SERVICE = new InjectionToken<IRoomserviceService>('ROOM
 export const SUPPORTREQUEST_SERVICE = new InjectionToken<ISupportrequestService>('SUPPORTREQUEST_SERVICE');
 export const TENANT_SERVICE = new InjectionToken<ITenantService>('TENANT_SERVICE');
 export const SERVICEPACKAGE_SERVICE = new InjectionToken<IServicepackageService>('SERVICEPACKAGE_SERVICE');
+export const EMAIL_SERVICE = new InjectionToken<IEmailService>('EMAIL_SERVICE');
+export const USER_SERVICE = new InjectionToken<IUserService>('USER_SERVICE');
+export const ADVERTISEMENT_SERVICE = new InjectionToken<IAdvertisementService>('ADVERTISEMENT_SERVICE');

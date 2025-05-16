@@ -1,16 +1,18 @@
 using System;
 using AutoMapper;
 using MediatR;
+using QLPT.Business.Services;
 using QLPT.Business.ViewModels;
 using QLPT.Data.UnitOfWorks;
 using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<AdvertisementCreateUpdateCommand, AdvertisementViewModel>
+public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOfWork, IImageHostingService imageService) : IRequestHandler<AdvertisementCreateUpdateCommand, AdvertisementViewModel>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
+    private readonly IImageHostingService _imageService = imageService;
 
     public Task<AdvertisementViewModel> Handle(AdvertisementCreateUpdateCommand request, CancellationToken cancellationToken)
     {
@@ -24,7 +26,7 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
         var entity = new Advertisement
         {
             Title = request.Title,
-            Address = request.Address,
+            Address = request.WardName + ", " + request.DistrictName + ", " + request.ProvinceName,
             Description = request.Description,
             Cost = request.Cost,
             Area = request.Area,
@@ -37,6 +39,22 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
         };
 
         _unitOfWork.AdvertisementRepository.Add(entity);
+
+        await _unitOfWork.SaveChangesAsync();
+
+        foreach (var image in request.Images)
+        {
+            string imageUrl = await _imageService.UploadImageAsync(image);
+
+            var entityAdvertisementImage = new AdvertisementImage
+            {
+                AdvertisementId = entity.Id,
+                ImagePath = imageUrl
+            };
+
+            _unitOfWork.AdvertisementImageRepository.Add(entityAdvertisementImage);
+        }
+
         var result = await _unitOfWork.SaveChangesAsync();
 
         if (result <= 0)

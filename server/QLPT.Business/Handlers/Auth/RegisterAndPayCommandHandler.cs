@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Identity;
 using Org.BouncyCastle.Bcpg;
 using QLPT.Business.Services;
 using QLPT.Business.ViewModels;
+using QLPT.Data.UnitOfWorks;
 using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class RegisterAndPayCommandHandler(UserManager<User> userManager, IVnPayService vnPayService, IHttpContextAccessor httpContextAccessor) : IRequestHandler<RegisterAndPayCommand, string>
+public class RegisterAndPayCommandHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IVnPayService vnPayService, IHttpContextAccessor httpContextAccessor) : IRequestHandler<RegisterAndPayCommand, string>
 {
+    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
     private readonly IVnPayService _vnPayService = vnPayService;
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -25,33 +27,9 @@ public class RegisterAndPayCommandHandler(UserManager<User> userManager, IVnPayS
             throw new Exception("Username or Email already exists.");
         }
 
-        // Tạo user
-        var user = new User
-        {
-            UserName = request.Username,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
-            FullName = request.FullName,
-            Status = 0,
-            CreatedAt = DateTime.UtcNow,
-            ServicePackageId = request.ServicePackageId
-        };
 
-        // var result = await _userManager.CreateAsync(user, request.Password);
-        // if (!result.Succeeded)
-        // {
-        //     var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-        //     throw new Exception($"Failed to create user: {errorMessage}");
-        // }
-
-        // var createdUser = await _userManager.FindByNameAsync(user.UserName);
 
         var httpContext = _httpContextAccessor.HttpContext;
-        // var paymentModel = new VnPaymentRequestModel
-        // {
-        //     UserId = createdUser.Id,
-        //     ServicePackageId = request.ServicePackageId
-        // };
 
          // 2. Encode toàn bộ thông tin đăng ký thành chuỗi Base64
         var registrationInfo = new
@@ -75,8 +53,18 @@ public class RegisterAndPayCommandHandler(UserManager<User> userManager, IVnPayS
         };
 
         // Tạo URL thanh toán
-        string paymentUrl = _vnPayService.CreatePaymentUrl(httpContext, paymentModel);
+        string paymentUrl = _vnPayService.CreatePaymentUrl(httpContext, paymentModel, GetAmountByServiceId(request.ServicePackageId));
 
         return paymentUrl;
+    }
+
+    private double GetAmountByServiceId(int servicePackageId)
+    {
+        var entity = _unitOfWorks.ServicePackageRepository.GetById(servicePackageId);
+        if(entity == null)
+        {
+            throw new Exception("Not found service package");
+        }
+        return entity.Price;
     }
 }

@@ -1,3 +1,12 @@
+<div class="container mx-auto px-4 py-8">
+<!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">Quản Lý Phòng Trọ</h1>
+        <button routerLink="/admin/room/create" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+            <i class="fas fa-plus mr-2"></i>
+            Thêm phòng mới
+        </button>
+    </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <div *ngFor="let room of rooms" class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="p-4 border-b border-gray-200">
@@ -16,28 +25,40 @@
         </div>
       </div>
       <div class="p-4 bg-gray-50">
-        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md transition duration-200 mb-3">
+        <button (click)="goToAddTenant(room.id)" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md transition duration-200 mb-3">
           Thêm khách
         </button>
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center text-gray-700">
             <i class="fas fa-user mr-2"></i>
-            <span>{{ room.description || 'Khách' }}</span>
+            <span>{{ room.maxOccupants || 'Khách' }}</span>
           </div>
           <span class="text-red-500 font-medium">{{ room.price | number }} VND</span>
         </div>
         <div class="grid grid-cols-3 gap-2 mt-4">
-          <button class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded">
+          <button [routerLink]="['/admin/room/edit', room.id]" class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded">
             <i class="fas fa-edit mr-1"></i><span class="text-sm">Sửa</span>
           </button>
-          <button class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
+          <button (click)="deleteRoom(room.id)" class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
             <i class="fas fa-trash mr-1"></i><span class="text-sm">Xóa</span>
           </button>
-          <button class="flex justify-center items-center bg-teal-500 hover:bg-teal-600 text-white py-2 px-3 rounded">
+          <button (click)="detailRoom(room.id)" class="flex justify-center items-center bg-teal-500 hover:bg-teal-600 text-white py-2 px-3 rounded">
             <i class="fas fa-info-circle mr-1"></i><span class="text-sm">Chi tiết</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-red-500 font-medium">Dịch vụ</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button [routerLink]="['/admin/roomservice', room.id]" class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded">
+            <i class="fa-solid fa-list mr-1"></i><span class="text-sm">Dịch vụ phòng</span>
+          </button>
+          <button [routerLink]="['/admin/invoice/create', room.id]" class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
+            <i class="fas fa-credit-card mr-1"></i><span class="text-sm">Thanh toán</span>
           </button>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

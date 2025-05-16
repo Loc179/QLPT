@@ -5,4 +5,7 @@ export class TenantModel {
     email: string = '';
     isRepresentative!: boolean;
     roomId!: number;
+    roomNumber: string = '';
+    houseId!: number;
+    houseName: string = '';
 }

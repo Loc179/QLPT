@@ -11,6 +11,12 @@ export class TenantService implements ITenantService {
   private readonly apiUrl: string = 'http://localhost:5297/api/tenant';
 
   constructor(private readonly httpClient: HttpClient) { }
+  getByHouseId(houseId: number): Observable<TenantModel[]> {
+    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-house/${houseId}`);
+  }
+  getByUserId(userId: number): Observable<TenantModel[]> {
+    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  }
 
   getAll(): Observable<TenantModel[]> {
     return this.httpClient.get<TenantModel[]>(this.apiUrl);

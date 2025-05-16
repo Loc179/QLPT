@@ -14,7 +14,11 @@ public class TenantGetAllQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) :
 
     public async Task<IEnumerable<TenantViewModel>> Handle(TenantGetAllQuery request, CancellationToken cancellationToken)
     {
-        var query = _unitOfWork.TenantRepository.GetQuery();
+        var query = _unitOfWork.TenantRepository.GetQuery()
+            .Include(r => r.Room)
+            .ThenInclude(r => r.House)
+            .AsNoTracking()
+            .AsQueryable();
 
         var result = await query.ToListAsync();
 

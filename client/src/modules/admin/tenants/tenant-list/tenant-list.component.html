@@ -4,9 +4,6 @@
       <h1 class="text-2xl font-bold text-gray-800">Quản Lý Khách Thuê</h1>
       <div class="flex space-x-2">
         <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
-          <i class="fas fa-plus mr-2"></i> Thêm khách thuê
-        </button>
-        <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center">
           <i class="fas fa-file-export mr-2"></i> Xuất dữ liệu
         </button>
       </div>
@@ -55,8 +52,8 @@
               *ngFor="let tenant of tenants"
               class="hover:bg-gray-50 border-b border-gray-100"
             >
-              <td class="py-3 px-4">{{ getHouseNameByRoomId(tenant.roomId) }}</td>
-              <td class="py-3 px-4">{{ getRoomNumberById(tenant.roomId) }}</td>
+              <td class="py-3 px-4">{{ tenant.houseName }}</td>
+              <td class="py-3 px-4">{{ tenant.roomNumber }}</td>
               <td class="py-3 px-4 font-medium">{{ tenant.fullName }}</td>
               <td class="py-3 px-4">{{ tenant.phoneNumber }}</td>
               <td class="py-3 px-4 text-gray-500">{{ tenant.email }}</td>
@@ -70,15 +67,11 @@
               <td class="py-3 px-4">
                 <div class="flex space-x-2">
                   <button
-                    (click)="editTenant(tenant)"
-                    class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
-                  >
+                    (click)="editTenant(tenant.id)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                     Sửa
                   </button>
                   <button
-                    (click)="deleteTenant(tenant)"
-                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
-                  >
+                    (click)="deleteTenant(tenant.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
                     Xóa
                   </button>
                 </div>

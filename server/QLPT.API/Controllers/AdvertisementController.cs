@@ -12,7 +12,7 @@ namespace QLPT.API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AdvertisementCreateUpdateCommand command)
+        public async Task<IActionResult> Create([FromForm] AdvertisementCreateUpdateCommand command)
         {
             if (!ModelState.IsValid)
             {

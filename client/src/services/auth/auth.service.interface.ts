@@ -15,5 +15,6 @@ export interface IAuthService {
     getUserInformationFromAccessToken(): Observable<UserInformation | null>;
     getAccessToken(): string;
     getUserRoles() : string[];
+    getUserId(): number;
     hasRole(allowedRoles: string[]): boolean;
 }

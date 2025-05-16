@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IAuthService } from './auth.service.interface';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { LoginRequest } from '../../models/auth/login-request.model';
 import { LoginResponse } from '../../models/auth/login-response.model';
 import { UserInformation } from '../../models/auth/user-information.model';
@@ -48,6 +48,11 @@ export class AuthService implements IAuthService {
 
 
   }
+  getUserId(): number {
+    const userInfo = this._userInformation.getValue();
+    return userInfo?.id ?? 0;
+  }
+  
   vnpayReturn(queryParams: any): Observable<any> {
     return this.httpClient.post<boolean>(`${this.apiUrl}/vnpay-return`, queryParams)
   }
@@ -92,7 +97,6 @@ export class AuthService implements IAuthService {
   }
 
   logout(): void {
-    window.location.reload();
     this.httpClient.post<boolean>(`${this.apiUrl}/logout`, { refreshToken: this.getRefreshToken() });
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');

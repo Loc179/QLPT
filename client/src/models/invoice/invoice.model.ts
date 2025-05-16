@@ -1,8 +1,9 @@
 export class InvoiceModel {
-    id!: number;
     total!: number;
     taxRate!: number;
-    taxAmount!: number;
     createdAt!: Date;
+    isPaid!: boolean;
+    invoiceCode!: string;
+    paymentDate!: Date | null;
     roomId!: number;
 }

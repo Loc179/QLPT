@@ -20,7 +20,11 @@ public class TenantGetByIdRoomQueryHandler(IMapper mapper, IUnitOfWorks unitOfWo
             throw new Exception("Not found Room");
         }
 
-        var queryTenant = _unitOfWork.TenantRepository.GetQuery(r => r.RoomId == request.RoomId);
+        var queryTenant = _unitOfWork.TenantRepository.GetQuery(r => r.RoomId == request.RoomId)
+            .Include(r => r.Room)
+            .ThenInclude(r => r.House)
+            .AsNoTracking()
+            .AsQueryable();
         
         var result = await queryTenant.ToListAsync();
 

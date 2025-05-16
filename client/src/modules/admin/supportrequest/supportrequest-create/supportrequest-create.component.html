@@ -1,1 +1,24 @@
-<p>supportrequest-create works!</p>
+<div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-semibold mb-4 text-center">Tạo Yêu Cầu Hỗ Trợ</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Content -->
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Nội dung yêu cầu</label>
+      <textarea formControlName="content"
+        class="w-full h-32 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="Nhập nội dung cần hỗ trợ..."></textarea>
+      <div *ngIf="form.get('content')?.invalid && form.get('content')?.touched"
+        class="text-red-500 text-sm mt-1">
+        Nội dung là bắt buộc.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit"
+      class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+      [disabled]="form.invalid">
+      Gửi yêu cầu
+    </button>
+  </form>
+</div>

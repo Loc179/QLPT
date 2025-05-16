@@ -1,1 +1,79 @@
-<p>invoice-list works!</p>
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Quản Lý Hóa Đơn</h1>
+    <div class="flex space-x-2">
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+        <i class="fas fa-file-export mr-2"></i> Xuất dữ liệu
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+      <div class="flex-1">
+        <div class="relative">
+          <input type="text" placeholder="Tìm kiếm mã hóa đơn..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" />
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div>
+      </div>
+      <div class="flex space-x-2">
+        <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+          <option value="">Tất cả trạng thái</option>
+          <option value="1">Đã thanh toán</option>
+          <option value="0">Chưa thanh toán</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice Table -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full whitespace-nowrap">
+        <thead class="bg-gray-50 text-left">
+          <tr>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Mã HĐ</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Nhà</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Phòng</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Khách thuê</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Tổng tiền (VNĐ)</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Ngày tạo</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Ngày thanh toán</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Trạng thái</th>
+            <th class="py-3 px-4 font-semibold text-sm text-gray-600 border-b">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices" class="hover:bg-gray-50 border-b border-gray-100">
+            <td class="py-3 px-4">{{ invoice.invoiceCode }}</td>
+            <td class="py-3 px-4">{{ invoice.houseName }}</td>
+            <td class="py-3 px-4">{{ invoice.roomNumber }}</td>
+            <td class="py-3 px-4">{{ invoice.tenantName }}</td>
+            <td class="py-3 px-4">{{ invoice.total | number:'1.0-0' }}</td>
+            <td class="py-3 px-4">{{ invoice.createdAt | date: 'dd/MM/yyyy' }}</td>
+            <td class="py-3 px-4">
+              {{ invoice.paymentDate ? (invoice.paymentDate | date: 'dd/MM/yyyy') : '---' }}
+            </td>
+            <td class="py-3 px-4">
+              <span [ngClass]="invoice.isPaid ? 'text-green-600 font-medium' : 'text-red-600 font-medium'">
+                {{ invoice.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán' }}
+              </span>
+            </td>
+            <td class="py-3 px-4">
+              <div class="flex space-x-2">
+                <button (click)="viewInvoice(invoice.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                  Xem
+                </button>
+                <button (click)="deleteInvoice(invoice.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                  Xóa
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

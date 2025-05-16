@@ -3,6 +3,7 @@ import { RoomServiceModel } from "../../models/roomservice/roomservice.model";
 
 export interface IRoomserviceService {
     getAll(): Observable<RoomServiceModel[]>;
+    getByRoomId(roomId: number): Observable<RoomServiceModel[]>;
     getById(id: number): Observable<RoomServiceModel>;
     create(service: RoomServiceModel): Observable<any>;
     update(id: number, service: RoomServiceModel): Observable<any>;
