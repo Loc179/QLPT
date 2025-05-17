@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using QLPT.Business.ViewModels;
 using QLPT.Data.UnitOfWorks;
 
@@ -13,7 +14,7 @@ public class AdvertisementGetByIdQueryHandler(IMapper mapper, IUnitOfWorks unitO
 
     public async Task<AdvertisementViewModel> Handle(AdvertisementGetByIdQuery request, CancellationToken cancellationToken)
     {
-        var query = await _unitOfWork.AdvertisementRepository.GetByIdAsync(request.Id);
+        var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Id == request.Id).Include(i => i.Images).FirstOrDefault();
 
         return _mapper.Map<AdvertisementViewModel>(query);
     }

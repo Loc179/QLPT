@@ -8,4 +8,5 @@ export interface ISupportrequestService {
     create(data: SupportRequestModel): Observable<any>;
     update(id: number, data: SupportRequestModel): Observable<any>;
     delete(id: number): Observable<any>;
+    reply(id: number, replyContent: string): Observable<any>;
 }

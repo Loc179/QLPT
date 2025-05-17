@@ -12,6 +12,10 @@ export class SupportrequestService implements ISupportrequestService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
+  reply(id: number, replyContent: string): Observable<any> {
+    return this.httpClient.put(`${this.apiUrl}/reply/${id}`, { id: id, adminReply: replyContent });
+  }
+
   getByUserId(userId: number): Observable<SupportRequestModel[]> {
     return this.httpClient.get<SupportRequestModel[]>(`${this.apiUrl}/by-user/${userId}`);
   }

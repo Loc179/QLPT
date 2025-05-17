@@ -14,7 +14,7 @@ public class ServicePackageCreateUpdateCommandHandler(IMapper mapper, IUnitOfWor
 
     public Task<ServicePackageViewModel> Handle(ServicePackageCreateUpdateCommand request, CancellationToken cancellationToken)
     {
-        return request.Id.HasValue
+        return (request.Id.HasValue && request.Id > 0)
             ? Update(request, cancellationToken)
             : Create(request, cancellationToken);
     }

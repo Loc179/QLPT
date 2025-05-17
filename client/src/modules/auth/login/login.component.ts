@@ -52,7 +52,7 @@ export class LoginComponent {
 
         if(res.userInfo.roles[0] === 'Admin')
         {
-          this.router.navigate(['/webadmin/user-manager']);
+          this.router.navigate(['/webadmin/user-management']);
         }
         
       },

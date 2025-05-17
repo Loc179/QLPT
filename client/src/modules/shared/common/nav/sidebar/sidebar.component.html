@@ -1,64 +1,148 @@
 <!-- Sidebar -->
-<aside class="hidden md:flex md:flex-shrink-0">
-    <div class="flex flex-col w-64 bg-white border-r border-gray-200">
+<aside class="hidden md:flex md:flex-shrink-0" [ngClass]="{'w-20': sidebarService.isCollapsed, 'w-68': !sidebarService.isCollapsed}">
+    <div class="flex flex-col w-full bg-white border-r border-gray-200">
       <div class="flex items-center justify-center h-16 px-4 bg-blue-500 text-white">
-        <h1 class="text-xl font-bold">QUẢN LÝ PHÒNG TRỌ</h1>
+        <i class="fa-solid fa-bars cursor-pointer" (click)="toggleSidebar()"></i>
+        <h1 class="text-xl font-bold ml-2" *ngIf="!sidebarService.isCollapsed">QUẢN LÝ PHÒNG TRỌ</h1>
       </div>
       <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
         <nav class="flex-1 space-y-2">
           <!-- Nếu là chủ trọ -->
           <ng-container *ngIf="role === 'User'">
-            <a class="flex items-center px-4 py-2 text-lg font-medium text-white rounded-md bg-blue-500">
-              <i class="fas fa-home mr-3"></i>
-              Tổng quan
+            <a class="flex items-center px-4 py-2 text-lg font-medium rounded-md" 
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('dashboard'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('dashboard'),
+                 'text-white': isActive('dashboard')
+               }">
+              <i class="fas fa-home" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Tổng quan</span>
             </a>
-            <a (click)="navigateToHouse()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-building mr-3"></i>
-              Nhà trọ
+            <a (click)="navigateToHouse()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('house'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('house'),
+                 'text-white': isActive('house')
+               }">
+              <i class="fas fa-building" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Nhà trọ</span>
             </a>
-            <a (click)="navigateToRoom()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-door-open mr-3"></i>
-              Phòng trọ
+            <a (click)="navigateToRoom()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('room'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('room'),
+                 'text-white': isActive('room')
+               }">
+              <i class="fas fa-door-open" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Phòng trọ</span>
             </a>
-            <a (click)="navigateToTenant()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-users mr-3"></i>
-              Khách thuê
+            <a (click)="navigateToTenant()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('tenant'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('tenant'),
+                 'text-white': isActive('tenant')
+               }">
+              <i class="fas fa-users" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Khách thuê</span>
             </a>
-            <a (click)="navigateToInvoice()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-file-invoice-dollar mr-3"></i>
-              Hóa đơn
+            <a (click)="navigateToInvoice()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('invoice'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('invoice'),
+                 'text-white': isActive('invoice')
+               }">
+              <i class="fas fa-file-invoice-dollar" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Hóa đơn</span>
             </a>
-            <a (click)="navigateToSupport()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-tools mr-3"></i>
-              Hỗ trợ
+            <a (click)="navigateToSupport()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('support'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('support'),
+                 'text-white': isActive('support')
+               }">
+              <i class="fas fa-tools" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Hỗ trợ</span>
             </a>
-            <a (click)="navigateToAdvertisement()" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fa-solid fa-rectangle-ad mr-3"></i>
-              Quảng cáo
+            <a (click)="navigateToAdvertisement()" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('advertisement'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('advertisement'),
+                 'text-white': isActive('advertisement')
+               }">
+              <i class="fa-solid fa-rectangle-ad" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Quảng cáo</span>
             </a>
           </ng-container>
 
           <!-- Nếu là webadmin -->
           <ng-container *ngIf="role === 'Admin'">
-            <a (click)="navigateTo('/webadmin/home')" class="flex items-center px-4 py-2 text-lg font-medium text-white rounded-md bg-blue-500 cursor-pointer">
-              <i class="fas fa-home mr-3"></i>
-              Trang chính
+            <a (click)="navigateTo('/webadmin/home')" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('webadmin-home'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('webadmin-home'),
+                 'text-white': isActive('webadmin-home')
+               }">
+              <i class="fas fa-home" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Trang chính</span>
             </a>
-            <a (click)="navigateTo('/webadmin/user-management')" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-users mr-3"></i>
-              Quản lý người dùng
+            <a (click)="navigateTo('/webadmin/user-management')" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('webadmin-users'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('webadmin-users'),
+                 'text-white': isActive('webadmin-users')
+               }">
+              <i class="fas fa-users" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Quản lý người dùng</span>
             </a>
-            <a (click)="navigateTo('/webadmin/advertisement-management')" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-file-alt mr-3"></i>
-              Quản lý quảng cáo
+            <a (click)="navigateTo('/webadmin/advertisement-management')" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('webadmin-ads'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('webadmin-ads'),
+                 'text-white': isActive('webadmin-ads')
+               }">
+              <i class="fas fa-file-alt" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Quản lý quảng cáo</span>
             </a>
-            <a (click)="navigateTo('/webadmin/service-packages')" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-history mr-3"></i>
-              Quản lý gói dịch vụ
+            <a (click)="navigateTo('/webadmin/servicepackage')" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('webadmin-service'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('webadmin-service'),
+                 'text-white': isActive('webadmin-service')
+               }">
+              <i class="fas fa-history" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Quản lý gói dịch vụ</span>
             </a>
-            <a (click)="navigateTo('/webadmin/support')" class="flex items-center px-4 py-2 text-lg font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i class="fas fa-life-ring mr-3"></i>
-              Hỗ trợ
+            <a (click)="navigateTo('/webadmin/supportrequest')" 
+               class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer"
+               [ngClass]="{
+                 'justify-center': sidebarService.isCollapsed,
+                 'active-menu-item': isActive('webadmin-support'),
+                 'text-gray-700 hover:bg-gray-100': !isActive('webadmin-support'),
+                 'text-white': isActive('webadmin-support')
+               }">
+              <i class="fas fa-life-ring" [ngClass]="{'mr-3': !sidebarService.isCollapsed}"></i>
+              <span *ngIf="!sidebarService.isCollapsed">Hỗ trợ</span>
             </a>
           </ng-container>
 

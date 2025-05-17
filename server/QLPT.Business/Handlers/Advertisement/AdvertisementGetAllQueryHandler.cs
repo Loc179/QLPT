@@ -14,7 +14,7 @@ public class AdvertisementGetAllQueryHandler(IMapper mapper, IUnitOfWorks unitOf
 
     public async Task<IEnumerable<AdvertisementViewModel>> Handle(AdvertisementGetAllQuery request, CancellationToken cancellationToken)
     {
-        var query = _unitOfWork.AdvertisementRepository.GetQuery();
+        var query = _unitOfWork.AdvertisementRepository.GetQuery().Include(i => i.Images);
 
         var result = await query.ToListAsync();
 

@@ -19,5 +19,10 @@ public class AdvertisementViewModel
     public DateTime CreatedAt { get; set; }
 
     public int UserId { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Fullname { get; set; } = string.Empty;
+    public string Phonenumber { get; set; } = string.Empty;
+
+    public List<string> imagesPath { get; set; } = [];
 
 }

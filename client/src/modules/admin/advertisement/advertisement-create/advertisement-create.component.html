@@ -88,7 +88,7 @@
     </div>
 
     <!-- Price and Area -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Price -->
       <div>
         <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá (VND)</label>
@@ -118,6 +118,22 @@
         >
         <div *ngIf="form.get('area')?.invalid && form.get('area')?.touched" class="text-red-500 text-xs mt-1">
           Diện tích phải là số dương
+        </div>
+      </div>
+
+      <!-- MaxOccupants -->
+      <div>
+        <label for="maxOccupants" class="block text-sm font-medium text-gray-700 mb-1">Thành viên tối đa</label>
+        <input
+          id="maxOccupants"
+          type="number"
+          formControlName="maxOccupants"
+          min="0"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-500]="form.get('maxOccupants')?.invalid && form.get('maxOccupants')?.touched"
+        >
+        <div *ngIf="form.get('maxOccupants')?.invalid && form.get('maxOccupants')?.touched" class="text-red-500 text-xs mt-1">
+          Thành viên phải là số dương
         </div>
       </div>
     </div>

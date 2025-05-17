@@ -1,0 +1,50 @@
+<!-- vip-card.component.html -->
+<div class="vip-card-layout bg-white rounded-2xl shadow-md p-4">
+  <div class="grid grid-cols-2 gap-2 mb-4">
+    <div *ngFor="let img of imagesToShow" class="rounded overflow-hidden">
+      <img [src]="img" alt="img" class="object-cover w-full h-32" />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-xl font-bold">{{ data.title }}</div>
+    <div class="text-gray-600 text-sm">
+      <span>{{ data.cost | number }} đ/tháng</span>
+      <span class="mx-1">·</span>
+      <span>{{ data.area }} m²</span>
+      <span class="mx-1">·</span>
+      <span>{{ data.address }}</span>
+    </div>
+    <div class="mt-2 text-sm text-gray-700">{{ data.description }}</div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <img class="w-10 h-10 rounded-full object-cover" [src]="images.default_avatar_icon" alt="avatar" />
+      <div>
+        <div class="text-sm font-semibold">{{ data.fullname }}</div>
+        <div class="text-xs text-gray-500">{{ data.createAt }}</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        class="bg-green-500 text-white text-sm px-4 py-1 rounded flex items-center gap-2 hover:bg-green-600"
+      >
+        <i class="fas fa-phone"></i>
+        {{ data.phonenumber }}
+      </button>
+
+      <button
+        (click)="handleLikeItem($event)"
+        [ngClass]="{
+          'border border-red-500 text-red-500': !btnState,
+          'bg-red-500 text-white': btnState
+        }"
+        class="px-3 py-1 rounded text-sm hover:opacity-80"
+      >
+        <i class="far fa-heart"></i>
+      </button>
+    </div>
+  </div>
+</div>

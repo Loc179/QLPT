@@ -1,0 +1,59 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4">Quản lý Quảng cáo</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let ad of advertisements" class="border rounded-2xl shadow p-4 bg-white">
+      <div class="mb-2">
+        <ng-container *ngIf="ad.imagesPath && ad.imagesPath.length > 0">
+            <img
+                [src]="ad.imagesPath[0]"
+                [alt]="ad.title || 'Ảnh phòng'"
+                class="w-full h-48 object-cover rounded-xl cursor-pointer transition hover:scale-105"
+                (click)="selectedImage = ad.imagesPath[0]"
+                (keydown.enter)="selectedImage = ad.imagesPath[0]"
+            />
+        </ng-container>
+        <div *ngIf="ad.imagesPath?.length === 0" class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-500 rounded-xl">
+          Không có ảnh
+        </div>
+      </div>
+      <h3 class="text-xl font-semibold">{{ ad.title }}</h3>
+      <div class="mt-2 text-sm">
+        <p><strong>Địa chỉ: </strong>{{ ad.address }}</p>
+        <p><strong>Mô tả: </strong>{{ ad.description }}</p>
+        <p><strong>Giá: </strong> {{ ad.cost | number }} VND</p>
+        <p><strong>Diện tích: </strong> {{ ad.area }} m²</p>
+        <p><strong>Sức chứa: </strong> {{ ad.maxOccupants > 0 ? ad.maxOccupants : 'Không giới hạn' }}</p>
+      </div>
+      <div class="mt-4 flex justify-end">
+        <button
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+        (click)="approveAd(ad.id)"
+        >
+        Duyệt quảng cáo
+        </button>
+        <button
+        class="px-4 py-2 ml-2 bg-red-500 text-white rounded-lg hover:bg-blue-700 transition"
+        (click)="approveAd(ad.id)"
+        >
+        Từ chối
+        </button>
+    </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="selectedImage"
+    class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+    (click)="selectedImage = null"
+    (keydown.enter)="selectedImage = null"
+    >
+    <img
+        [src]="selectedImage"
+        alt="Ảnh phóng to"
+        class="rounded-xl shadow-lg"
+        style="width: 600px; height: 400px; object-fit: cover;"
+        (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+    />
+</div>

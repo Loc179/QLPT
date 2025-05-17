@@ -4,5 +4,4 @@ export class ServicePackageModel {
     description?: string;
     duration!: number;
     price!: number;
-    createdAt!: Date;
 }

@@ -10,8 +10,10 @@ import { IServicepackageService } from "../../services/servicepackage/servicepac
 import { IEmailService } from "../../services/email/email.service.interface";
 import { IUserService } from "../../services/user/user.service.interface";
 import { IAdvertisementService } from "../../services/advertisement/advertisement.service.interface";
+import { IPermissionService } from "../../services/permission/permission.service.interface";
 
 export const AUTH_SERVICE = new InjectionToken<IAuthService>('AUTH_SERVICE');
+export const PERMISSION_SERVICE = new InjectionToken<IPermissionService>('PERMISSON_SERVICE');
 export const HOUSE_SERVICE = new InjectionToken<IHouseService>('HOUSE_SERVICE');
 export const INVOICE_SERVICE = new InjectionToken<IInvoiceService>('INVOICE_SERVICE');
 export const ROOM_SERVICE = new InjectionToken<IRoomService>('ROOM_SERVICE');

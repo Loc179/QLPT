@@ -74,6 +74,19 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
+        [HttpPut("reply/{id}")]
+        public async Task<IActionResult> Reply(SupportRequestReplyCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

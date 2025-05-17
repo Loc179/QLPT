@@ -16,7 +16,6 @@ public class AdvertisementCreateUpdateCommand : BaseCreateUpdateCommand<Advertis
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public int MaxOccupants { get; set; }
-    public int Status { get; set; }
     public int Type { get; set; }
     public int UserId { get; set; }
     public List<IFormFile>? Images { get; set; }

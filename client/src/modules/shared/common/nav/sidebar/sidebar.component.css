@@ -1,0 +1,33 @@
+/* Adjusted sidebar.component.css */
+:host {
+  display: contents;
+}
+
+.sidebar-transition {
+  transition: width 0.3s ease;
+}
+
+/* Add these classes in addition to your existing styles */
+.sidebar-collapsed {
+  width: 5rem !important; /* 80px */
+}
+
+.sidebar-expanded {
+  width: 17rem !important; /* 272px - equivalent to w-68 */
+}
+
+/* Add icon transitions */
+.icon-transition {
+  transition: margin 0.3s ease;
+}
+
+/* Active menu item styles */
+.active-menu-item {
+  background-color: #3b82f6 !important; /* Blue-500 */
+  color: white !important;
+  font-weight: bold;
+}
+
+.active-menu-item i {
+  color: white !important;
+}

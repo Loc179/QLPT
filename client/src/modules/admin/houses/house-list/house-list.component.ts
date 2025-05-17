@@ -41,7 +41,6 @@ export class HouseListComponent {
 
   goToRoom(houseId: number) {
     this.router.navigate(['admin/room', houseId]);
-    console.log("clicked room", houseId);
   }
 
   editHouse(houseId: number) {

@@ -8,7 +8,6 @@ import { IAuthService } from '../../../../services/auth/auth.service.interface';
 import { CommonModule } from '@angular/common';
 import { IUserService } from '../../../../services/user/user.service.interface';
 import { IAdvertisementService } from '../../../../services/advertisement/advertisement.service.interface';
-import { AdvertisementModel } from '../../../../models/advertisement/advertisement.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -59,6 +58,7 @@ export class AdvertisementCreateComponent implements OnInit, OnDestroy {
       description: ['', Validators.maxLength(1000)],
       cost: ['', [Validators.required, Validators.min(0)]],
       area: ['', [Validators.required, Validators.min(0)]],
+      maxOccupants: ['', [Validators.required, Validators.min(0)]],
       province: ['', Validators.required],
       district: ['', Validators.required],
       ward: ['', Validators.required],

@@ -13,7 +13,12 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<AdvertisementViewModel, Advertisement>().ReverseMap();
+        CreateMap<AdvertisementViewModel, Advertisement>();
+        CreateMap<Advertisement, AdvertisementViewModel>()
+            .ForMember(dest => dest.Username, otp => otp.MapFrom(src => src.User.UserName))
+            .ForMember(dest => dest.Fullname, otp => otp.MapFrom(src => src.User.FullName))
+            .ForMember(dest => dest.Phonenumber, otp => otp.MapFrom(src => src.User.PhoneNumber))
+            .ForMember(dest => dest.imagesPath, opt => opt.MapFrom(src => src.Images.Select(img => img.ImagePath)));
         CreateMap<UserViewModel, User>().ReverseMap();
         CreateMap<HouseViewModel, House>().ReverseMap();
         CreateMap<HouseCreateUpdateCommand, House>().ReverseMap();
@@ -21,6 +26,7 @@ public class MappingProfile : Profile
         CreateMap<RoomCreateUpdateCommand, Room>().ReverseMap();
         CreateMap<RoomServiceViewModel, RoomService>().ReverseMap();
         CreateMap<ServicePackageViewModel, ServicePackage>().ReverseMap();
+        CreateMap<ServicePackageCreateUpdateCommand, ServicePackage>().ReverseMap();
         CreateMap<SupportRequestViewModel, SupportRequest>().ReverseMap();
         CreateMap<SupportRequestCreateUpdateCommand, SupportRequest>().ReverseMap();
         CreateMap<InvoiceViewModel, Invoice>().ReverseMap();

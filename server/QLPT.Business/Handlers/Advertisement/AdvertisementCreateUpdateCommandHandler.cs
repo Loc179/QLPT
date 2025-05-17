@@ -33,8 +33,9 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             MaxOccupants = request.MaxOccupants,
-            Status = request.Status,
+            Status = 0,
             Type = request.Type,
+            CreatedAt = DateTime.UtcNow,
             UserId = request.UserId,
         };
 
@@ -77,6 +78,8 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
         }
 
         _mapper.Map(request, entity);
+        
+        entity.Address = request.WardName + ", " + request.DistrictName + ", " + request.ProvinceName;
 
         _unitOfWork.AdvertisementRepository.Update(entity);
         var result = await _unitOfWork.SaveChangesAsync();

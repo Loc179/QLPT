@@ -1,1 +1,42 @@
-<p>advertisement-list works!</p>
+<div class="w-full px-4 py-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Danh sách quảng cáo</h2>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-[1000px] w-full bg-white border border-gray-200 rounded-md shadow-sm">
+      <thead class="bg-gray-100">
+        <tr class="text-sm uppercase text-gray-600">
+          <th class="p-4 text-left whitespace-nowrap">Tiêu đề</th>
+          <th class="p-4 text-left whitespace-nowrap">Địa chỉ</th>
+          <th class="p-4 text-left whitespace-nowrap">Giá (VNĐ)</th>
+          <th class="p-4 text-left whitespace-nowrap">Diện tích (m²)</th>
+          <th class="p-4 text-left whitespace-nowrap">Tối đa</th>
+          <th class="p-4 text-left whitespace-nowrap">Trạng thái</th>
+          <th class="p-4 text-center whitespace-nowrap">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ad of advertisements" class="border-b hover:bg-gray-50">
+          <td class="p-4 font-medium text-gray-900 whitespace-nowrap">{{ ad.title }}</td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">{{ ad.address }}</td>
+          <td class="p-4 text-green-600 font-semibold whitespace-nowrap">{{ ad.cost | number }}</td>
+          <td class="p-4 whitespace-nowrap">{{ ad.area }}</td>
+          <td class="p-4 whitespace-nowrap">{{ ad.maxOccupants }}</td>
+          <td class="p-4 whitespace-nowrap">
+            <span [ngClass]="{
+              'text-green-600 font-semibold': ad.status === 1,
+              'text-yellow-600 font-semibold': ad.status === 0,
+              'text-red-500 font-semibold': ad.status === -1
+            }">
+              {{ getStatusLabel(ad.status) }}
+            </span>
+          </td>
+          <td class="p-4 text-center whitespace-nowrap space-x-2">
+            <button class="text-sm px-3 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200" (click)="view(ad.id)">Xem</button>
+            <button class="text-sm px-3 py-1 rounded bg-yellow-100 text-yellow-700 hover:bg-yellow-200" (click)="edit(ad.id)">Sửa</button>
+            <button class="text-sm px-3 py-1 rounded bg-red-100 text-red-700 hover:bg-red-200" (click)="delete(ad.id)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
