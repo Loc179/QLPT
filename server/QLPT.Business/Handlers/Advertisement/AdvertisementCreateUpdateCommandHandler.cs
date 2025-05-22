@@ -33,7 +33,7 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             MaxOccupants = request.MaxOccupants,
-            Status = 0,
+            Status = -1,
             Type = request.Type,
             CreatedAt = DateTime.UtcNow,
             UserId = request.UserId,

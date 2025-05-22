@@ -14,8 +14,12 @@ public class AdvertisementGetByIdQueryHandler(IMapper mapper, IUnitOfWorks unitO
 
     public async Task<AdvertisementViewModel> Handle(AdvertisementGetByIdQuery request, CancellationToken cancellationToken)
     {
-        var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Id == request.Id).Include(i => i.Images).FirstOrDefault();
+        var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Id == request.Id)
+            .Include(ad => ad.User)
+            .Include(i => i.Images);
 
-        return _mapper.Map<AdvertisementViewModel>(query);
+        var result = await query.FirstOrDefaultAsync();
+
+        return _mapper.Map<AdvertisementViewModel>(result);
     }
 }

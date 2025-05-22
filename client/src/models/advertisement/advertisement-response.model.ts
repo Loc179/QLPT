@@ -10,6 +10,7 @@ export interface AdvertisementResponseModel {
     userId: number;
     username?: string;
     fullname?: string;
+    email?: string;
     phonenumber?: string;
     type: number;
     status: number;

@@ -1,1 +1,10 @@
-<p>card works!</p>
+<div class="rounded-lg shadow hover:shadow-lg transition duration-300 border overflow-hidden">
+  <a [routerLink]="['/advertisement', data.id]" class="block w-full h-full">
+    <ng-container *ngIf="data.type === 1; else normalCard">
+      <app-vip-card [data]="data" />
+    </ng-container>
+    <ng-template #normalCard>
+      <app-normal-card [data]="data" />
+    </ng-template>
+  </a>
+</div>

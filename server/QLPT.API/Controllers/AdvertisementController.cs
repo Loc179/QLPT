@@ -38,6 +38,19 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
+        [HttpPut("update-status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] AdvertisementUpdateStatusCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
+
         
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -70,6 +83,27 @@ namespace QLPT.API.Controllers
             {
                 return NotFound($"Advertisement with userId {id} not found.");
             }
+
+            return Ok(result);
+        }
+
+        [HttpGet("by-status/{status}")]
+        public async Task<IActionResult> GetByStatus(int status)
+        {
+            var result = await _mediator.Send(new AdvertisementGetByStatusQuery { Status = status });
+
+            if (result == null)
+            {
+                return NotFound($"Advertisement with {status} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetByFilter([FromQuery] AdvertisementFilterQuery command)
+        {
+            var result = await _mediator.Send(command);
 
             return Ok(result);
         }

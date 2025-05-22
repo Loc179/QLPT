@@ -1,0 +1,18 @@
+<header class="bg-gray-100 shadow py-3">
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <img src="assets/images/logo.png" alt="Batdongsan" class="h-16" />
+    </div>
+
+    <!-- Right menu -->
+    <div class="flex items-center gap-6 text-base text-gray-700 font-medium">
+      <button class="flex items-center gap-1 hover:text-red-500 text-lg">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+      <a [routerLink]="['/login']" routerLinkActive="router-link-active"  class="hover:text-blue-600">Đăng nhập</a>
+      <span>|</span>
+      <a [routerLink]="['/register']" class="hover:text-blue-600">Đăng ký</a>
+    </div>
+  </div>
+</header>

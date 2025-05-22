@@ -74,7 +74,6 @@ export class AdvertisementCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.initializeMap();
     this.loadProvinces();
   }
 

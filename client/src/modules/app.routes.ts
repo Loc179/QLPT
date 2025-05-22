@@ -1,16 +1,24 @@
-import { NormalCardComponent } from './shared/cards/normal-card/normal-card.component';
+import { DetailComponent } from './advertisement/detail/detail.component';
 import { Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { SimpleLayoutComponent } from './shared/simple-layout/simple-layout.component';
 import { AdminLayoutComponent } from './shared/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'filter', pathMatch: 'full' },
 
   {
     path: '',
     component: SimpleLayoutComponent,
     children: [
+      { 
+        path: 'filter', 
+        loadComponent: () => import('./advertisement/home/home.component').then(m => m.HomeComponent) 
+      },
+      { 
+        path: 'advertisement/:id', 
+        loadComponent: () => import('./advertisement/detail/detail.component').then(m => m.DetailComponent) 
+      },
       { 
         path: 'login', 
         loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) 

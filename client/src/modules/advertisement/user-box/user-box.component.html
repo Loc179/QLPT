@@ -1,0 +1,39 @@
+<div class="w-full bg-white rounded-lg shadow p-4 flex flex-wrap items-end gap-4">
+  <!-- Thành phố -->
+  <div class="flex flex-col">
+    <label for="city" class="text-sm font-medium text-gray-700 mb-1">Thành phố</label>
+    <select
+      id="city"
+      class="border border-gray-300 rounded-lg px-3 py-2 w-52 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      (change)="onCityChange($event)">
+      <option value="-1">Chọn thành phố</option>
+      <option *ngFor="let city of cityData" [value]="city.id">{{ city.name }}</option>
+    </select>
+  </div>
+
+  <!-- Huyện -->
+  <div class="flex flex-col">
+    <label for="district" class="text-sm font-medium text-gray-700 mb-1">Huyện</label>
+    <select
+      id="district"
+      class="border border-gray-300 rounded-lg px-3 py-2 w-52 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [disabled]="!selectedCity.id"
+      (change)="onDistrictChange($event)">
+      <option value="-1">Chọn huyện</option>
+      <option *ngFor="let district of districtData" [value]="district.id">{{ district.name }}</option>
+    </select>
+  </div>
+
+  <!-- Xã -->
+  <div class="flex flex-col">
+    <label for="commune" class="text-sm font-medium text-gray-700 mb-1">Xã</label>
+    <select
+      id="commune"
+      class="border border-gray-300 rounded-lg px-3 py-2 w-52 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [disabled]="!selectedDistrict.id"
+      (change)="onCommuneChange($event)">
+      <option value="-1">Chọn xã</option>
+      <option *ngFor="let commune of communeData" [value]="commune.id">{{ commune.name }}</option>
+    </select>
+  </div>
+</div>

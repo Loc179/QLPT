@@ -17,6 +17,7 @@ public class MappingProfile : Profile
         CreateMap<Advertisement, AdvertisementViewModel>()
             .ForMember(dest => dest.Username, otp => otp.MapFrom(src => src.User.UserName))
             .ForMember(dest => dest.Fullname, otp => otp.MapFrom(src => src.User.FullName))
+            .ForMember(dest => dest.Email, otp => otp.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.Phonenumber, otp => otp.MapFrom(src => src.User.PhoneNumber))
             .ForMember(dest => dest.imagesPath, opt => opt.MapFrom(src => src.Images.Select(img => img.ImagePath)));
         CreateMap<UserViewModel, User>().ReverseMap();

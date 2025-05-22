@@ -23,7 +23,9 @@ public class AdvertisementGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks u
             throw new Exception("Not found User");
         }
 
-        var queryAdvertisement = _unitOfWork.AdvertisementRepository.GetQuery(r => r.UserId == request.UserId).Include(i => i.Images);
+        var queryAdvertisement = _unitOfWork.AdvertisementRepository.GetQuery(r => r.UserId == request.UserId)
+            .Include(ad => ad.User)
+            .Include(i => i.Images);
 
         var result = await queryAdvertisement.ToListAsync();
 

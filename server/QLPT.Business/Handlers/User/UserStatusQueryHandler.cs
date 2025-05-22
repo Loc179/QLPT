@@ -5,11 +5,11 @@ using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class UserBanQueryHandler(UserManager<User> userManager) : IRequestHandler<UserBanQuery, bool>
+public class UserStatusQueryHandler(UserManager<User> userManager) : IRequestHandler<UserStatusQuery, bool>
 {
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<bool> Handle(UserBanQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UserStatusQuery request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.Id.ToString());
         if (user == null)

@@ -11,29 +11,29 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./normal-card.component.css']
 })
 export class NormalCardComponent implements OnInit {
-  // @Input() data!: AdvertisementResponseModel;
-  data: AdvertisementResponseModel={
-    id: 1,
-    title: "Phòng cho thuê gần trung tâm",
-    description: "Phòng rộng rãi, có đầy đủ tiện nghi, an ninh tốt.",
-    address: "123 Đường Lê Lợi, Quận 1, TP.HCM",
-    cost: 3500000,
-    area: 30,
-    latitude: 10.776530,
-    longitude: 106.700981,
-    userId: 101,
-    fullname: "Nguyễn Văn A",
-    phonenumber: "0987654321",
-    type: 1,
-    status: 1,
-    maxOccupants: 2,
-    createAt: new Date("2025-05-18T10:00:00"),
-    imagesPath: [
-      "assets/images/no-photo-available.jpg",
-      "assets/images/no-photo-available.jpg",
-      "assets/images/no-photo-available.jpg"
-    ]
-  };
+  @Input() data!: AdvertisementResponseModel;
+  // data: AdvertisementResponseModel={
+  //   id: 1,
+  //   title: "Phòng cho thuê gần trung tâm",
+  //   description: "Phòng rộng rãi, có đầy đủ tiện nghi, an ninh tốt.",
+  //   address: "123 Đường Lê Lợi, Quận 1, TP.HCM",
+  //   cost: 3500000,
+  //   area: 30,
+  //   latitude: 10.776530,
+  //   longitude: 106.700981,
+  //   userId: 101,
+  //   fullname: "Nguyễn Văn A",
+  //   phonenumber: "0987654321",
+  //   type: 1,
+  //   status: 1,
+  //   maxOccupants: 2,
+  //   createAt: new Date("2025-05-18T10:00:00"),
+  //   imagesPath: [
+  //     "assets/images/no-photo-available.jpg",
+  //     "assets/images/no-photo-available.jpg",
+  //     "assets/images/no-photo-available.jpg"
+  //   ]
+  // };
 
 
   btnState = false;

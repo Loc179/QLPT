@@ -23,7 +23,7 @@ namespace QLPT.API.Controllers
         }
 
         [HttpPut("ban")]
-        public async Task<IActionResult> BanUser([FromBody] UserBanQuery command)
+        public async Task<IActionResult> BanUser([FromBody] UserStatusQuery command)
         {
             if (!ModelState.IsValid)
             {

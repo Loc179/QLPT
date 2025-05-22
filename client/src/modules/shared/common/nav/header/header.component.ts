@@ -24,7 +24,7 @@ export class HeaderComponent {
   ngOnInit() {
     const userInfoString = localStorage.getItem('userInformation');
     if (userInfoString) {
-      this.userInfo = JSON.parse(userInfoString); // Convert JSON string → object
+      this.userInfo = JSON.parse(userInfoString);
     }
 
   }

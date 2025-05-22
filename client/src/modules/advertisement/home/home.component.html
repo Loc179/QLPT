@@ -1,0 +1,45 @@
+<app-header-advertisement></app-header-advertisement>
+
+<div class="max-w-7xl mx-auto px-4 mt-4">
+  <app-user-box (addressChange)="onAddressChange($event)"></app-user-box>
+
+  <div class="flex gap-4 mt-6">
+    <!-- Main content -->
+    <div class="w-3/4">
+      <div *ngFor="let ad of adData">
+        <app-card [data]="ad"></app-card>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="w-1/4 flex flex-col gap-4">
+      <!-- Filter by price -->
+      <div class="bg-white p-4 shadow rounded">
+        <div class="font-semibold mb-2">Lọc theo khoảng giá</div>
+        <div class="mb-2">
+          <label class="block text-sm">Giá thấp nhất</label>
+          <input type="number" [(ngModel)]="minCost" class="w-full border rounded px-2 py-1" placeholder="Từ" />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Giá cao nhất</label>
+          <input type="number" [(ngModel)]="maxCost" class="w-full border rounded px-2 py-1" placeholder="Đến" />
+        </div>
+        <button (click)="filter()" class="bg-blue-500 text-white rounded px-4 py-2 mt-2">Áp dụng</button>
+      </div>
+
+      <!-- Filter by area -->
+      <div class="bg-white p-4 shadow rounded">
+        <div class="font-semibold mb-2">Lọc theo diện tích</div>
+        <div class="mb-2">
+          <label class="block text-sm">Diện tích nhỏ nhất</label>
+          <input type="number" [(ngModel)]="minArea" class="w-full border rounded px-2 py-1" placeholder="Từ" />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Diện tích lớn nhất</label>
+          <input type="number" [(ngModel)]="maxArea" class="w-full border rounded px-2 py-1" placeholder="Đến" />
+        </div>
+        <button (click)="filter()" class="bg-blue-500 text-white rounded px-4 py-2 mt-2">Áp dụng</button>
+      </div>
+    </div>
+  </div>
+</div>
