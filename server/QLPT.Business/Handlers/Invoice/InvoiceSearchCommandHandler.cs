@@ -25,6 +25,16 @@ public class InvoiceSearchCommandHandler(IMapper mapper, UserManager<User> userM
 
         var query = _unitOfWork.InvoiceRepository.GetQuery(r => r.Room.House.UserId == request.UserId);
 
+        if (request.FromDate.HasValue)
+        {
+            query = query.Where(i => i.CreatedAt >= request.FromDate.Value);
+        }
+
+        if (request.ToDate.HasValue)
+        {
+            query = query.Where(i => i.CreatedAt <= request.ToDate.Value);
+        }
+
         if (request.HouseId.HasValue)
         {
             query = query.Where(i => i.Room.HouseId == request.HouseId.Value);

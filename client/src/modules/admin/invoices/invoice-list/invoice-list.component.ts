@@ -21,6 +21,8 @@ export class InvoiceListComponent {
   selectedHouseId: number | null = null;
   selectedRoomId: number | null = null;
   selectedIsPad: boolean | null = null;
+  fromDate: Date | null = null;
+  toDate: Date | null = null;
   
   houses: HouseModel[] = [];
   rooms: RoomModel[] = [];
@@ -99,6 +101,8 @@ export class InvoiceListComponent {
       keyword: this.keyword,
       houseId: this.selectedHouseId,
       roomId: this.selectedRoomId,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
       isPad: this.selectedIsPad === null ? null : this.selectedIsPad
     };
 
@@ -114,6 +118,8 @@ export class InvoiceListComponent {
       keyword: this.keyword,
       houseId: this.selectedHouseId,
       roomId: this.selectedRoomId,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
       isPad: this.selectedIsPad === null ? null : this.selectedIsPad
     };
     this.invoiceService.exportToExcel(filter).subscribe({

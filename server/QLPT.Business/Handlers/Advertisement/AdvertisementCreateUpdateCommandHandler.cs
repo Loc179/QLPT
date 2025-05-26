@@ -82,6 +82,33 @@ public class AdvertisementCreateUpdateCommandHandler(IMapper mapper, IUnitOfWork
         entity.Address = request.WardName + ", " + request.DistrictName + ", " + request.ProvinceName;
 
         _unitOfWork.AdvertisementRepository.Update(entity);
+
+        // XÓA ẢNH CŨ
+        var oldImages = _unitOfWork.AdvertisementImageRepository
+            .GetQuery(x => x.AdvertisementId == entity.Id);
+
+        foreach (var oldImage in oldImages)
+        {
+            _unitOfWork.AdvertisementImageRepository.Delete(oldImage);
+        }
+
+        // THÊM ẢNH MỚI
+        if (request.Images != null && request.Images.Any())
+        {
+            foreach (var image in request.Images)
+            {
+                string imageUrl = await _imageService.UploadImageAsync(image);
+
+                var newImage = new AdvertisementImage
+                {
+                    AdvertisementId = entity.Id,
+                    ImagePath = imageUrl
+                };
+
+                _unitOfWork.AdvertisementImageRepository.Add(newImage);
+            }
+        }
+
         var result = await _unitOfWork.SaveChangesAsync();
 
         if (result <= 0)

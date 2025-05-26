@@ -59,6 +59,8 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     keyword?: string;
     isPad?: boolean | null;
     houseId?: number | null;
+    fromDate?: number | null;
+    toDate?: number | null;
     roomId?: number | null;
   }): Observable<InvoiceListModel[]> {
     let params = new HttpParams()
@@ -75,6 +77,12 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     }
     if (filter.roomId) {
       params = params.set('roomId', filter.roomId);
+    }
+    if (filter.fromDate) {
+      params = params.set('fromDate', filter.fromDate.toString());
+    }
+    if (filter.toDate) {
+      params = params.set('toDate', filter.toDate.toString());
     }
 
     return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/search`, { params });

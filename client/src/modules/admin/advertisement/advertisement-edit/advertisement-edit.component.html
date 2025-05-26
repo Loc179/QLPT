@@ -1,1 +1,222 @@
-<p>advertisement-edit works!</p>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6 pb-2 border-b">Chỉnh sửa quảng cáo</h2>
+
+  <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Title -->
+    <div>
+      <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        [class.border-red-500]="form.get('title')?.invalid && form.get('title')?.touched"
+      >
+      <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-red-500 text-xs mt-1">
+        Tiêu đề là bắt buộc
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        rows="4"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+      ></textarea>
+    </div>
+
+    <!-- Location Selection -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Province -->
+      <div>
+        <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Tỉnh/Thành phố</label>
+        <select
+          id="province"
+          formControlName="province"
+          (change)="onProvinceChange()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-500]="form.get('province')?.invalid && form.get('province')?.touched"
+        >
+          <option value="">Chọn tỉnh/thành phố</option>
+          <option *ngFor="let city of locations.provinces" [value]="city.id">{{ city.name }}</option>
+        </select>
+        <div *ngIf="form.get('province')?.invalid && form.get('province')?.touched" class="text-red-500 text-xs mt-1">
+          Vui lòng chọn tỉnh/thành phố
+        </div>
+      </div>
+
+      <!-- District -->
+      <div>
+        <label for="district" class="block text-sm font-medium text-gray-700 mb-1">Quận/Huyện</label>
+        <select
+          id="district"
+          formControlName="district"
+          (change)="onDistrictChange()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [disabled]="!form.get('province')?.value"
+          [class.border-red-500]="form.get('district')?.invalid && form.get('district')?.touched"
+        >
+          <option value="">Chọn quận/huyện</option>
+          <option *ngFor="let district of locations.districts" [value]="district.id">{{ district.name }}</option>
+        </select>
+        <div *ngIf="form.get('district')?.invalid && form.get('district')?.touched" class="text-red-500 text-xs mt-1">
+          Vui lòng chọn quận/huyện
+        </div>
+      </div>
+
+      <!-- Ward -->
+      <div>
+        <label for="ward" class="block text-sm font-medium text-gray-700 mb-1">Phường/Xã</label>
+        <select
+          id="ward"
+          formControlName="ward"
+          (change)="onWardChange()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [disabled]="!form.get('district')?.value"
+          [class.border-red-500]="form.get('ward')?.invalid && form.get('ward')?.touched"
+        >
+          <option value="">Chọn phường/xã</option>
+          <option *ngFor="let ward of locations.wards" [value]="ward.id">{{ ward.name }}</option>
+        </select>
+        <div *ngIf="form.get('ward')?.invalid && form.get('ward')?.touched" class="text-red-500 text-xs mt-1">
+          Vui lòng chọn phường/xã
+        </div>
+      </div>
+    </div>
+
+    <!-- Price and Area -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Price -->
+      <div>
+        <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá (VND)</label>
+        <input
+          id="price"
+          type="number"
+          formControlName="cost"
+          min="0"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-500]="form.get('cost')?.invalid && form.get('cost')?.touched"
+        >
+        <div *ngIf="form.get('cost')?.invalid && form.get('cost')?.touched" class="text-red-500 text-xs mt-1">
+          Giá phải là số dương
+        </div>
+      </div>
+
+      <!-- Area -->
+      <div>
+        <label for="area" class="block text-sm font-medium text-gray-700 mb-1">Diện tích (m²)</label>
+        <input
+          id="area"
+          type="number"
+          formControlName="area"
+          min="0"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-500]="form.get('area')?.invalid && form.get('area')?.touched"
+        >
+        <div *ngIf="form.get('area')?.invalid && form.get('area')?.touched" class="text-red-500 text-xs mt-1">
+          Diện tích phải là số dương
+        </div>
+      </div>
+
+      <!-- MaxOccupants -->
+      <div>
+        <label for="maxOccupants" class="block text-sm font-medium text-gray-700 mb-1">Thành viên tối đa</label>
+        <input
+          id="maxOccupants"
+          type="number"
+          formControlName="maxOccupants"
+          min="0"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-500]="form.get('maxOccupants')?.invalid && form.get('maxOccupants')?.touched"
+        >
+        <div *ngIf="form.get('maxOccupants')?.invalid && form.get('maxOccupants')?.touched" class="text-red-500 text-xs mt-1">
+          Thành viên phải là số dương
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div>
+      <label for="map" class="block text-sm font-medium text-gray-700 mb-1">Vị trí trên bản đồ</label>
+      <div #mapContainer class="w-full h-100 rounded-md border border-gray-300"></div>
+      <div *ngIf="form.get('latitude')?.value && form.get('longitude')?.value" class="text-xs text-gray-500 mt-1">
+        Vị trí hiện tại: {{ form.get('latitude')?.value | number:'1.4-4' }}, {{ form.get('longitude')?.value | number:'1.4-4' }}
+      </div>
+    </div>
+
+    <!-- Current Images -->
+    <div *ngIf="currentImages.length > 0">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Ảnh hiện tại</label>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div *ngFor="let img of currentImages; let i = index" class="relative">
+          <img [src]="img" alt="Current image" class="w-full h-32 object-cover rounded-lg border">
+          <button
+            type="button"
+            (click)="removeCurrentImage(i)"
+            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Images -->
+    <div>
+      <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Thêm ảnh mới</label>
+      <input
+        id="image"
+        type="file"
+        (change)="onFileChange($event)"
+        multiple
+        accept="image/*"
+        class="block w-full text-sm text-gray-500
+          file:mr-4 file:py-2 file:px-4
+          file:rounded-md file:border-0
+          file:text-sm file:font-semibold
+          file:bg-blue-50 file:text-blue-700
+          hover:file:bg-blue-100"
+      >
+      <div *ngIf="form.get('images')?.value?.length > 0" class="text-xs text-gray-500 mt-1">
+        Đã chọn {{ form.get('images')?.value?.length }} ảnh mới
+      </div>
+      <div *ngFor="let img of form.get('images')?.value; let i = index" class="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-2 mt-2 shadow-sm">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L18 9.828V7h-2.828z" />
+          </svg>
+          <span class="text-sm text-gray-800 truncate max-w-[200px]">{{ img.name }}</span>
+        </div>
+        <button type="button" (click)="removeNewImage(i)" class="text-sm text-red-600 hover:text-red-800 hover:underline">
+          Xóa
+        </button>
+      </div>
+    </div>
+
+    <!-- Submit Buttons -->
+    <div class="pt-4 flex gap-4">
+      <button
+        type="button"
+        (click)="onCancel()"
+        class="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        Hủy
+      </button>
+      <button
+        type="submit"
+        class="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        <span *ngIf="isSubmitting">Đang cập nhật...</span>
+        <span *ngIf="!isSubmitting">Cập nhật</span>
+      </button>
+    </div>
+  </form>
+</div>

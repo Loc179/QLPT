@@ -12,6 +12,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        CreateMap<AdvertisementCreateUpdateCommand, Advertisement>()
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
         CreateMap<AdvertisementViewModel, Advertisement>();
         CreateMap<Advertisement, AdvertisementViewModel>()
             .ForMember(dest => dest.Username, otp => otp.MapFrom(src => src.User.UserName))
@@ -25,6 +27,7 @@ public class MappingProfile : Profile
         CreateMap<RoomViewModel, Room>().ReverseMap();
         CreateMap<RoomCreateUpdateCommand, Room>().ReverseMap();
         CreateMap<RoomServiceViewModel, RoomService>().ReverseMap();
+        CreateMap<RoomServiceCreateUpdateCommand, RoomService>().ReverseMap();
         CreateMap<ServicePackageViewModel, ServicePackage>().ReverseMap();
         CreateMap<ServicePackageCreateUpdateCommand, ServicePackage>().ReverseMap();
         CreateMap<SupportRequestViewModel, SupportRequest>().ReverseMap();

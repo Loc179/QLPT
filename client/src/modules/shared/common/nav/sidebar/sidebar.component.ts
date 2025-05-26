@@ -110,6 +110,12 @@ export class SidebarComponent implements OnInit {
       this.activeMenuItem = 'webadmin-support';
     }
   }
+  
+  navigateToDashboard() {
+    const path = `/admin/dashboard`;
+    this.router.navigate([path]);
+    this.activeMenuItem = 'dashboard';
+  }
 
   navigateToHouse() {
     const path = `/admin/house/${this.userId}`;

@@ -88,53 +88,55 @@ export class InvoiceCreateComponent {
   }
 
   async createInvoice(): Promise<void> {
-  if (!this.isFormValid) return;
+    if (!this.isFormValid) return;
 
-  const invoice: InvoiceModel = {
-    roomId: this.roomId,
-    total: this.totalAmount,
-    taxRate: 0.1,
-    createdAt: new Date(),
-    isPaid: false,
-    invoiceCode: `INV-${this.roomId}-${new Date().getTime()}`,
-    paymentDate: null
-  };
-
-  try {
-    // Tạo hóa đơn
-    const createdInvoice = await this.invoiceService.create(invoice).toPromise();
-    console.log('Invoice created:', createdInvoice);
-
-    // Tạo đối tượng thanh toán
-    this.invoicePayment = {
-      invoiceCode: invoice.invoiceCode,
-      total: invoice.total,
-      createAt: invoice.createdAt,
-      roomId: invoice.roomId
+    const invoice: InvoiceModel = {
+      roomId: this.roomId,
+      total: this.totalAmount,
+      taxRate: 0.1,
+      createdAt: new Date(),
+      isPaid: false,
+      invoiceCode: `INV-${this.roomId}-${new Date().getTime()}`,
+      paymentDate: null
     };
 
-    // Lấy link thanh toán
-    this.invoiceService.getPaymentUrl(this.invoicePayment).subscribe({
-      next: (response) => {
-        console.log('Payment invoice URL:', response);
-        this.paymentUrl = response.paymentUrl;
-      },
-      error: () => {
-        this.toastr.error('Lỗi khi lấy link thanh toán.');
-      }
-    });
+    try {
+      // Tạo hóa đơn
+      const createdInvoice = await this.invoiceService.create(invoice).toPromise();
+      console.log('Invoice created:', createdInvoice);
 
-    // Gửi email hóa đơn
-    this.sendInvoiceEmail(this.paymentUrl);
+      // Tạo đối tượng thanh toán
+      this.invoicePayment = {
+        invoiceCode: invoice.invoiceCode,
+        total: invoice.total,
+        createAt: invoice.createdAt,
+        roomId: invoice.roomId
+      };
 
-    // Thực hiện các xử lý khác sau khi có kết quả
-    console.log('Payment URL:', this.paymentUrl);
-  } catch (error) {
-    // Xử lý lỗi nếu có
-    console.error('Error creating invoice or getting payment URL:', error);
-    this.toastr.error('Lỗi khi tạo hóa đơn hoặc lấy link thanh toán.');
+      // Lấy link thanh toán
+      this.invoiceService.getPaymentUrl(this.invoicePayment).subscribe({
+        next: (response) => {
+          console.log('Payment invoice URL:', response);
+          this.paymentUrl = response.paymentUrl;
+
+          // ✅ Gửi email sau khi có link thanh toán
+          this.sendInvoiceEmail(this.paymentUrl);
+
+          // ✅ Thực hiện các xử lý khác sau khi có payment URL
+          console.log('Payment URL:', this.paymentUrl);
+        },
+        error: () => {
+          this.toastr.error('Lỗi khi lấy link thanh toán.');
+        }
+      });
+
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error('Error creating invoice or getting payment URL:', error);
+      this.toastr.error('Lỗi khi tạo hóa đơn hoặc lấy link thanh toán.');
+    }
   }
-}
+
 
 
   sendInvoiceEmail(paymentUrl: string): void {

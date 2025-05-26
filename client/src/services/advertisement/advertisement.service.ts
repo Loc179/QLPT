@@ -1,4 +1,3 @@
-import { AdvertisementModel } from './../../models/advertisement/advertisement.model';
 import { Injectable } from '@angular/core';
 import { IAdvertisementService } from './advertisement.service.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -49,7 +48,7 @@ export class AdvertisementService implements IAdvertisementService {
     return this.httpClient.post(this.apiUrl, advertisement);
   }
   
-  update(id: number, advertisement: AdvertisementModel): Observable<any> {
+  update(id: number, advertisement: FormData): Observable<any> {
     return this.httpClient.put(`${this.apiUrl}/${id}`, advertisement);
   }
   

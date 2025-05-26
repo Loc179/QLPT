@@ -1,1 +1,39 @@
-<p>advertisement-detail works!</p>
+<div class="bg-gray-100 min-h-screen">
+  <div class="max-w-5xl mx-auto py-6 px-4 space-y-6">
+    <!-- Gallery -->
+    <div class="grid grid-cols-1 gap-4">
+      <app-photo-carousel [images]="data.imagesPath || []"></app-photo-carousel>
+    </div>
+
+    <!-- Thông tin chi tiết -->
+    <div class="bg-white p-6 rounded-lg shadow-lg space-y-6">
+      <h1 class="text-2xl font-bold">{{ data.title }}</h1>
+      <p class="text-gray-600"><i class="fas fa-map-marker-alt mr-2"></i>{{ data.address }}</p>
+
+      <!-- Short Info -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-lg relative">
+        <div>
+          <div class="text-sm text-gray-500">Giá</div>
+          <div class="text-lg font-medium">{{ (data.cost / 1e6) | number:'1.0-2' }} triệu/tháng</div>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500">Diện tích</div>
+          <div class="text-lg font-medium">{{ data.area }} m²</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="prose max-w-none">
+        <h2 class="font-semibold mb-2">Thông tin mô tả</h2>
+        <div [innerHTML]="data.description"></div>
+      </div>
+
+      <!-- Map -->
+      <div>
+        <h2 class="text-lg font-medium mb-2">Xem trên bản đồ</h2>
+        <div #mapContainer class="w-full h-80 rounded-lg overflow-hidden"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

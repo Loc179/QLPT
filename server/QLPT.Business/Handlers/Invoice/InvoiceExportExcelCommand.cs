@@ -9,5 +9,7 @@ public class InvoiceExportExcelCommand : IRequest<byte[]>
     public bool? IsPad { get; set; }
     public int? HouseId { get; set; }
     public int? RoomId { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
     public int UserId { get; set; }
 }

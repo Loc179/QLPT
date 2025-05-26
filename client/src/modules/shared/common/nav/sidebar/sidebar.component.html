@@ -9,7 +9,8 @@
         <nav class="flex-1 space-y-2">
           <!-- Nếu là chủ trọ -->
           <ng-container *ngIf="role === 'User'">
-            <a class="flex items-center px-4 py-2 text-lg font-medium rounded-md" 
+            <a (click)="navigateToDashboard()"
+              class="flex items-center px-4 py-2 text-lg font-medium rounded-md cursor-pointer" 
                [ngClass]="{
                  'justify-center': sidebarService.isCollapsed,
                  'active-menu-item': isActive('dashboard'),

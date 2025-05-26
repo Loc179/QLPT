@@ -10,7 +10,7 @@ export interface IAdvertisementService {
     getByUserId(id: number): Observable<AdvertisementResponseModel[]>;
     getByFilter(filter: AdvertisementFilter): Observable<AdvertisementResponseModel[]>
     create(advertisement: FormData): Observable<any>;
-    update(id: number, advertisement: AdvertisementModel): Observable<any>;
+    update(id: number, advertisement: FormData): Observable<any>;
     updateStatus(id: number, status: number): Observable<any>;
     delete(id: number): Observable<any>;
 }

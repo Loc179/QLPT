@@ -28,14 +28,14 @@ export class VnpayReturnComponent implements OnInit {
             this.statusMessage = 'Thanh toán thành công!';
             setTimeout(() => this.router.navigate(['/login']), 3000);
           } else {
-            this.statusMessage = 'Xác nhận thanh toán thất bại!1';
+            this.statusMessage = 'Xác nhận thanh toán thất bại!';
             setTimeout(() => this.router.navigate(['/login']), 3000);
           }
         },
         error: (err) => {
           console.log("Error from BE:", err); // Log lỗi từ backend
-          this.statusMessage = 'Xác nhận thanh toán thất bại!2';
-          setTimeout(() => this.router.navigate(['/login']), 30000);
+          this.statusMessage = 'Xác nhận thanh toán thất bại!';
+          setTimeout(() => this.router.navigate(['/login']), 3000);
         }
       });
       

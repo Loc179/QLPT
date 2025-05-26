@@ -1,1 +1,87 @@
-<p>roomservices-edit works!</p>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 animate__animated animate__fadeIn">
+  <div class="bg-white rounded-lg w-full max-w-lg p-6 relative animate__animated animate__fadeInDown">
+    <!-- Close Button -->
+    <button (click)="close.emit()" 
+            class="absolute top-2 right-2 text-gray-500 hover:text-red-600 transition-colors text-xl font-bold">
+      ✖
+    </button>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Chỉnh sửa dịch vụ</h2>
+
+    <div *ngIf="error" class="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-sm">
+      {{ error }}
+    </div>
+
+    <form [formGroup]="roomServiceForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <!-- Name -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Tên dịch vụ</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Nhập tên dịch vụ"
+        />
+        <div *ngIf="roomServiceForm.get('name')?.invalid && roomServiceForm.get('name')?.touched" class="text-xs text-red-500 mt-1">
+          <div *ngIf="roomServiceForm.get('name')?.errors?.['required']">Tên dịch vụ là bắt buộc</div>
+          <div *ngIf="roomServiceForm.get('name')?.errors?.['maxlength']">Tên dịch vụ quá dài</div>
+        </div>
+      </div>
+
+      <!-- Cost -->
+      <div>
+        <label for="cost" class="block text-sm font-medium text-gray-700">Giá tiền</label>
+        <input
+          id="cost"
+          type="number"
+          formControlName="cost"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="0.00"
+          step="0.01"
+          min="0"
+        />
+        <div *ngIf="roomServiceForm.get('cost')?.invalid && roomServiceForm.get('cost')?.touched" class="text-xs text-red-500 mt-1">
+          <div *ngIf="roomServiceForm.get('cost')?.errors?.['required']">Giá là bắt buộc</div>
+          <div *ngIf="roomServiceForm.get('cost')?.errors?.['min']">Giá phải lớn hơn 0</div>
+        </div>
+      </div>
+
+      <!-- Unit -->
+      <div>
+        <label for="unit" class="block text-sm font-medium text-gray-700">Đơn vị tính</label>
+        <select
+          id="unit"
+          formControlName="unit"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled selected>Chọn đơn vị</option>
+          <option *ngFor="let option of unitOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <div *ngIf="roomServiceForm.get('unit')?.invalid && roomServiceForm.get('unit')?.touched" class="text-xs text-red-500 mt-1">
+          Đơn vị là bắt buộc
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-4 pt-2">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
+        >
+          Hủy
+        </button>
+        <button
+          type="submit"
+          [disabled]="roomServiceForm.invalid || isLoading"
+          class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50"
+        >
+          Cập nhật
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -5,10 +5,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IRoomserviceService } from '../../../../services/roomservice/roomservice.service.interface';
 import { RoomServiceModel } from '../../../../models/roomservice/roomservice.model';
 import { CommonModule } from '@angular/common';
+import { RoomservicesCreateComponent } from "../roomservices-create/roomservices-create.component";
+import { RoomservicesEditComponent } from "../roomservices-edit/roomservices-edit.component";
 
 @Component({
   selector: 'app-roomservices-list',
-  imports: [CommonModule, RouterModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, RoomservicesCreateComponent, RoomservicesEditComponent],
   templateUrl: './roomservices-list.component.html',
   styleUrl: './roomservices-list.component.css'
 })
@@ -17,8 +20,11 @@ export class RoomservicesListComponent {
   roomId!: number;
   isLoading: boolean = false;
   error: string | null = null;
+  isCreateModalOpen = false;
+  isEditModalOpen = false;
+  selectedService: RoomServiceModel | null = null;
 
-  displayedColumns: string[] = ['name', 'cost', 'unit', 'actions'];
+  displayedColumns: string[] = ['Tên', 'Giá', 'Đơn vị', 'Hành động'];
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -51,11 +57,14 @@ export class RoomservicesListComponent {
       });
   }
 
-  editService(service: RoomServiceModel): void {
-    // Implement edit logic, perhaps open a dialog
-    console.log('Editing service:', service);
-    // Example:
-    // this.router.navigate(['/room-services/edit', service.id]);
+  openEditModal(service: RoomServiceModel) {
+    this.selectedService = service;
+    this.isEditModalOpen = true;
+  }
+
+  handleUpdatedService(updatedService: RoomServiceModel) {
+    this.loadRoomServices();
+    this.isEditModalOpen = false;
   }
 
   deleteService(id: number): void {
@@ -74,16 +83,20 @@ export class RoomservicesListComponent {
     }
   }
 
-  createService(): void {
-    
+  openCreateModal() {
+    this.isCreateModalOpen = true;
+  }
+
+  closeCreateModal() {
+    this.isCreateModalOpen = false;
+    this.loadRoomServices();
   }
 
   getUnitName(unit: number): string {
     switch(unit) {
-      case 1: return 'month';
-      case 2: return 'day';
-      case 3: return 'week';
-      case 4: return 'year';
+      case 1: return 'Theo phòng';
+      case 2: return 'Theo chỉ số';
+      case 3: return 'Theo người';
       default: return 'unit';
     }
   }

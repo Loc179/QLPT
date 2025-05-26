@@ -45,6 +45,10 @@ export const routes: Routes = [
         loadComponent: () => import('./auth/vnpay-return/vnpay-return.component').then(m => m.VnpayReturnComponent) 
       },
       { 
+        path: 'invoice/vnpay-return', 
+        loadComponent: () => import('./admin/invoices/invoice-update-status/invoice-update-status.component').then(m => m.InvoiceUpdateStatusComponent) 
+      },
+      { 
         path: 'vipcard', 
         loadComponent: () => import('./shared/cards/vip-card/vip-card.component').then(m => m.VipCardComponent) 
       },
@@ -88,7 +92,10 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      // Advertisement Routes
+      { 
+        path: 'dashboard', 
+        loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+      },
       { 
         path: 'advertisement', 
         loadComponent: () => import('./admin/advertisement/advertisement-list/advertisement-list.component').then(m => m.AdvertisementListComponent) 
@@ -186,10 +193,6 @@ export const routes: Routes = [
       { 
         path: 'invoice/detail/:invoiceId', 
         loadComponent: () => import('./admin/invoices/invoice-detail/invoice-detail.component').then(m => m.InvoiceDetailComponent) 
-      },
-      { 
-        path: 'invoice/vnpay-return', 
-        loadComponent: () => import('./admin/invoices/invoice-update-status/invoice-update-status.component').then(m => m.InvoiceUpdateStatusComponent) 
       },
       { 
         path: 'support', 

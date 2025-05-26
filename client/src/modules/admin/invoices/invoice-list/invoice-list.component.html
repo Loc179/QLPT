@@ -11,7 +11,7 @@
 
   <!-- Search and Filter -->
   <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 items-center">
+    <div class="flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4">
       
       <!-- Keyword Input -->
       <div class="flex-1 relative">
@@ -53,6 +53,31 @@
         <option [value]="true">Đã thanh toán</option>
         <option [value]="false">Chưa thanh toán</option>
       </select>
+
+      <div class="flex flex-row flex-wrap items-end gap-4">
+        <!-- From Date -->
+        <div class="relative">
+          <label for="fromDate" class="absolute -top-2 left-3 bg-white px-1 text-xs text-gray-500">Từ ngày</label>
+          <input
+            id="fromDate"
+            type="date"
+            [(ngModel)]="fromDate"
+            class="border border-gray-300 rounded-lg px-4 py-2 pt-5 focus:outline-none focus:border-blue-500 w-[150px]"
+          />
+        </div>
+
+        <!-- To Date -->
+        <div class="relative">
+          <label for="toDate" class="absolute -top-2 left-3 bg-white px-1 text-xs text-gray-500">Đến ngày</label>
+          <input
+            id="toDate"
+            type="date"
+            [(ngModel)]="toDate"
+            class="border border-gray-300 rounded-lg px-4 py-2 pt-5 focus:outline-none focus:border-blue-500 w-[150px]"
+          />
+        </div>
+      </div>
+
 
       <!-- Search Button -->
       <button 

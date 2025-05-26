@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ROOMSERVICE_SERVICE } from '../../../../constants/injection/injection.constant';
 import { IRoomserviceService } from '../../../../services/roomservice/roomservice.service.interface';
 import { RoomServiceModel } from '../../../../models/roomservice/roomservice.model';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-roomservices-create',
@@ -14,9 +14,11 @@ import { CommonModule } from '@angular/common';
 })
 export class RoomservicesCreateComponent {
   roomServiceForm: FormGroup;
-  roomId!: number;
   isLoading = false;
   error: string | null = null;
+
+  @Input() roomId!: number;
+  @Output() close = new EventEmitter<void>();
 
   // Unit options for dropdown
   unitOptions = [
@@ -27,24 +29,13 @@ export class RoomservicesCreateComponent {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
+    private readonly toastr: ToastrService,
     @Inject(ROOMSERVICE_SERVICE) private readonly roomServiceService: IRoomserviceService,
   ) {
     this.roomServiceForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
       cost: ['', [Validators.required, Validators.min(0)]],
       unit: ['', Validators.required],
-    });
-  }
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const idParam = params.get('roomId');
-      if (idParam) {
-        this.roomId = +idParam;
-        console.log('Room ID:', this.roomId);
-      }
     });
   }
 
@@ -65,16 +56,18 @@ export class RoomservicesCreateComponent {
     this.roomServiceService.create(newService).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/admin/roomservice/' + this.roomId]);
+        this.toastr.success("Tạo dịch vụ phòng thành công");
+        this.close.emit();
       },
       error: (err) => {
         this.isLoading = false;
+        this.toastr.error("Tao dịch vụ phòng thất bại");
         this.error = err.message || 'Failed to create room service';
       }
     });
   }
 
   onCancel(): void {
-    this.router.navigate(['/admin/roomservice/' + this.roomId]);
+    this.close.emit();
   }
 }

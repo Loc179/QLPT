@@ -24,7 +24,7 @@ namespace QLPT.API.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AdvertisementCreateUpdateCommand command)
+        public async Task<IActionResult> Update(int id, [FromForm] AdvertisementCreateUpdateCommand command)
         {
             command.Id = id;
 

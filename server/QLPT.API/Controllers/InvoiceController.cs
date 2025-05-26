@@ -164,6 +164,8 @@ namespace QLPT.API.Controllers
             [FromQuery] string? keyword,
             [FromQuery] bool? isPad,
             [FromQuery] int? houseId,
+            [FromQuery] DateTime? fromDate,
+            [FromQuery] DateTime? toDate,
             [FromQuery] int? roomId)
         {
             var result = await _mediator.Send(new InvoiceSearchCommand
@@ -172,7 +174,9 @@ namespace QLPT.API.Controllers
                 Keyword = keyword,
                 IsPad = isPad,
                 HouseId = houseId,
-                RoomId = roomId
+                RoomId = roomId,
+                FromDate = fromDate,
+                ToDate = toDate
             });
 
             return Ok(result);
