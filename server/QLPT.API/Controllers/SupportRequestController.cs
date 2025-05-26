@@ -62,14 +62,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id)
+        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int? status)
         {
-            var result = await _mediator.Send(new SupportRequestGetByUserIdQuery { UserId = id });
-
-            if (result == null || !result.Any())
-            {
-                return NotFound($"SupportRequest with User ID {id} not found.");
-            }
+            var result = await _mediator.Send(new SupportRequestGetByUserIdQuery { UserId = id, Status = status });
 
             return Ok(result);
         }

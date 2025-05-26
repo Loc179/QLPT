@@ -5,13 +5,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AUTH_SERVICE } from '../../../constants/injection/injection.constant';
 import { IAuthService } from '../../../services/auth/auth.service.interface';
+import { HeaderComponent } from "../../public/home/header/header.component";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent],
 })
 export class RegisterComponent {
   registerForm!: FormGroup;

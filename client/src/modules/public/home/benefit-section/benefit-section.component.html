@@ -1,0 +1,33 @@
+<section class="bg-gray-50 py-12">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold uppercase mb-4 animate-fade-in-down">
+        Quản lý &amp; kinh doanh nhà cho thuê cùng QLPT
+      </h2>
+      <p class="text-gray-600 max-w-xl mx-auto animate-fade-in-up delay-200">
+        Hàng ngàn chủ nhà đã vận hành và quản lý dễ dàng hơn rất nhiều sau khi đăng ký và sử dụng sản phẩm của chúng tôi
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        *ngFor="let item of benefits; let i = index"
+        class="bg-white rounded-lg shadow-md p-6 flex space-x-4 transform transition duration-500 ease-in-out hover:scale-105 animate-fade-in-up"
+        [style.animationDelay]="(i * 100) + 'ms'"
+      >
+        <div class="flex-shrink-0">
+          <img
+            [src]="item.icon"
+            alt="icon"
+            class="w-16 h-16"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">{{ item.title }}</h3>
+          <p class="text-gray-700">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

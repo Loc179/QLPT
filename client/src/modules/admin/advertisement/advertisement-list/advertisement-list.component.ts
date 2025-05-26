@@ -4,15 +4,17 @@ import { AdvertisementResponseModel } from '../../../../models/advertisement/adv
 import { Router } from '@angular/router';
 import { ADVERTISEMENT_SERVICE } from '../../../../constants/injection/injection.constant';
 import { IAdvertisementService } from '../../../../services/advertisement/advertisement.service.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-advertisement-list',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './advertisement-list.component.html',
   styleUrl: './advertisement-list.component.css'
 })
 export class AdvertisementListComponent {
   advertisements: AdvertisementResponseModel[] = [];
+  selectedStatus: number | null = null;
 
   constructor(
     private readonly router: Router,
@@ -20,8 +22,12 @@ export class AdvertisementListComponent {
   ) { }
 
   ngOnInit(): void {
-    this.advertisementService.getByUserId(5).subscribe(users => {
-      this.advertisements = users;
+    this.loadAdvertisement();
+  }
+
+  loadAdvertisement() {
+    this.advertisementService.getByUserId(5).subscribe(data => {
+      this.advertisements = data;
     })
   }
 
@@ -38,6 +44,10 @@ export class AdvertisementListComponent {
       this.advertisements = this.advertisements.filter(req => req.id !== id);
     })
   }
+  
+  createNew() {
+    this.router.navigate(['/admin/advertisement/create']);
+  }
 
   getStatusLabel(status: number): string {
     switch (status) {
@@ -48,4 +58,14 @@ export class AdvertisementListComponent {
     }
   }
 
+  filterByStatus() {
+    if(this.selectedStatus == null)
+    {
+      this.loadAdvertisement();
+    } else {
+      this.advertisementService.getByStatus(this.selectedStatus).subscribe(data => {
+        this.advertisements = data;
+      })
+    }
+  }
 }

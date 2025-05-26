@@ -40,6 +40,6 @@ export class HeaderComponent {
   logout() {
     this.authService.logout();
     this.closeDropdown();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 }

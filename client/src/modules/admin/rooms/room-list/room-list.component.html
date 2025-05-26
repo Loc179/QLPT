@@ -1,13 +1,35 @@
-<div class="container mx-auto px-4 py-8">
-<!-- Header -->
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-2xl font-bold text-gray-800">Quản Lý Phòng Trọ</h1>
-        <button routerLink="/admin/room/create" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
-            <i class="fas fa-plus mr-2"></i>
-            Thêm phòng mới
-        </button>
+<div class="container mx-auto px-4 py-8 bg-white rounded-xl shadow-md">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-2xl font-bold text-gray-800">Quản Lý Phòng Trọ</h1>
+
+    <div class="flex items-center gap-4">
+      <!-- Select House -->
+      <select [(ngModel)]="selectedHouseId" (change)="onHouseChange()"
+              class="border border-gray-300 rounded-md px-3 py-2 text-gray-700">
+        <option [ngValue]="null" disabled selected>Chọn toà nhà</option>
+        <option *ngFor="let house of houseList" [value]="house.id">{{ house.name }}</option>
+      </select>
+
+      <!-- Select Room (disabled nếu chưa chọn House) -->
+      <select [(ngModel)]="selectedRoomId"
+              (change)="getByRoomId(selectedRoomId)"
+              [disabled]="!selectedHouseId"
+              class="border border-gray-300 rounded-md px-3 py-2 text-gray-700">
+        <option [ngValue]="null" disabled selected>Chọn phòng</option>
+        <option *ngFor="let room of roomsList" [value]="room.id" >{{ room.roomNumber }}</option>
+      </select>
+
+      <!-- Thêm phòng -->
+      <button routerLink="/admin/room/create"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+        <i class="fas fa-plus mr-2"></i>
+        Thêm phòng mới
+      </button>
     </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <div *ngFor="let room of rooms" class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="p-4 border-b border-gray-200">
         <div class="flex justify-between items-center">

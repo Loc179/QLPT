@@ -5,10 +5,11 @@ import { IAuthService } from '../../../services/auth/auth.service.interface';
 import { AUTH_SERVICE } from '../../../constants/injection/injection.constant';
 import { CommonModule } from '@angular/common';
 import { LoginRequest } from '../../../models/auth/login-request.model';
+import { HeaderComponent } from "../../public/home/header/header.component";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })

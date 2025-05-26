@@ -7,11 +7,11 @@ import { UserBoxComponent } from "../user-box/user-box.component";
 import { CommonModule } from '@angular/common';
 import { CardComponent } from "../../shared/cards/card/card.component";
 import { FormsModule } from '@angular/forms';
-import { HeaderAdvertisementComponent } from "../header-advertisement/header-advertisement.component";
+import { HeaderComponent } from "../../public/home/header/header.component";
 
 @Component({
   selector: 'app-home',
-  imports: [UserBoxComponent, CommonModule, CardComponent, FormsModule, HeaderAdvertisementComponent],
+  imports: [UserBoxComponent, CommonModule, CardComponent, FormsModule, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

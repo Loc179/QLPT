@@ -1,5 +1,5 @@
 using System;
-using QLPT.Business.ViewModels.Tenant;
+using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 

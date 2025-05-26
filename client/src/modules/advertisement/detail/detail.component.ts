@@ -6,10 +6,13 @@ import { IAdvertisementService } from '../../../services/advertisement/advertise
 import { ADVERTISEMENT_SERVICE } from '../../../constants/injection/injection.constant';
 import { CommonModule } from '@angular/common';
 import { AdvertisementResponseModel } from '../../../models/advertisement/advertisement-response.model';
+import { PhotoCarouselComponent } from "../../public/advertisement/photo-carousel/photo-carousel.component";
+import { HeaderComponent } from "../../public/home/header/header.component";
+import { FooterComponent } from "../../public/home/footer/footer.component";
 
 @Component({
   selector: 'app-detail',
-  imports: [CommonModule],
+  imports: [CommonModule, PhotoCarouselComponent, HeaderComponent, FooterComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.css'
 })
@@ -85,7 +88,7 @@ export class DetailComponent {
     if (this.isFavorited) {
       favs = favs.filter((f: any) => f.id !== this.data.id);
     } else {
-      favs.push({ id: this.data.id, title: this.data.title, image: this.data.imagesPath });
+      favs.push({ id: this.data.id, title: this.data.title });
     }
     localStorage.setItem('favoritedItems', JSON.stringify(favs));
     this.isFavorited = !this.isFavorited;

@@ -1,44 +1,66 @@
-<app-header-advertisement></app-header-advertisement>
+<app-header></app-header>
 
-<div class="max-w-7xl mx-auto px-4 mt-4">
+<div class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
+  <!-- Thanh tìm kiếm địa chỉ -->
   <app-user-box (addressChange)="onAddressChange($event)"></app-user-box>
 
-  <div class="flex gap-4 mt-6">
-    <!-- Main content -->
-    <div class="w-3/4">
-      <div *ngFor="let ad of adData">
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- Danh sách bài đăng -->
+    <div class="lg:w-3/4 w-full space-y-6">
+      <div *ngIf="adData.length === 0" class="text-center text-gray-500 italic">
+        Không tìm thấy bài đăng nào.
+      </div>
+      <div *ngFor="let ad of adData" class="transition-transform transform hover:scale-[1.01]">
         <app-card [data]="ad"></app-card>
       </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="w-1/4 flex flex-col gap-4">
-      <!-- Filter by price -->
-      <div class="bg-white p-4 shadow rounded">
-        <div class="font-semibold mb-2">Lọc theo khoảng giá</div>
-        <div class="mb-2">
-          <label class="block text-sm">Giá thấp nhất</label>
-          <input type="number" [(ngModel)]="minCost" class="w-full border rounded px-2 py-1" placeholder="Từ" />
+    <!-- Sidebar bộ lọc -->
+    <div class="lg:w-1/4 w-full space-y-6">
+      <!-- Bộ lọc giá -->
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          💰 Lọc theo giá
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Giá thấp nhất</label>
+            <input type="number" [(ngModel)]="minCost" placeholder="Từ"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Giá cao nhất</label>
+            <input type="number" [(ngModel)]="maxCost" placeholder="Đến"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <button (click)="filter()"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-2 font-semibold transition">
+            Áp dụng
+          </button>
         </div>
-        <div class="mb-2">
-          <label class="block text-sm">Giá cao nhất</label>
-          <input type="number" [(ngModel)]="maxCost" class="w-full border rounded px-2 py-1" placeholder="Đến" />
-        </div>
-        <button (click)="filter()" class="bg-blue-500 text-white rounded px-4 py-2 mt-2">Áp dụng</button>
       </div>
 
-      <!-- Filter by area -->
-      <div class="bg-white p-4 shadow rounded">
-        <div class="font-semibold mb-2">Lọc theo diện tích</div>
-        <div class="mb-2">
-          <label class="block text-sm">Diện tích nhỏ nhất</label>
-          <input type="number" [(ngModel)]="minArea" class="w-full border rounded px-2 py-1" placeholder="Từ" />
+      <!-- Bộ lọc diện tích -->
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          📐 Lọc theo diện tích
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Diện tích nhỏ nhất</label>
+            <input type="number" [(ngModel)]="minArea" placeholder="Từ"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Diện tích lớn nhất</label>
+            <input type="number" [(ngModel)]="maxArea" placeholder="Đến"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <button (click)="filter()"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-2 font-semibold transition">
+            Áp dụng
+          </button>
         </div>
-        <div class="mb-2">
-          <label class="block text-sm">Diện tích lớn nhất</label>
-          <input type="number" [(ngModel)]="maxArea" class="w-full border rounded px-2 py-1" placeholder="Đến" />
-        </div>
-        <button (click)="filter()" class="bg-blue-500 text-white rounded px-4 py-2 mt-2">Áp dụng</button>
       </div>
     </div>
   </div>

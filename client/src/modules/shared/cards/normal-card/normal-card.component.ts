@@ -57,6 +57,7 @@ export class NormalCardComponent implements OnInit {
 
   handleLikeItem(event: Event): void {
     event.preventDefault();
+    event.stopPropagation();
 
     const favoriteItem = {
       id: this.data.id,

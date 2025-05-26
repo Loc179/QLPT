@@ -1,7 +1,7 @@
 using System;
 using QLPT.Models.Entities;
 
-namespace QLPT.Business.ViewModels.Tenant;
+namespace QLPT.Business.ViewModels;
 
 public class TenantViewModel
 {

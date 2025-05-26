@@ -1,24 +1,39 @@
 import { Component, Inject } from '@angular/core';
 import { InvoiceListModel } from '../../../../models/invoice/invoicelist.model';
-import { INVOICE_SERVICE } from '../../../../constants/injection/injection.constant';
+import { HOUSE_SERVICE, INVOICE_SERVICE, ROOM_SERVICE } from '../../../../constants/injection/injection.constant';
 import { IInvoiceService } from '../../../../services/invoice/invoice.service.interface';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HouseModel } from '../../../../models/house/house.model';
+import { RoomModel } from '../../../../models/room/room.model';
+import { IHouseService } from '../../../../services/house/house.service.interface';
+import { IRoomService } from '../../../../services/room/room.service.interface';
 
 @Component({
   selector: 'app-invoice-list',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.css'
 })
 export class InvoiceListComponent {
+  keyword: string = '';
+  selectedHouseId: number | null = null;
+  selectedRoomId: number | null = null;
+  selectedIsPad: boolean | null = null;
+  
+  houses: HouseModel[] = [];
+  rooms: RoomModel[] = [];
+  
   public userId: number | null = null;
   invoices: InvoiceListModel[] = [];
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    @Inject(INVOICE_SERVICE) private readonly invoiceService: IInvoiceService
+    @Inject(INVOICE_SERVICE) private readonly invoiceService: IInvoiceService,
+    @Inject(HOUSE_SERVICE) private readonly houseService: IHouseService,
+    @Inject(ROOM_SERVICE) private readonly roomService: IRoomService,
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +52,8 @@ export class InvoiceListComponent {
       }
     });
 
+    this.loadHouses();
+
   }
 
   
@@ -53,5 +70,64 @@ export class InvoiceListComponent {
 
   viewInvoice(invoiceId: number) {
     this.router.navigate(['admin/invoice/detail', invoiceId]);
+  }
+
+  loadHouses() {
+    this.houseService.getByUserId(this.userId!).subscribe(data => {
+        this.houses = data;
+      });
+  }
+
+  onHouseChange() {
+    this.selectedRoomId = null;
+    if (this.selectedHouseId) {
+      this.loadRoomsByHouse(this.selectedHouseId);
+    } else {
+      this.rooms = [];
+    }
+  }
+
+  loadRoomsByHouse(houseId: number) {
+    this.roomService.getByHouseId(houseId).subscribe(data => {
+        this.rooms = data;
+      });
+  }
+
+  onSearch() {
+    const filter = {
+      userId: this.userId,
+      keyword: this.keyword,
+      houseId: this.selectedHouseId,
+      roomId: this.selectedRoomId,
+      isPad: this.selectedIsPad === null ? null : this.selectedIsPad
+    };
+
+    this.invoiceService.searchInvoices(filter).subscribe(data => {
+      this.invoices = data;
+    })
+
+  }
+
+  onExportExcel() {
+    const filter = {
+      userId: this.userId,
+      keyword: this.keyword,
+      houseId: this.selectedHouseId,
+      roomId: this.selectedRoomId,
+      isPad: this.selectedIsPad === null ? null : this.selectedIsPad
+    };
+    this.invoiceService.exportToExcel(filter).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Invoices_${new Date().toISOString().replace(/[:.]/g, '-')}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url); // giải phóng bộ nhớ
+      },
+      error: (err) => {
+        console.error('Export failed:', err);
+      }
+    });
   }
 }

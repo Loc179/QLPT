@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IInvoiceService } from './invoice.service.interface';
 import { Observable } from 'rxjs';
 import { InvoiceModel } from '../../models/invoice/invoice.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { InvoicePaymentModel } from '../../models/invoice/invoicepayment.model';
 import { InvoiceListModel } from '../../models/invoice/invoicelist.model';
 
@@ -54,5 +54,36 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  
+  searchInvoices(filter: {
+    userId: number;
+    keyword?: string;
+    isPad?: boolean | null;
+    houseId?: number | null;
+    roomId?: number | null;
+  }): Observable<InvoiceListModel[]> {
+    let params = new HttpParams()
+      .set('userId', filter.userId.toString());
+
+    if (filter.keyword) {
+      params = params.set('keyword', filter.keyword);
+    }
+    if (filter.isPad !== null && filter.isPad !== undefined) {
+      params = params.set('isPad', filter.isPad);
+    }
+    if (filter.houseId) {
+      params = params.set('houseId', filter.houseId);
+    }
+    if (filter.roomId) {
+      params = params.set('roomId', filter.roomId);
+    }
+
+    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/search`, { params });
+  }
+
+  // Gọi API xuất Excel
+  exportToExcel(command: any) {
+    return this.httpClient.post(`${this.apiUrl}/export`, command, {
+      responseType: 'blob', // cần để xử lý file Excel
+    });
+  }
 }

@@ -1,8 +1,8 @@
-<div class="p-6">
+<div class="p-6 bg-white rounded-xl shadow-md">
   <h2 class="text-2xl font-bold mb-4">Yêu Cầu Hỗ Trợ</h2>
 
   <!-- Danh sách yêu cầu -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
     <div *ngFor="let req of requests" class="border rounded-lg p-4 shadow bg-white">
       <p class="mb-2"><strong>Nội dung:</strong> {{ req.content }}</p>
       <p class="mb-2 text-gray-600">
@@ -11,11 +11,12 @@
       <p class="mb-2">
         <strong>Trạng thái:</strong>
         <span [ngClass]="req.adminReply ? 'text-green-600' : 'text-red-600'">
-          {{ req.adminReply ? 'Đã phản hồi' : 'Chưa phản hồi' }}
+          {{ req.status === 1 ? 'Đã phản hồi' : 'Chưa phản hồi' }}
         </span>
       </p>
       <button
-        class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+        class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 disabled:bg-gray-400"
+        [disabled]="req.status === 1"
         (click)="selectRequest(req)"
       >
         Phản hồi

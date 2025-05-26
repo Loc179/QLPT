@@ -21,27 +21,29 @@ public class AdvertisementFilterQueryHandler(IMapper mapper, IUnitOfWorks unitOf
             query = query.Where(ad => ad.Address.Contains(request.Address));
         }
 
-        if (request.AreaMin.HasValue)
+        if (request.AreaMin > 0)
         {
-            query = query.Where(ad => ad.Area >= request.AreaMin.Value);
+            query = query.Where(ad => ad.Area >= request.AreaMin);
         }
 
-        if (request.AreaMax.HasValue)
+        if (request.AreaMax >0)
         {
-            query = query.Where(ad => ad.Area <= request.AreaMax.Value);
+            query = query.Where(ad => ad.Area <= request.AreaMax);
         }
 
-        if (request.PriceMin.HasValue)
+        if (request.PriceMin > 0)
         {
-            query = query.Where(ad => ad.Cost >= request.PriceMin.Value);
+            query = query.Where(ad => ad.Cost >= request.PriceMin);
         }
 
-        if (request.PriceMax.HasValue)
+        if (request.PriceMax > 0)
         {
-            query = query.Where(ad => ad.Cost <= request.PriceMax.Value);
+            query = query.Where(ad => ad.Cost <= request.PriceMax);
         }
 
-        var result = await query.ToListAsync();
+        var result = await query
+            .Include(ad => ad.User)
+            .Include(i => i.Images).ToListAsync();
 
         return _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
     }

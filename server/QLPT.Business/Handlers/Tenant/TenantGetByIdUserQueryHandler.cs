@@ -3,7 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using QLPT.Business.ViewModels.Tenant;
+using QLPT.Business.ViewModels;
 using QLPT.Data.UnitOfWorks;
 using QLPT.Models.Entities;
 

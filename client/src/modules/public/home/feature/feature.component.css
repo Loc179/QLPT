@@ -1,0 +1,38 @@
+@keyframes fadeInLeftSm {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRightSm {
+  0% {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.element-animated {
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.fadeInLeft--sm {
+  animation-name: fadeInLeftSm;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
+.fadeInRight--sm {
+  animation-name: fadeInRightSm;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}

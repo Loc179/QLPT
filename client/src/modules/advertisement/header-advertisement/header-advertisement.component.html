@@ -1,18 +1,31 @@
-<header class="bg-gray-100 shadow py-3">
-  <div class="container mx-auto px-4 flex justify-between items-center">
+<header class="fixed top-0 w-full z-50 bg-white shadow">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 text-lg">
     <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <img src="assets/images/logo.png" alt="Batdongsan" class="h-16" />
-    </div>
+    <a routerLink="/" class="flex items-center">
+      <img src="/assets/images/logo.png" alt="Logo" class="h-10" />
+    </a>
 
-    <!-- Right menu -->
-    <div class="flex items-center gap-6 text-base text-gray-700 font-medium">
-      <button class="flex items-center gap-1 hover:text-red-500 text-lg">
-        <i class="fa-regular fa-heart"></i>
-      </button>
-      <a [routerLink]="['/login']" routerLinkActive="router-link-active"  class="hover:text-blue-600">Đăng nhập</a>
-      <span>|</span>
-      <a [routerLink]="['/register']" class="hover:text-blue-600">Đăng ký</a>
+    <!-- Menu -->
+    <div class="flex items-center w-full justify-between">
+      <!-- Menu trái -->
+      <ul class="hidden lg:flex items-center space-x-6 pl-6 font-medium text-gray-700 uppercase">
+        <li><a routerLink="/download" class="hover:text-primary">Quảng cáo</a></li>
+        <li><a routerLink="/pricing" class="hover:text-primary">Bảng giá</a></li>
+      </ul>
+
+      <!-- Gạch chéo -->
+      <div class="hidden lg:block h-8 border-r rotate-[25deg] border-orange-300 mx-6"></div>
+
+      <!-- Menu phải -->
+      <ul class="hidden lg:flex items-center space-x-4 text-primary font-semibold uppercase">
+        <li><a routerLink="/login" class="hover:text-orange-500">Đăng nhập</a></li>
+        <li>
+          <a routerLink="/register"
+             class="border border-primary rounded-full px-4 py-1 hover:bg-primary hover:text-white transition">
+            Đăng ký
+          </a>
+        </li>
+      </ul>
     </div>
-  </div>
+  </nav>
 </header>

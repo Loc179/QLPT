@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using MediatR;
-using QLPT.Business.ViewModels.Tenant;
+using QLPT.Business.ViewModels;
 using QLPT.Data.UnitOfWorks;
 using QLPT.Models.Entities;
 

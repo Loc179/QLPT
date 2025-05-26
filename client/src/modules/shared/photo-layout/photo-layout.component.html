@@ -1,0 +1,31 @@
+<div class="grid grid-cols-3 gap-2 h-64 overflow-hidden rounded">
+  <!-- Ảnh lớn bên trái -->
+  <div class="col-span-2 relative h-full overflow-hidden">
+    <img
+      [src]="imagesPath[0]"
+      class="w-full h-full object-cover rounded"
+      alt="Ảnh lớn"
+    />
+    <div
+      class="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded flex items-center"
+      *ngIf="imagesPath.length > 0"
+    >
+      <i class="bi bi-camera-fill mr-1"></i>
+      {{ imagesPath.length }} ảnh
+    </div>
+  </div>
+
+  <!-- 4 ảnh nhỏ bên phải -->
+  <div class="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+    <div
+      *ngFor="let img of imagesPath.slice(1, 5)"
+      class="overflow-hidden h-full"
+    >
+      <img
+        [src]="img"
+        class="w-full h-full object-cover rounded"
+        alt="Ảnh nhỏ"
+      />
+    </div>
+  </div>
+</div>

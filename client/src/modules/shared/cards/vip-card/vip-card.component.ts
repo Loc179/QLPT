@@ -56,6 +56,7 @@ export class VipCardComponent {
 
   handleLikeItem(event: Event): void {
     event.preventDefault();
+    event.stopPropagation();
     const favoriteItem = {
       id: this.data.id,
       title: this.data.title,

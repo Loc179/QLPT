@@ -38,11 +38,11 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var request = new InvoiceDeleteByIdCommand{ Id = id};
+            var request = new InvoiceDeleteByIdCommand { Id = id };
             var result = await _mediator.Send(request);
             return Ok(result);
         }
@@ -110,7 +110,7 @@ namespace QLPT.API.Controllers
 
             string paymentUrl = await _mediator.Send(command);
             return Ok(new { paymentUrl });
-            
+
         }
 
         [HttpGet]
@@ -145,6 +145,37 @@ namespace QLPT.API.Controllers
             }
 
             return BadRequest(new { message = "Thanh toán thất bại hoặc dữ liệu không hợp lệ." });
+        }
+
+        [HttpPost("export")]
+        public async Task<IActionResult> ExportToExcel([FromBody] InvoiceExportExcelCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            // Trả về file Excel dạng byte[]
+            return File(result,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: $"invoices_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
+        
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchInvoices(
+            [FromQuery] int userId,
+            [FromQuery] string? keyword,
+            [FromQuery] bool? isPad,
+            [FromQuery] int? houseId,
+            [FromQuery] int? roomId)
+        {
+            var result = await _mediator.Send(new InvoiceSearchCommand
+            {
+                UserId = userId,
+                Keyword = keyword,
+                IsPad = isPad,
+                HouseId = houseId,
+                RoomId = roomId
+            });
+
+            return Ok(result);
         }
     }
 }

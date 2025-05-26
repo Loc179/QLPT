@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QLPT.Business.Handlers;
@@ -7,6 +8,7 @@ namespace QLPT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HouseController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
@@ -38,11 +40,11 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var request = new HouseDeleteByIdCommand{ Id = id};
+            var request = new HouseDeleteByIdCommand { Id = id };
             var result = await _mediator.Send(request);
             return Ok(result);
         }
@@ -73,6 +75,15 @@ namespace QLPT.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("search/{id}")]
+        public async Task<IActionResult> GetSearch(int id, [FromQuery] string? keyword = "")
+        {
+            var result = await _mediator.Send(new HouseSearchCommand { UserId = id, keyword = keyword });
+
+            return Ok(result);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

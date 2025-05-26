@@ -1,0 +1,143 @@
+<app-header></app-header>
+
+<section class="bg-gray-100 py-16 mt-12">
+  <div class="max-w-[1200px] mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Cột trái: Danh sách quảng cáo -->
+      <div class="lg:col-span-2">
+        <div class="flex gap-2">
+          <!-- Nút Tìm theo khu vực -->
+          <button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm hover:bg-orange-700 hover:text-white hover:-translate-y-0.5 transition-transform duration-200">
+            <i class="fa-solid fa-location-dot text-white text-sm"></i>
+            Tìm theo khu vực
+          </button>
+
+          <!-- Nút Bộ lọc -->
+          <button (click)="showFilter = true" class="flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-full text-sm hover:-translate-y-0.5 transition-transform duration-200">
+            <i class="fa-light fa-filter text-primary text-sm"></i>
+            Bộ lọc
+          </button>
+
+          <app-filter
+            *ngIf="showFilter"
+            (close)="showFilter = false"
+            (onFilter)="onApplyFilter($event)"
+          ></app-filter>
+        </div>
+
+
+
+        <!-- Danh sách quảng cáo -->
+        <div
+          *ngFor="let advertisement of advertisements"
+          class="bg-white rounded shadow p-4 mt-4 border border-gray-100"
+          routerLink="/advertisement/{{advertisement.id}}"
+        >
+          <!-- Phần ảnh -->
+          <app-photo-layout [imagesPath]="advertisement.imagesPath!"></app-photo-layout>
+
+          <!-- Phần nội dung -->
+          <div class="pt-4">
+            <!-- Tiêu đề -->
+            <h3 class="text-red-600 font-semibold text-base uppercase mb-1">
+              {{ advertisement.title }}
+            </h3>
+
+            <!-- Giá, diện tích, địa chỉ -->
+            <div class="text-sm text-gray-700 mb-1">
+              <span class="text-green-600 font-semibold text-base">
+                {{ advertisement.cost }} triệu/tháng
+              </span>
+              <span class="mx-1">•</span>
+              <span>{{ advertisement.area }} m²</span>
+              <span class="mx-1">•</span>
+              <span>{{ advertisement.address }}</span>
+            </div>
+
+            <!-- Mô tả -->
+            <p class="text-sm text-gray-500 mb-4 line-clamp-2">
+              {{ advertisement.description }}
+            </p>
+
+            <!-- Người đăng và nút liên hệ -->
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <img
+                  class="w-10 h-10 rounded-full object-cover border"
+                  src="/assets/images/default-avatar-icon.jpg"
+                  alt="avatar"
+                />
+                <div>
+                  <div class="font-medium text-sm">{{ advertisement.fullname }}</div>
+                  <div class="text-xs text-gray-400">{{ advertisement.createAt }}</div>
+                </div>
+              </div>
+
+              <div class="flex gap-2 items-center">
+                <button
+                  class="bg-green-500 text-white text-sm px-3 py-1.5 rounded-md flex items-center"
+                >
+                  {{ advertisement.phonenumber }}
+                </button>
+                <button class="text-gray-400 hover:text-red-500 text-xl">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cột phải: Sidebar -->
+      <div class="space-y-6">
+        <!-- Box 1: Lọc theo giá / diện tích -->
+        <div class="bg-white p-4 rounded shadow border border-gray-100 text-sm">
+          <h4 class="font-semibold mt-4 mb-2">Xem theo giá</h4>
+          <div class="flex flex-wrap gap-2 text-blue-600">
+            <a
+              *ngFor="let range of priceRanges"
+              (click)="filterByPrice(range)"
+              class="cursor-pointer transition-transform transform hover:-translate-y-0.5 hover:no-underline"
+            >
+              {{ range.label }}
+            </a>
+          </div>
+
+          <h4 class="font-semibold mt-4 mb-2">Xem theo diện tích</h4>
+          <div class="flex flex-wrap gap-2 text-blue-600">
+            <a
+              *ngFor="let range of areaRanges"
+              (click)="filterByArea(range)"
+              class="cursor-pointer transition-transform transform hover:-translate-y-0.5 hover:no-underline"
+            >
+              {{ range.label }}
+            </a>
+          </div>
+
+        </div>
+
+
+        <!-- Box 2: Tin mới đăng -->
+        <div class="bg-white p-4 rounded shadow border border-gray-100">
+          <h4 class="font-semibold text-sm mb-4">Tin mới đăng</h4>
+          <div *ngFor="let post of advertisements" routerLink="/advertisement/{{post.id}}" class="flex gap-2 mb-4 cursor-pointer">
+            <img
+              [src]="post.imagesPath?.[0] || '/assets/images/no-photo-available.jpg'"
+              class="w-16 h-12 object-cover rounded"
+              alt="post thumbnail"
+            />
+            <div class="flex-1">
+              <p class="text-xs font-medium line-clamp-2">{{ post.title }}</p>
+              <div class="text-green-600 text-xs font-semibold">{{ post.cost }} triệu/tháng</div>
+              <div class="text-gray-400 text-xs">{{ post.createAt }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

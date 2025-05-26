@@ -2,7 +2,7 @@ using System;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using QLPT.Business.ViewModels.Tenant;
+using QLPT.Business.ViewModels;
 using QLPT.Data.UnitOfWorks;
 
 namespace QLPT.Business.Handlers;

@@ -1,88 +1,122 @@
-<div class="max-w-4xl mx-auto py-6 px-4 space-y-6">
-  <!-- Gallery -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <img [src]="data.imagesPath?.at(1)" alt="" class="w-full h-64 object-cover rounded-lg" />
-    <div class="grid grid-rows-2 gap-2">
-      <img *ngFor="let img of data.imagesPath" [src]="img" alt="" class="w-full h-32 object-cover rounded-lg" />
-    </div>
-  </div>
+<app-header></app-header>
 
-  <!-- Title & Address -->
-  <h1 class="text-2xl font-bold">{{ data.title }}</h1>
-  <p class="text-gray-600"><i class="fas fa-map-marker-alt mr-2"></i>{{ data.address }}</p>
+<div class="bg-gray-100 min-h-screen">
+  <div class="max-w-7xl mx-auto py-6 px-4 space-y-6 mt-18">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-  <!-- Short Info -->
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-lg shadow relative">
-    <div>
-      <div class="text-sm text-gray-500">Giá</div>
-      <div class="text-lg font-medium">{{ data.cost / 1e6 }} triệu/tháng</div>
-    </div>
-    <div>
-      <div class="text-sm text-gray-500">Diện tích</div>
-      <div class="text-lg font-medium">{{ data.area }} m²</div>
-    </div>
+      <!-- Nội dung chính chiếm 2 cột -->
+      <div class="md:col-span-2 space-y-6">
+        <!-- Gallery -->
+        <div class="grid grid-cols-1 gap-4">
+          <app-photo-carousel [images]="data.imagesPath || []"></app-photo-carousel>
+        </div>
 
-    <!-- Share & Favorite Buttons (wrap in relative container) -->
-    <div class="flex items-center space-x-4 relative">
-      <button (click)="toggleShare()" class="text-gray-600 hover:text-blue-600">
-        <i class="fas fa-share-alt"></i>
-      </button>
+        <!-- Thông tin chi tiết -->
+        <div class="bg-white p-6 rounded-lg shadow-lg space-y-6">
+          <h1 class="text-2xl font-bold">{{ data.title }}</h1>
+          <p class="text-gray-600"><i class="fas fa-map-marker-alt mr-2"></i>{{ data.address }}</p>
 
-      <!-- Share Dropdown Positioned Here -->
-      <div
-        *ngIf="isShareOpen"
-        class="absolute left-0 top-full mt-2 bg-white border border-gray-200 p-2 rounded-xl shadow-lg z-10 w-40 text-2xl"
-      >
-        <button
-          (click)="shareTo('facebook')"
-          class="flex items-center gap-2 px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition"
-        >
-          <i class="fab fa-facebook-square"></i> Facebook
-        </button>
-        <button
-          (click)="shareTo('zalo')"
-          class="flex items-center gap-2 px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition"
-        >
-          <img src="assets/images/zalo-logo.png" alt="zalo" class="h-4 w-4" /> Zalo
-        </button>
+          <!-- Short Info -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-lg relative">
+            <div>
+              <div class="text-sm text-gray-500">Giá</div>
+              <div class="text-lg font-medium">{{ (data.cost / 1e6) | number:'1.0-2' }} triệu/tháng</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">Diện tích</div>
+              <div class="text-lg font-medium">{{ data.area }} m²</div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="prose max-w-none">
+            <h2 class="font-semibold mb-2">Thông tin mô tả</h2>
+            <div [innerHTML]="data.description"></div>
+          </div>
+
+          <!-- Map -->
+          <div>
+            <h2 class="text-lg font-medium mb-2">Xem trên bản đồ</h2>
+            <div #mapContainer class="w-full h-80 rounded-lg overflow-hidden"></div>
+          </div>
+        </div>
       </div>
 
+      <!-- Right Sidebar (cột 3) -->
+      <div class="w-full space-y-4">
+        <!-- Contact Card -->
+        <div class="bg-white p-4 rounded-lg shadow-lg">
+          <div class="text-center space-y-4">
+            <img src="assets/images/default-avatar-icon.jpg" alt="" class="w-16 h-16 rounded-full mx-auto" />
+            <div>
+              <div class="font-semibold">{{ data.fullname }}</div>
+              <div class="text-sm text-gray-500">Đăng lúc: {{ data.createAt | date:'short' }}</div>
+            </div>
+            <a class="block bg-green-500 text-white text-center py-3 rounded font-medium" [href]="'tel:' + data.phonenumber">
+              <i class="fas fa-phone mr-2"></i>{{ data.phonenumber }}
+            </a>
+            <a
+              class="block bg-blue-600 text-white text-center py-3 rounded font-medium"
+              [href]="'https://zalo.me/' + data.phonenumber"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="fab fa-facebook-messenger mr-2"></i>Nhắn Zalo
+            </a>
 
-      <button (click)="toggleFavorite()" class="text-gray-600"
-        [ngClass]="{ 'text-red-500': isFavorited }">
-        <i [ngClass]="isFavorited ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-      </button>
+            <!-- Container thêm relative để popup share căn sát nút -->
+            <div class="flex justify-center space-x-6 pt-2 relative"> 
+              <button (click)="toggleShare()" class="text-gray-600 hover:text-blue-600 flex items-center space-x-1">
+                <i class="fas fa-share-alt"></i> <span>Chia sẻ</span>
+              </button>
+
+              <div
+                *ngIf="isShareOpen"
+                class="absolute right-0 top-full mt-1 bg-white border border-gray-300 p-3 rounded-xl shadow-lg z-20 w-48 text-base animate__animated animate__fadeInDown"
+                style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+              >
+                <button
+                  (click)="shareTo('facebook')"
+                  class="flex items-center gap-2 px-4 py-2 w-full text-left text-gray-700 hover:bg-blue-100 hover:text-blue-700 rounded-md transition"
+                >
+                  <i class="fab fa-facebook-square text-blue-600"></i> Facebook
+                </button>
+                <button
+                  (click)="shareTo('zalo')"
+                  class="flex items-center gap-2 px-4 py-2 w-full text-left text-gray-700 hover:bg-blue-100 hover:text-blue-700 rounded-md transition"
+                >
+                  <img src="assets/images/zalo-logo.png" alt="zalo" class="h-5 w-5" /> Zalo
+                </button>
+              </div>
+
+              <button (click)="toggleFavorite()" class="text-gray-600" [ngClass]="{ 'text-red-500': isFavorited }">
+                <i [ngClass]="isFavorited ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i> Lưu tin
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Related Properties -->
+        <div class="bg-white p-4 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold mb-4">Tin đăng nổi bật</h3>
+          <div class="space-y-4">
+            <div class="border rounded-lg p-3">
+              <div class="flex space-x-3">
+                <img src="assets/images/property-thumb.jpg" alt="" class="w-20 h-16 rounded object-cover" />
+                <div class="flex-1">
+                  <div class="text-sm font-medium line-clamp-2">GÓ VAP, PHÒNG LỚN 40 M2 NHƯ CHUNG CƯ RIÊNG BIỆT</div>
+                  <div class="text-green-600 font-semibold">3.5 triệu/tháng</div>
+                  <div class="text-xs text-gray-500">1 ngày trước</div>
+                </div>
+              </div>
+            </div>
+            <!-- Thêm các tin đăng khác ở đây nếu có -->
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-
-
-  <!-- Description -->
-  <div class="prose max-w-none">
-    <h2>Thông tin mô tả</h2>
-    <div [innerHTML]="data.description"></div>
-  </div>
-
-  <!-- Map -->
-  <div>
-    <h2 class="text-lg font-medium mb-2">Xem trên bản đồ</h2>
-    <div #mapContainer class="w-full h-80 rounded-lg overflow-hidden"></div>
-  </div>
-
-  <!-- Sidebar Contact -->
-  <div class="bg-white p-4 rounded-lg shadow space-y-4">
-    <div class="flex items-center space-x-3">
-      <img src="assets/images/default-avatar-icon.jpg" alt="" class="w-12 h-12 rounded-full" />
-      <div class="font-medium">{{ data.fullname }}</div>
-    </div>
-    <a class="block bg-green-500 text-white text-center py-2 rounded" [href]="'tel:' + data.phonenumber">
-      <i class="fas fa-phone mr-2"></i>{{ data.phonenumber }}
-    </a>
-    <a class="block border border-gray-300 text-center py-2 rounded" [href]="'https://zalo.me/' + data.phonenumber" target="_blank">
-      <img src="assets/images/zalo-logo.png" alt="zalo" class="inline h-5 mr-2" /> Chat Zalo
-    </a>
-    <a class="block border border-gray-300 text-center py-2 rounded" [href]="'mailto:' + data.email" target="_blank">
-      Gửi email
-    </a>
   </div>
 </div>
+
+<app-footer></app-footer>

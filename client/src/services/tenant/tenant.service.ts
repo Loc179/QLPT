@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ITenantService } from './tenant.service.interface';
 import { Observable } from 'rxjs';
 import { TenantModel } from '../../models/tenant/tenant.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,12 @@ export class TenantService implements ITenantService {
   private readonly apiUrl: string = 'http://localhost:5297/api/tenant';
 
   constructor(private readonly httpClient: HttpClient) { }
+
+  search(id: number, keyword: string): Observable<TenantModel[]> {
+    const params = new HttpParams().set('keyword', keyword);
+    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/search/${id}`, {params});
+  }
+
   getByHouseId(houseId: number): Observable<TenantModel[]> {
     return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-house/${houseId}`);
   }

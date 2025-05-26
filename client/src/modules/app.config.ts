@@ -4,8 +4,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AuthService } from '../services/auth/auth.service';
-import { ADVERTISEMENT_SERVICE, AUTH_SERVICE, EMAIL_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SERVICEPACKAGE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE, USER_SERVICE } from '../constants/injection/injection.constant';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ADVERTISEMENT_SERVICE, AUTH_SERVICE, EMAIL_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, PERMISSION_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SERVICEPACKAGE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE, USER_SERVICE } from '../constants/injection/injection.constant';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { HouseService } from '../services/house/house.service';
 import { InvoiceService } from '../services/invoice/invoice.service';
 import { RoomService } from '../services/room/room.service';
@@ -18,6 +18,8 @@ import { provideToastr } from 'ngx-toastr';
 import { EmailService } from '../services/email/email.service';
 import { UserService } from '../services/user/user.service';
 import { AdvertisementService } from '../services/advertisement/advertisement.service';
+import { authInterceptor } from '../interceptors/auth.interceptor';
+import { PermissionService } from '../services/permission/permission.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -67,8 +69,13 @@ export const appConfig: ApplicationConfig = {
       provide: ADVERTISEMENT_SERVICE,
       useClass: AdvertisementService,
     },
+    {
+      provide: PERMISSION_SERVICE,
+      useClass: PermissionService,
+    },
     provideHttpClient(
       withFetch(),
+      withInterceptors([authInterceptor]),
     ),
     provideAnimations(),
     provideToastr()

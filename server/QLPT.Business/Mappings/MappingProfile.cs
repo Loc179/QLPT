@@ -4,7 +4,6 @@ using QLPT.Business.Handlers;
 using QLPT.Business.ViewModels;
 using QLPT.Business.ViewModels.ServicePackage;
 using QLPT.Business.ViewModels.SupportRequest;
-using QLPT.Business.ViewModels.Tenant;
 using QLPT.Models.Entities;
 
 namespace QLPT.Business.Mappings;

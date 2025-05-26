@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8 bg-white rounded-xl shadow-md">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-800">Quản Lý Khách Thuê</h1>
@@ -13,22 +13,44 @@
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
       <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
         <div class="flex-1">
-          <div class="relative">
-            <input type="text" placeholder="Tìm kiếm khách thuê..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" />
+          <div class="flex relative">
+            <!-- Ô nhập -->
+            <input
+              [(ngModel)]="searchText"
+              type="text"
+              placeholder="Tìm kiếm khách thuê..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-blue-500"
+            />
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+
+            <!-- Nút tìm -->
+            <button
+              (click)="searchTenants()"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg whitespace-nowrap">
+              Tìm kiếm
+            </button>
           </div>
         </div>
+
         <div class="flex space-x-2">
-          <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả nhà</option>
-            <option value="nha-so-1">Nhà Số 1</option>
+          <!-- Select Nhà -->
+          <select [(ngModel)]="selectedHouseId"
+                  (change)="onHouseChange(selectedHouseId!)"
+                  class="border border-gray-300 rounded-lg px-4 py-2">
+            <option [ngValue]="null" disabled>Chọn nhà</option>
+            <option *ngFor="let house of houses" [value]="house.id">{{ house.name }}</option>
           </select>
-          <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
-            <option value="">Trạng thái</option>
-            <option value="active">Đang thuê</option>
-            <option value="inactive">Đã rời đi</option>
+
+          <!-- Select Phòng -->
+          <select [(ngModel)]="selectedRoomId"
+                  [disabled]="!selectedHouseId"
+                  (change)="onRoomChange()"
+                  class="border border-gray-300 rounded-lg px-4 py-2">
+            <option [ngValue]="null" disabled>Chọn phòng</option>
+            <option *ngFor="let room of filteredRooms" [value]="room.id">{{ room.roomNumber }}</option>
           </select>
         </div>
+
       </div>
     </div>
   

@@ -1,3 +1,4 @@
+import { AdvertisementDetailComponent } from './public/advertisement/advertisement-detail/advertisement-detail.component';
 import { DetailComponent } from './advertisement/detail/detail.component';
 import { Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
@@ -5,15 +6,27 @@ import { SimpleLayoutComponent } from './shared/simple-layout/simple-layout.comp
 import { AdminLayoutComponent } from './shared/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'filter', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   {
     path: '',
     component: SimpleLayoutComponent,
     children: [
       { 
+        path: 'home', 
+        loadComponent: () => import('./public/home/home/home.component').then(m => m.HomeComponent) 
+      },
+      { 
+        path: 'price', 
+        loadComponent: () => import('./public/price-list/price-list.component').then(m => m.PriceListComponent) 
+      },
+      { 
         path: 'filter', 
-        loadComponent: () => import('./advertisement/home/home.component').then(m => m.HomeComponent) 
+        loadComponent: () => import('./public/advertisement/advertisement-home/advertisement-home.component').then(m => m.AdvertisementHomeComponent) 
+      },
+      { 
+        path: 'saved', 
+        loadComponent: () => import('./public/advertisement/saved-advertisement/saved-advertisement.component').then(m => m.SavedAdvertisementComponent) 
       },
       { 
         path: 'advertisement/:id', 

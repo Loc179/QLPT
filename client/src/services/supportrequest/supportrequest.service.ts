@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ISupportrequestService } from './supportrequest.service.interface';
 import { Observable } from 'rxjs';
 import { SupportRequestModel } from '../../models/supportrequest/supportrequest.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,15 @@ export class SupportrequestService implements ISupportrequestService {
     return this.httpClient.put(`${this.apiUrl}/reply/${id}`, { id: id, adminReply: replyContent });
   }
 
-  getByUserId(userId: number): Observable<SupportRequestModel[]> {
-    return this.httpClient.get<SupportRequestModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  getByUserId(userId: number, status: number | null): Observable<SupportRequestModel[]> {
+    let params = new HttpParams();
+    if (status !== undefined && status !== null) {
+      params = params.set('status', status.toString());
+    }
+
+    return this.httpClient.get<SupportRequestModel[]>(`${this.apiUrl}/by-user/${userId}`, {
+      params
+    });
   }
   
   getAll(): Observable<SupportRequestModel[]> {

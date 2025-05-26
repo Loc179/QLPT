@@ -1,0 +1,101 @@
+<!-- filter-modal.component.html -->
+<div
+  class="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center z-50 animate__animated animate__fadeIn"
+>
+  <div
+    class="bg-white rounded-2xl shadow-lg max-h-[90vh] overflow-y-auto w-full sm:w-[700px] mx-4"
+  >
+    <div class="flex justify-between items-center px-4 py-3 border-b">
+      <div class="text-lg font-semibold">Bộ lọc</div>
+      <button (click)="close.emit()" class="text-gray-500 text-xl cursor-pointer rounded px-2 hover:bg-amber-100">&times;</button>
+    </div>
+
+    <div class="p-4 space-y-6">
+      <!-- Lọc theo khu vực -->
+      <div>
+        <div class="text-base font-medium mb-3">Lọc theo khu vực</div>
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Tỉnh thành -->
+          <select
+            class="form-select border-orange-500 text-orange-600 rounded-xl p-2 w-full"
+            [(ngModel)]="selectedProvinceId"
+            (change)="onProvinceChange()"
+          >
+            <option value="">Chọn tỉnh thành</option>
+            <option *ngFor="let p of provinces" [value]="p.id">{{ p.name }}</option>
+          </select>
+
+          <!-- Quận huyện -->
+          <select
+            class="form-select border-orange-500 text-orange-600 rounded-xl p-2 w-full"
+            [(ngModel)]="selectedDistrictId"
+            (change)="onDistrictChange()"
+          >
+            <option value="">Tất cả</option>
+            <option *ngFor="let d of districts" [value]="d.id">{{ d.name }}</option>
+          </select>
+
+          <!-- Phường xã -->
+          <select
+            class="form-select border-gray-300 rounded-xl p-2 w-full"
+            [(ngModel)]="selectedWardId"
+          >
+            <option value="">Tất cả</option>
+            <option *ngFor="let w of wards" [value]="w.id">{{ w.name }}</option>
+          </select>
+
+
+        </div>
+      </div>
+
+      <!-- Giá -->
+      <div>
+        <div class="text-base font-medium mb-3">Khoảng giá</div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            *ngFor="let price of priceRanges"
+            (click)="selectPriceRange(price)"
+            class="border rounded-xl px-4 py-2 text-sm"
+            [ngClass]="{
+              'border-orange-500 text-orange-600 shadow-sm': selectedPrice === price.label,
+              'border-gray-300 text-gray-700': selectedPrice !== price.label
+            }"
+            type="button"
+          >
+            {{ price.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Diện tích -->
+      <div>
+        <div class="text-base font-medium mb-3">Khoảng diện tích</div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            *ngFor="let area of areaRanges"
+            (click)="selectAreaRange(area)"
+            class="border rounded-xl px-4 py-2 text-sm"
+            [ngClass]="{
+              'border-orange-500 text-orange-600 shadow-sm': selectedArea === area.label,
+              'border-gray-300 text-gray-700': selectedArea !== area.label
+            }"
+            type="button"
+          >
+            {{ area.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Nút áp dụng -->
+      <div class="flex justify-center pt-2">
+        <button
+          (click)="onApply()"
+          class="bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full px-6 py-2 cursor-pointer"
+          type="button"
+        >
+          Áp dụng bộ lọc
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8 bg-white rounded-xl shadow-md">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-gray-800">Yêu Cầu Hỗ Trợ</h1>
@@ -7,6 +7,31 @@
       <i class="fas fa-plus mr-2"></i> Tạo mới yêu cầu
     </button>
   </div>
+
+  <!-- Filter Tabs -->
+  <div class="flex justify-end space-x-4 mb-4 border-red-900">
+    <button
+      (click)="filterStatus = null; loadRequests()"
+      [ngClass]="filterStatus === null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'"
+      class="px-4 py-2 rounded-lg font-medium hover:bg-blue-500 hover:text-white transition">
+      Tất cả
+    </button>
+
+    <button
+      (click)="filterStatus = 0; loadRequests()"
+      [ngClass]="filterStatus === 0 ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700'"
+      class="px-4 py-2 rounded-lg font-medium hover:bg-yellow-400 hover:text-white transition">
+      Chờ phản hồi
+    </button>
+
+    <button
+      (click)="filterStatus = 1; loadRequests()"
+      [ngClass]="filterStatus === 1 ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'"
+      class="px-4 py-2 rounded-lg font-medium hover:bg-green-500 hover:text-white transition">
+      Đã phản hồi
+    </button>
+  </div>
+
 
   <!-- Table -->
   <div class="bg-white rounded-lg shadow-md overflow-hidden">

@@ -68,7 +68,20 @@ namespace QLPT.API.Controllers
 
             if (result == null)
             {
-                return NotFound($"Tenant with ID {id} not found.");
+                return NotFound($"Tenant with RoomId {id} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("by-house/{id}")]
+        public async Task<IActionResult> GetByHouseId(int id)
+        {
+            var result = await _mediator.Send(new TenantGetByIdHouseQuery { HouseId = id });
+
+            if (result == null)
+            {
+                return NotFound($"Tenant with houseId {id} not found.");
             }
 
             return Ok(result);
@@ -83,6 +96,14 @@ namespace QLPT.API.Controllers
             {
                 return NotFound($"Tenant with ID {id} not found.");
             }
+
+            return Ok(result);
+        }
+
+        [HttpGet("search/{id}")]
+        public async Task<IActionResult> GetSearch(int id, [FromQuery] string? keyword = "")
+        {
+            var result = await _mediator.Send(new TenantSearchCommand { UserId = id, keyword = keyword });
 
             return Ok(result);
         }

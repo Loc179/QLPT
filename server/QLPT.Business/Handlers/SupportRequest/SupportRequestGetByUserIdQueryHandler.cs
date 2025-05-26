@@ -14,10 +14,16 @@ public class SupportRequestGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks 
 
     public async Task<IEnumerable<SupportRequestViewModel>> Handle(SupportRequestGetByUserIdQuery request, CancellationToken cancellationToken)
     {
-        var queries = await _unitOfWork.SupportRequestRepository.GetQuery(s => s.UserId == request.UserId)
-            .OrderByDescending(s => s.CreatedAt)
-            .ToListAsync(cancellationToken);
-        return _mapper.Map<IEnumerable<SupportRequestViewModel>>(queries);
+        var queries = _unitOfWork.SupportRequestRepository.GetQuery(s => s.UserId == request.UserId);
+
+        if (request.Status != null)
+        {
+            queries = queries.Where(r => r.Status == request.Status);
+        }
+
+        var result = await queries.OrderByDescending(s => s.CreatedAt).ToListAsync(cancellationToken);
+
+        return _mapper.Map<IEnumerable<SupportRequestViewModel>>(result);
     }
 
 }

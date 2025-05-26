@@ -1,9 +1,9 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8 bg-white rounded-xl shadow-md">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-gray-800">Quản Lý Hóa Đơn</h1>
     <div class="flex space-x-2">
-      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center" (click)="onExportExcel()">
         <i class="fas fa-file-export mr-2"></i> Xuất dữ liệu
       </button>
     </div>
@@ -11,22 +11,59 @@
 
   <!-- Search and Filter -->
   <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-      <div class="flex-1">
-        <div class="relative">
-          <input type="text" placeholder="Tìm kiếm mã hóa đơn..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" />
-          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-        </div>
+    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 items-center">
+      
+      <!-- Keyword Input -->
+      <div class="flex-1 relative">
+        <input 
+          type="text" 
+          placeholder="Tìm kiếm ..." 
+          [(ngModel)]="keyword"
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          (keyup.enter)="onSearch()"
+        />
+        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
       </div>
-      <div class="flex space-x-2">
-        <select class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
-          <option value="">Tất cả trạng thái</option>
-          <option value="1">Đã thanh toán</option>
-          <option value="0">Chưa thanh toán</option>
-        </select>
-      </div>
+
+      <!-- House Select -->
+      <select
+        class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+        [(ngModel)]="selectedHouseId"
+        (change)="onHouseChange()"
+      >
+        <option [ngValue]="null" disabled selected>Chọn nhà</option>
+        <option *ngFor="let house of houses" [value]="house.id">{{ house.name }}</option>
+      </select>
+
+      <!-- Room Select - chỉ hiện khi đã chọn House -->
+      <select
+        class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+        [(ngModel)]="selectedRoomId"
+      >
+        <option [ngValue]="null" disabled>Chọn phòng</option>
+        <option *ngFor="let room of rooms" [value]="room.id">{{ room.roomNumber }}</option>
+      </select>
+
+      <!-- IsPad Select -->
+      <select
+        class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+        [(ngModel)]="selectedIsPad"
+      >
+        <option [ngValue]="null" disabled>Tất cả trạng thái</option>
+        <option [value]="true">Đã thanh toán</option>
+        <option [value]="false">Chưa thanh toán</option>
+      </select>
+
+      <!-- Search Button -->
+      <button 
+        (click)="onSearch()"
+        class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2"
+      >
+        Tìm kiếm
+      </button>
     </div>
   </div>
+
 
   <!-- Invoice Table -->
   <div class="bg-white rounded-lg shadow-md overflow-hidden">

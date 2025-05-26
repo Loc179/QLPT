@@ -16,6 +16,7 @@ export class SupportrequestListComponent {
   requests: SupportRequestModel[] = [];
 
   selectedRequest: SupportRequestModel | null = null;
+  filterStatus: number | null = null
   isEditModalOpen = false;
 
   constructor(
@@ -51,7 +52,7 @@ export class SupportrequestListComponent {
 
   loadRequests() {
     const userId = this.getUserId();
-    this.supportRequestService.getByUserId(userId).subscribe(data => {
+    this.supportRequestService.getByUserId(userId, this.filterStatus).subscribe(data => {
       this.requests = data;
     });
   }

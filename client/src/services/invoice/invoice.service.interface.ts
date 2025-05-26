@@ -14,4 +14,6 @@ export interface IInvoiceService {
     delete(id: number): Observable<void>;
     getPaymentUrl(invoice: InvoicePaymentModel): Observable<{ paymentUrl: string }>;
     vnpayReturn(queryParams: any): Observable<any>;
+    searchInvoices(filter: any): Observable<InvoiceListModel[]>;
+    exportToExcel(command: any): Observable<Blob>;
 }
