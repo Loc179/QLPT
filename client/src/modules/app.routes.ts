@@ -1,3 +1,4 @@
+import { AdminDashboardComponent } from './webadmin/admin-dashboard/admin-dashboard.component';
 import { AdvertisementDetailComponent } from './public/advertisement/advertisement-detail/advertisement-detail.component';
 import { DetailComponent } from './advertisement/detail/detail.component';
 import { Routes } from '@angular/router';
@@ -65,8 +66,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { 
+        path: 'home', 
+        loadComponent: () => import('./webadmin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) 
+      },
+      { 
         path: 'advertisement-management', 
         loadComponent: () => import('./webadmin/advertisement-manager/advertisement-manager.component').then(m => m.AdvertisementManagerComponent) 
+      },
+      { 
+        path: 'advertisement/detail/:id', 
+        loadComponent: () => import('./webadmin/advertisement-detail/advertisement-detail.component').then(m => m.AdvertisementDetailComponent) 
       },
       { 
         path: 'servicepackage', 

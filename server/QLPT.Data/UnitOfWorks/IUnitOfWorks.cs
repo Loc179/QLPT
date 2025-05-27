@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using QLPT.Data.Repositories;
 using QLPT.Models.Entities;
@@ -9,6 +10,8 @@ public interface IUnitOfWorks : IDisposable
 {
     QlptDbContext context { get; }
 
+    IGenericRepository<User> UserRepository { get; }
+    IGenericRepository<Role> RoleRepository { get; }
     IGenericRepository<Advertisement> AdvertisementRepository { get; }
     
     IGenericRepository<AdvertisementImage> AdvertisementImageRepository { get; }
@@ -22,6 +25,7 @@ public interface IUnitOfWorks : IDisposable
     IGenericRepository<RoomService> RoomServiceRepository { get; }
 
     IGenericRepository<ServicePackage> ServicePackageRepository { get; }
+    IGenericRepository<ServicePackageInvoice> ServicePackageInvoiceRepository { get; }
 
     IGenericRepository<SupportRequest> SupportRequestRepository { get; }
 

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using QLPT.Data.Repositories;
 using QLPT.Models.Entities;
@@ -40,6 +41,15 @@ public class UnitOfWorks(QlptDbContext context) : IUnitOfWorks
 
     private IGenericRepository<Tenant>? _tenant;
     public IGenericRepository<Tenant> TenantRepository => _tenant ??= new GenericRepository<Tenant>(_context);
+
+    private IGenericRepository<ServicePackageInvoice>? _servicePackageInvoice;
+    public IGenericRepository<ServicePackageInvoice> ServicePackageInvoiceRepository => _servicePackageInvoice ??= new GenericRepository<ServicePackageInvoice>(_context);
+
+    private IGenericRepository<User>? _userRepository;
+    public IGenericRepository<User> UserRepository => _userRepository ??= new GenericRepository<User>(_context);
+
+    private IGenericRepository<Role>? _roleRepository;
+    public IGenericRepository<Role> RoleRepository => _roleRepository ??= new GenericRepository<Role>(_context);
 
     public async Task<IDbContextTransaction> BeginTransactionAsync()
     {

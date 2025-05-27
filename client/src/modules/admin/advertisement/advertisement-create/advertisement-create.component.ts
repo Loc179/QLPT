@@ -263,7 +263,7 @@ export class AdvertisementCreateComponent implements OnInit, OnDestroy {
         this.toastr.success('Đăng bài thành công!');
         this.form.reset();
         this.form.patchValue({
-          type: this.servicePackageId === 3 ? 1 : 2,
+          type: this.servicePackageId,
           userId: this.authService.getUserInformation(),
         });
         if (this.marker) this.marker.remove();

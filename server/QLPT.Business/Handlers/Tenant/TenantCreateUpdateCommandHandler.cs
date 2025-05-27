@@ -27,6 +27,8 @@ public class TenantCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitO
             PhoneNumber = request.PhoneNumber,
             Email = request.Email,
             IsRepresentative = request.IsRepresentative,
+            CreatedAt = DateTime.UtcNow,
+            Status = 1,
             RoomId = request.RoomId
         };
 
@@ -53,6 +55,8 @@ public class TenantCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitO
         }
 
         _mapper.Map(request, entity);
+
+        entity.UpdatedAt = DateTime.UtcNow;
 
         _unitOfWork.TenantRepository.Update(entity);
         var result = await _unitOfWork.SaveChangesAsync();

@@ -6,5 +6,5 @@ namespace QLPT.Models.Entities;
 public class Role : IdentityRole<int>
 {
     // Navigation
-	public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
+	public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

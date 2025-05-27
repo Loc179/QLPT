@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { AdvertisementResponseModel } from '../../../../models/advertisement/advertisement-response.model';
 import { Router } from '@angular/router';
-import { ADVERTISEMENT_SERVICE } from '../../../../constants/injection/injection.constant';
+import { ADVERTISEMENT_SERVICE, AUTH_SERVICE } from '../../../../constants/injection/injection.constant';
 import { IAdvertisementService } from '../../../../services/advertisement/advertisement.service.interface';
 import { FormsModule } from '@angular/forms';
+import { IAuthService } from '../../../../services/auth/auth.service.interface';
 
 @Component({
   selector: 'app-advertisement-list',
@@ -19,6 +20,7 @@ export class AdvertisementListComponent {
   constructor(
     private readonly router: Router,
     @Inject(ADVERTISEMENT_SERVICE) private readonly advertisementService: IAdvertisementService,
+    @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +28,7 @@ export class AdvertisementListComponent {
   }
 
   loadAdvertisement() {
-    this.advertisementService.getByUserId(5).subscribe(data => {
+    this.advertisementService.getByUserId(this.authService.getUserId()).subscribe(data => {
       this.advertisements = data;
     })
   }

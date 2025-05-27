@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AUTH_SERVICE } from '../../../constants/injection/injection.constant';
 import { IAuthService } from '../../../services/auth/auth.service.interface';
 import { HeaderComponent } from "../../public/home/header/header.component";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +22,7 @@ export class RegisterComponent {
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    private readonly toastr: ToastrService,
     private readonly fb: FormBuilder) {}
 
   ngOnInit() {
@@ -36,7 +38,7 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
+      this.toastr.warning('Vui lòng điền đầy đủ thông tin đăng ký.',);
       return;
     }
 

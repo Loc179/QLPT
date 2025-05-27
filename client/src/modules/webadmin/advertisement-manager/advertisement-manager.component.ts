@@ -4,6 +4,7 @@ import { AdvertisementResponseModel } from '../../../models/advertisement/advert
 import { CommonModule } from '@angular/common';
 import { ADVERTISEMENT_SERVICE } from '../../../constants/injection/injection.constant';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advertisement-manager',
@@ -17,6 +18,7 @@ export class AdvertisementManagerComponent {
 
   constructor(
     private readonly toastr: ToastrService,
+    private readonly router: Router,
     @Inject(ADVERTISEMENT_SERVICE) private readonly advertisementService: IAdvertisementService,
   ) {  }
 
@@ -59,5 +61,10 @@ export class AdvertisementManagerComponent {
         this.toastr.warning("Từ chối quảng cáo thất bại");
       }
     })
+  }
+
+  
+  selectAd(ad: AdvertisementResponseModel) {
+    this.router.navigate(['/webadmin/advertisement/detail', ad.id]);
   }
 }

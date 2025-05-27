@@ -48,12 +48,12 @@ export class LoginComponent {
         this.isSubmitting = false;
         if(res.userInfo.roles[0] === 'User')
         {
-          this.router.navigate(['/admin/house/', res.userInfo.id]); // điều hướng về trang chủ hoặc dashboard
+          this.router.navigate(['/admin/dashboard']); // điều hướng về trang chủ hoặc dashboard
         }
 
         if(res.userInfo.roles[0] === 'Admin')
         {
-          this.router.navigate(['/webadmin/user-management']);
+          this.router.navigate(['/webadmin/home']);
         }
         
       },
