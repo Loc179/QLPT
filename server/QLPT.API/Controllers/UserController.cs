@@ -48,9 +48,9 @@ namespace QLPT.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new UserGetAllQuery(), cancellationToken);
+            var result = await _mediator.Send(new UserGetAllQuery{ PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
     }

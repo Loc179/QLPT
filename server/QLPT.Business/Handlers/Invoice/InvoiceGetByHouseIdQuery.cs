@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class InvoiceGetByHouseIdQuery :IRequest<IEnumerable<InvoiceListViewModel>>
+public class InvoiceGetByHouseIdQuery : BaseGetAllQuery<InvoiceListViewModel>
 {
     public int HouseId { get; set; }
 }

@@ -48,7 +48,7 @@ export class RoomCreateComponent {
       this.userId = user.id;
     });
     this.houseService.getByUserId(this.userId).subscribe(houses => {
-      this.houses = houses;
+      // this.houses = houses;
     });
   }
 

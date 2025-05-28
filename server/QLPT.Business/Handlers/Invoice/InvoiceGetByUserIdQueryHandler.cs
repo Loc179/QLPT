@@ -9,13 +9,13 @@ using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class InvoiceGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork, UserManager<User> userManager) : IRequestHandler<InvoiceGetByUserIdQuery, IEnumerable<InvoiceListViewModel>>
+public class InvoiceGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork, UserManager<User> userManager) : IRequestHandler<InvoiceGetByUserIdQuery, PaginatedResult<InvoiceListViewModel>>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<IEnumerable<InvoiceListViewModel>> Handle(InvoiceGetByUserIdQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<InvoiceListViewModel>> Handle(InvoiceGetByUserIdQuery request, CancellationToken cancellationToken)
     {
         var queryUser = await _userManager.FindByIdAsync(request.UserId.ToString());
         if(queryUser == null)
@@ -25,15 +25,19 @@ public class InvoiceGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks unitOfW
 
         var queryInvoice = _unitOfWork.InvoiceRepository.GetQuery(r => r.Room.House.UserId == request.UserId);
         
-        var result = await queryInvoice
+        var query = queryInvoice
             .Include(i => i.Room)
             .ThenInclude(r => r.House)
             .Include(i => i.Room)
             .ThenInclude(r => r.Tenants).Where(i => i.Room.Tenants.Any(t => t.IsRepresentative))
             .AsNoTracking()
-            .AsQueryable()
-            .ToListAsync();
+            .AsQueryable();
 
-        return _mapper.Map<IEnumerable<InvoiceListViewModel>>(result);
+        int total = await query.CountAsync(cancellationToken);
+        var result = await query.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
+
+        var viewmodels = _mapper.Map<IEnumerable<InvoiceListViewModel>>(result);
+
+        return new PaginatedResult<InvoiceListViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

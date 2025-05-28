@@ -32,7 +32,7 @@
         (change)="onHouseChange()"
       >
         <option [ngValue]="null" disabled selected>Chọn nhà</option>
-        <option *ngFor="let house of houses" [value]="house.id">{{ house.name }}</option>
+        <option *ngFor="let house of houses?.items" [value]="house.id">{{ house.name }}</option>
       </select>
 
       <!-- Room Select - chỉ hiện khi đã chọn House -->
@@ -41,7 +41,7 @@
         [(ngModel)]="selectedRoomId"
       >
         <option [ngValue]="null" disabled>Chọn phòng</option>
-        <option *ngFor="let room of rooms" [value]="room.id">{{ room.roomNumber }}</option>
+        <option *ngFor="let room of rooms?.items" [value]="room.id">{{ room.roomNumber }}</option>
       </select>
 
       <!-- IsPad Select -->
@@ -108,7 +108,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let invoice of invoices" class="hover:bg-gray-50 border-b border-gray-100">
+          <tr *ngFor="let invoice of invoices?.items" class="hover:bg-gray-50 border-b border-gray-100">
             <td class="py-3 px-4">{{ invoice.invoiceCode }}</td>
             <td class="py-3 px-4">{{ invoice.houseName }}</td>
             <td class="py-3 px-4">{{ invoice.roomNumber }}</td>
@@ -139,3 +139,9 @@
     </div>
   </div>
 </div>
+<app-pagination
+    *ngIf="houses && houses.totalCount > 0"
+    [paginatedData]="invoices"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

@@ -5,15 +5,20 @@ import { USER_SERVICE } from '../../../constants/injection/injection.constant';
 import { IUserService } from '../../../services/user/user.service.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { PaginatedResult } from '../../../models/paginated-result.model';
+import { PaginationComponent } from "../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-user-manager',
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationComponent],
   templateUrl: './user-manager.component.html',
   styleUrl: './user-manager.component.css'
 })
 export class UserManagerComponent {
-  landlords: UserModel[] = [];
+  landlords: PaginatedResult<UserModel> | null = null;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly toastr: ToastrService,
@@ -22,6 +27,10 @@ export class UserManagerComponent {
   ) { }
 
   ngOnInit(): void {
+    this.loadUser();
+  }
+
+  loadUser(){
     this.userService.getAll().subscribe({
       next: (data) => {
         this.landlords = data;
@@ -50,5 +59,18 @@ export class UserManagerComponent {
       }
     });
 
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadUser();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadUser();
   }
 }

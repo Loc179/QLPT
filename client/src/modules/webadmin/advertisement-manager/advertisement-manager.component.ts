@@ -5,16 +5,21 @@ import { CommonModule } from '@angular/common';
 import { ADVERTISEMENT_SERVICE } from '../../../constants/injection/injection.constant';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { PaginatedResult } from '../../../models/paginated-result.model';
+import { PaginationComponent } from "../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-advertisement-manager',
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationComponent],
   templateUrl: './advertisement-manager.component.html',
   styleUrl: './advertisement-manager.component.css'
 })
 export class AdvertisementManagerComponent {
-  advertisements: AdvertisementResponseModel[] = [];
+  advertisements: PaginatedResult<AdvertisementResponseModel> | null = null;
   selectedImage: string | null = null;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly toastr: ToastrService,
@@ -28,7 +33,7 @@ export class AdvertisementManagerComponent {
   }
 
   LoadAdvertisement() {
-    this.advertisementService.getByStatus(-1).subscribe(res => {
+    this.advertisementService.getByStatus(-1, this.currentPage, this.pageSize).subscribe(res => {
       this.advertisements = res;
     })
   }
@@ -62,9 +67,21 @@ export class AdvertisementManagerComponent {
       }
     })
   }
-
   
   selectAd(ad: AdvertisementResponseModel) {
     this.router.navigate(['/webadmin/advertisement/detail', ad.id]);
   }
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.LoadAdvertisement();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.LoadAdvertisement();
+  }
+
 }

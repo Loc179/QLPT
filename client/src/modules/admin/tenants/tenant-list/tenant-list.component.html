@@ -38,7 +38,7 @@
                   (change)="onHouseChange(selectedHouseId!)"
                   class="border border-gray-300 rounded-lg px-4 py-2">
             <option [ngValue]="null" disabled>Chọn nhà</option>
-            <option *ngFor="let house of houses" [value]="house.id">{{ house.name }}</option>
+            <option *ngFor="let house of houses?.items" [value]="house.id">{{ house.name }}</option>
           </select>
 
           <!-- Select Phòng -->
@@ -71,7 +71,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let tenant of tenants"
+              *ngFor="let tenant of tenants?.items"
               class="hover:bg-gray-50 border-b border-gray-100"
             >
               <td class="py-3 px-4">{{ tenant.houseName }}</td>
@@ -103,5 +103,10 @@
         </table>
       </div>
     </div>
-  </div>
-  
+</div>
+<app-pagination
+  *ngIf="tenants && tenants.totalCount > 0"
+  [paginatedData]="tenants"
+  (pageChanged)="onPageChanged($event)"
+  (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

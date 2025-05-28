@@ -7,12 +7,12 @@ using QLPT.Data.UnitOfWorks;
 
 namespace QLPT.Business.Handlers;
 
-public class InvoiceGetByRoomIdQueryHandler(IUnitOfWorks unitOfWork, IMapper mapper) : IRequestHandler<InvoiceGetByRoomIdQuery, IEnumerable<InvoiceListViewModel>>
+public class InvoiceGetByRoomIdQueryHandler(IUnitOfWorks unitOfWork, IMapper mapper) : IRequestHandler<InvoiceGetByRoomIdQuery, PaginatedResult<InvoiceListViewModel>>
 {
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<InvoiceListViewModel>> Handle(InvoiceGetByRoomIdQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<InvoiceListViewModel>> Handle(InvoiceGetByRoomIdQuery request, CancellationToken cancellationToken)
     {
         var queryRoom = await _unitOfWork.RoomRepository.GetByIdAsync(request.RoomId);
         if(queryRoom == null)
@@ -22,15 +22,19 @@ public class InvoiceGetByRoomIdQueryHandler(IUnitOfWorks unitOfWork, IMapper map
 
         var queryInvoice = _unitOfWork.InvoiceRepository.GetQuery(r => r.RoomId == request.RoomId);
         
-        var result = await queryInvoice
+        var query = queryInvoice
             .Include(i => i.Room)
             .ThenInclude(r => r.House)
             .Include(i => i.Room)
             .ThenInclude(r => r.Tenants).Where(i => i.Room.Tenants.Any(t => t.IsRepresentative))
             .AsNoTracking()
-            .AsQueryable()
-            .ToListAsync();
+            .AsQueryable();
 
-        return _mapper.Map<IEnumerable<InvoiceListViewModel>>(result);
+        int total = await query.CountAsync(cancellationToken);
+        var result = await query.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
+
+        var viewmodels = _mapper.Map<IEnumerable<InvoiceListViewModel>>(result);
+
+        return new PaginatedResult<InvoiceListViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

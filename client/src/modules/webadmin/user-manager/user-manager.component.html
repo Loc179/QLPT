@@ -1,5 +1,5 @@
-<div class="p-6 bg-white rounded-xl shadow-md">
-  <h2 class="text-2xl font-semibold mb-4">Quản lý chủ trọ</h2>
+<div class="container bg-white rounded-xl shadow-md mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-4">Quản lý chủ trọ</h2>
   <div class="overflow-x-auto bg-white rounded shadow">
     <table class="min-w-full text-sm text-left">
       <thead class="bg-gray-100 text-gray-700">
@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="let landlord of landlords; let i = index"
+          *ngFor="let landlord of landlords?.items; let i = index"
           class="border-b hover:bg-gray-50"
         >
           <td class="px-4 py-2">{{ i + 1 }}</td>
@@ -59,3 +59,9 @@
     </table>
   </div>
 </div>
+<app-pagination
+    *ngIf="landlords && landlords.totalCount > 0"
+    [paginatedData]="landlords"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

@@ -8,7 +8,7 @@
       <select [(ngModel)]="selectedHouseId" (change)="onHouseChange()"
               class="border border-gray-300 rounded-md px-3 py-2 text-gray-700">
         <option [ngValue]="null" disabled selected>Chọn toà nhà</option>
-        <option *ngFor="let house of houseList" [value]="house.id">{{ house.name }}</option>
+        <option *ngFor="let house of houseList?.items" [value]="house.id">{{ house.name }}</option>
       </select>
 
       <!-- Select Room (disabled nếu chưa chọn House) -->
@@ -17,7 +17,7 @@
               [disabled]="!selectedHouseId"
               class="border border-gray-300 rounded-md px-3 py-2 text-gray-700">
         <option [ngValue]="null" disabled selected>Chọn phòng</option>
-        <option *ngFor="let room of roomsList" [value]="room.id" >{{ room.roomNumber }}</option>
+        <option *ngFor="let room of roomsList?.items" [value]="room.id" >{{ room.roomNumber }}</option>
       </select>
 
       <!-- Thêm phòng -->
@@ -30,7 +30,7 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let room of rooms" class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div *ngFor="let room of rooms?.items" class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="p-4 border-b border-gray-200">
         <div class="flex justify-between items-center">
           <h2 class="text-xl font-semibold text-gray-800">
@@ -76,7 +76,11 @@
           <button [routerLink]="['/admin/roomservice', room.id]" class="flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded">
             <i class="fa-solid fa-list mr-1"></i><span class="text-sm">Dịch vụ phòng</span>
           </button>
-          <button [routerLink]="['/admin/invoice/create', room.id]" class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
+          <button [routerLink]="room.occupancyStatus !== 0 ? ['/admin/invoice/create', room.id] : null"
+                  [class.cursor-not-allowed]="room.occupancyStatus === 0"
+                  [class.opacity-50]="room.occupancyStatus === 0"
+                  [attr.disabled]="room.occupancyStatus === 0 ? true : null"
+            class="flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
             <i class="fas fa-credit-card mr-1"></i><span class="text-sm">Thanh toán</span>
           </button>
         </div>
@@ -84,3 +88,9 @@
     </div>
   </div>
 </div>
+<app-pagination
+    *ngIf="rooms && rooms.totalCount > 0"
+    [paginatedData]="rooms"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

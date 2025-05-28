@@ -9,13 +9,13 @@ using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork, UserManager<User> userManager) : IRequestHandler<AdvertisementGetByUserIdQuery, IEnumerable<AdvertisementViewModel>>
+public class AdvertisementGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork, UserManager<User> userManager) : IRequestHandler<AdvertisementGetByUserIdQuery, PaginatedResult<AdvertisementViewModel>>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<IEnumerable<AdvertisementViewModel>> Handle(AdvertisementGetByUserIdQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<AdvertisementViewModel>> Handle(AdvertisementGetByUserIdQuery request, CancellationToken cancellationToken)
     {
         var queryUser = await _userManager.FindByIdAsync(request.UserId.ToString());
         if (queryUser == null)
@@ -27,8 +27,11 @@ public class AdvertisementGetByUserIdQueryHandler(IMapper mapper, IUnitOfWorks u
             .Include(ad => ad.User)
             .Include(i => i.Images);
 
-        var result = await queryAdvertisement.ToListAsync();
+        int total = await queryAdvertisement.CountAsync(cancellationToken);
+        var result = await queryAdvertisement.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
 
-        return _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+        var viewmodels = _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+
+        return new PaginatedResult<AdvertisementViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

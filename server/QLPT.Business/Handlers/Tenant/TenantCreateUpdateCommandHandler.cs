@@ -33,7 +33,16 @@ public class TenantCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitO
         };
 
         _unitOfWork.TenantRepository.Add(entity);
+        
         var result = await _unitOfWork.SaveChangesAsync();
+
+        var entityRoom = await _unitOfWork.RoomRepository.GetByIdAsync(request.RoomId);
+
+        if (entityRoom != null && entityRoom.OccupancyStatus == 0)
+        {
+            entityRoom.OccupancyStatus = 1;
+            await _unitOfWork.SaveChangesAsync();
+        }
 
         if (result <= 0)
         {

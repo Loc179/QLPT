@@ -3,6 +3,7 @@ import { IHouseService } from './house.service.interface';
 import { Observable } from 'rxjs';
 import { HouseModel } from '../../models/house/house.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedResult } from '../../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,42 @@ export class HouseService implements IHouseService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  search(id: number, keyword: string): Observable<HouseModel[]> {
-    const params = new HttpParams().set('keyword', keyword);
-    return this.httpClient.get<HouseModel[]>(`${this.apiUrl}/search/${id}`, {params});
+  search(id: number, keyword: string, page?: number, pageSize?: number): Observable<PaginatedResult<HouseModel>> {
+    let params = new HttpParams()
+      .set('keyword', keyword);
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<HouseModel>>(`${this.apiUrl}/search/${id}`, {params});
   }
   
-  getAll(): Observable<HouseModel[]> {
-    return this.httpClient.get<HouseModel[]>(this.apiUrl);
+  getAll(page?: number, pageSize?: number): Observable<PaginatedResult<HouseModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<HouseModel>>(this.apiUrl, {params});
   }
 
   getById(id: number): Observable<HouseModel> {
     return this.httpClient.get<HouseModel>(`${this.apiUrl}/${id}`);
   }
 
-  getByUserId(userId: number): Observable<HouseModel[]> {
-    return this.httpClient.get<HouseModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  getByUserId(userId: number, page?: number, pageSize?: number): Observable<PaginatedResult<HouseModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<HouseModel>>(`${this.apiUrl}/by-user/${userId}`, {params});
   }
 
   create(house: HouseModel): Observable<any> {

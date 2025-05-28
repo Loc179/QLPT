@@ -3,6 +3,7 @@ import { ITenantService } from './tenant.service.interface';
 import { Observable } from 'rxjs';
 import { TenantModel } from '../../models/tenant/tenant.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedResult } from '../../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +13,62 @@ export class TenantService implements ITenantService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  search(id: number, keyword: string): Observable<TenantModel[]> {
-    const params = new HttpParams().set('keyword', keyword);
-    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/search/${id}`, {params});
+  search(id: number, keyword: string, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams().set('keyword', keyword);
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(`${this.apiUrl}/search/${id}`, {params});
   }
 
-  getByHouseId(houseId: number): Observable<TenantModel[]> {
-    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-house/${houseId}`);
+  getByHouseId(houseId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(`${this.apiUrl}/by-house/${houseId}`, {params});
   }
-  getByUserId(userId: number): Observable<TenantModel[]> {
-    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  getByUserId(userId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(`${this.apiUrl}/by-user/${userId}`, {params});
   }
 
-  getAll(): Observable<TenantModel[]> {
-    return this.httpClient.get<TenantModel[]>(this.apiUrl);
+  getAll(page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(this.apiUrl, {params});
   }
 
   getById(id: number): Observable<TenantModel> {
     return this.httpClient.get<TenantModel>(`${this.apiUrl}/${id}`);
   }
 
-  getByRoomId(roomId: number): Observable<TenantModel[]> {
-    return this.httpClient.get<TenantModel[]>(`${this.apiUrl}/by-room/${roomId}`);
+  getByRoomId(roomId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(`${this.apiUrl}/by-room/${roomId}`, {params});
   }
 
   create(data: TenantModel): Observable<any> {

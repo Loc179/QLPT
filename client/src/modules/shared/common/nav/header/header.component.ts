@@ -1,6 +1,6 @@
 import { UserInformation } from './../../../../../models/auth/user-information.model';
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { AUTH_SERVICE } from '../../../../../constants/injection/injection.constant';
 import { IAuthService } from '../../../../../services/auth/auth.service.interface';
 import { Router, RouterModule } from '@angular/router';
@@ -11,10 +11,12 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   public userId: number | null = null;
   public userInfo: UserInformation | null = null;
   public isDropdownOpen = false;
+
+  @ViewChild('dropdownRef', { static: false }) dropdownRef!: ElementRef;
 
   constructor(
     private readonly router: Router,
@@ -26,7 +28,6 @@ export class HeaderComponent {
     if (userInfoString) {
       this.userInfo = JSON.parse(userInfoString);
     }
-
   }
 
   toggleDropdown() {
@@ -37,9 +38,27 @@ export class HeaderComponent {
     this.isDropdownOpen = false;
   }
 
+  // Lắng nghe click outside để đóng dropdown
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    if (this.dropdownRef && !this.dropdownRef.nativeElement.contains(event.target)) {
+      this.closeDropdown();
+    }
+  }
+
   logout() {
     this.authService.logout();
     this.closeDropdown();
     this.router.navigate(['/home']);
+  }
+
+  changePassword() {
+    this.closeDropdown();
+    this.router.navigate(['/change-password']);
+  }
+
+  // Ngăn chặn event bubbling khi click vào dropdown
+  onDropdownClick(event: Event) {
+    event.stopPropagation();
   }
 }

@@ -5,19 +5,24 @@ import { SUPPORTREQUEST_SERVICE } from '../../../../constants/injection/injectio
 import { ISupportrequestService } from '../../../../services/supportrequest/supportrequest.service.interface';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-supportrequest-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './supportrequest-list.component.html',
   styleUrl: './supportrequest-list.component.css'
 })
 export class SupportrequestListComponent {
-  requests: SupportRequestModel[] = [];
+  requests: PaginatedResult<SupportRequestModel> | null = null;
 
   selectedRequest: SupportRequestModel | null = null;
   filterStatus: number | null = null
   isEditModalOpen = false;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly router: Router,
@@ -52,7 +57,7 @@ export class SupportrequestListComponent {
 
   loadRequests() {
     const userId = this.getUserId();
-    this.supportRequestService.getByUserId(userId, this.filterStatus).subscribe(data => {
+    this.supportRequestService.getByUserId(userId, this.filterStatus, this.currentPage, this.pageSize).subscribe(data => {
       this.requests = data;
     });
   }
@@ -79,7 +84,20 @@ export class SupportrequestListComponent {
 
   deleteRequest(id: number) {
     this.supportRequestService.delete(id).subscribe(() => {
-      this.requests = this.requests.filter(req => req.id !== id);
+      this.loadRequests();
     });
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadRequests();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadRequests();
   }
 }

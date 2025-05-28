@@ -30,7 +30,7 @@
 
         <!-- Danh sách quảng cáo -->
         <div
-          *ngFor="let advertisement of advertisements"
+          *ngFor="let advertisement of advertisements.items"
           class="bg-white rounded shadow p-4 mt-4 border border-gray-100"
           routerLink="/advertisement/{{advertisement.id}}"
         >
@@ -87,6 +87,13 @@
             </div>
           </div>
         </div>
+        
+        <app-pagination
+          *ngIf="advertisements && advertisements.totalCount > 0"
+          [paginatedData]="advertisements"
+          (pageChanged)="onPageChanged($event)"
+          (pageSizeChanged)="onPageSizeChanged($event)">
+        </app-pagination>
       </div>
 
       <!-- Cột phải: Sidebar -->
@@ -121,7 +128,7 @@
         <!-- Box 2: Tin mới đăng -->
         <div class="bg-white p-4 rounded shadow border border-gray-100">
           <h4 class="font-semibold text-sm mb-4">Tin mới đăng</h4>
-          <div *ngFor="let post of advertisements" routerLink="/advertisement/{{post.id}}" class="flex gap-2 mb-4 cursor-pointer">
+          <div *ngFor="let post of advertisements.items" routerLink="/advertisement/{{post.id}}" class="flex gap-2 mb-4 cursor-pointer">
             <img
               [src]="post.imagesPath?.[0] || '/assets/images/no-photo-available.jpg'"
               class="w-16 h-12 object-cover rounded"

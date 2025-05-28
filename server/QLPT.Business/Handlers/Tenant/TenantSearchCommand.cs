@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class TenantSearchCommand : IRequest<IEnumerable<TenantViewModel>>
+public class TenantSearchCommand : BaseGetAllQuery<TenantViewModel>
 {
     public int UserId { get; set; }
     public string? keyword { get; set; }

@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class InvoiceSearchCommand : IRequest<IEnumerable<InvoiceViewModel>>
+public class InvoiceSearchCommand : BaseGetAllQuery<InvoiceListViewModel>
 {
     public string? Keyword { get; set; }
     public bool? IsPad { get; set; }

@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementFilterQuery : IRequest<IEnumerable<AdvertisementViewModel>>
+public class AdvertisementFilterQuery : BaseGetAllQuery<AdvertisementViewModel>
 {
     public string Address { get; set; } = string.Empty;
     public int AreaMin { get; set; }

@@ -1,8 +1,8 @@
-<div class="p-6 bg-white rounded-xl shadow-md">
-  <h2 class="text-2xl font-bold mb-4">Quản lý Quảng cáo</h2>
+<div class="container bg-white rounded-xl shadow-md mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-4">Quản lý quảng cáo</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let ad of advertisements" (click)="selectAd(ad)" class="border rounded-2xl shadow p-4 bg-white">
+    <div *ngFor="let ad of advertisements?.items" (click)="selectAd(ad)" class="border rounded-2xl shadow p-4 bg-white">
       <div class="mb-2">
         <ng-container *ngIf="ad.imagesPath && ad.imagesPath.length > 0">
             <img
@@ -41,19 +41,10 @@
     </div>
     </div>
   </div>
-
-  <!-- <div
-    *ngIf="selectedImage"
-    class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
-    (click)="selectedImage = null"
-    (keydown.enter)="selectedImage = null"
-    >
-    <img
-        [src]="selectedImage"
-        alt="Ảnh phóng to"
-        class="rounded-xl shadow-lg"
-        style="width: 600px; height: 400px; object-fit: cover;"
-        (click)="$event.stopPropagation()"
-        (keydown.enter)="$event.stopPropagation()"
-    /> -->
 </div>
+<app-pagination
+    *ngIf="advertisements && advertisements.totalCount > 0"
+    [paginatedData]="advertisements"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

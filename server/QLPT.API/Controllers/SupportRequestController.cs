@@ -62,9 +62,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int? status)
+        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new SupportRequestGetByUserIdQuery { UserId = id, Status = status });
+            var result = await _mediator.Send(new SupportRequestGetByUserIdQuery { UserId = id, Status = status, PageNumber = page, PageSize = pageSize });
 
             return Ok(result);
         }
@@ -83,9 +83,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new SupportRequestGetAllQuery());
+            var result = await _mediator.Send(new SupportRequestGetAllQuery{ PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
     }

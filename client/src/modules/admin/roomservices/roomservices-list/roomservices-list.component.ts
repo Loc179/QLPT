@@ -7,22 +7,27 @@ import { RoomServiceModel } from '../../../../models/roomservice/roomservice.mod
 import { CommonModule } from '@angular/common';
 import { RoomservicesCreateComponent } from "../roomservices-create/roomservices-create.component";
 import { RoomservicesEditComponent } from "../roomservices-edit/roomservices-edit.component";
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-roomservices-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, RoomservicesCreateComponent, RoomservicesEditComponent],
+  imports: [CommonModule, RouterModule, RoomservicesCreateComponent, RoomservicesEditComponent, PaginationComponent],
   templateUrl: './roomservices-list.component.html',
   styleUrl: './roomservices-list.component.css'
 })
 export class RoomservicesListComponent {
-  roomServices: RoomServiceModel[] = [];
+  roomServices: PaginatedResult<RoomServiceModel> | null = null;
   roomId!: number;
   isLoading: boolean = false;
   error: string | null = null;
   isCreateModalOpen = false;
   isEditModalOpen = false;
   selectedService: RoomServiceModel | null = null;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   displayedColumns: string[] = ['Tên', 'Giá', 'Đơn vị', 'Hành động'];
 
@@ -47,7 +52,7 @@ export class RoomservicesListComponent {
     this.isLoading = true;
     this.error = null;
     
-    this.roomServiceService.getByRoomId(this.roomId)
+    this.roomServiceService.getByRoomId(this.roomId, this.currentPage, this.pageSize)
       .pipe(
         finalize(() => this.isLoading = false)
       )
@@ -99,5 +104,18 @@ export class RoomservicesListComponent {
       case 3: return 'Theo người';
       default: return 'unit';
     }
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadRoomServices();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadRoomServices();
   }
 }

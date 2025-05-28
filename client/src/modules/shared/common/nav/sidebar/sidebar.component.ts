@@ -16,11 +16,12 @@ export class SidebarComponent implements OnInit {
   public userId: number | null = null;
   public role: string | null = null;
   public activeMenuItem: string = '';
+  public isAnimating: boolean = false;
 
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    public readonly sidebarService: SidebarService, // Changed to public for template access
+    public readonly sidebarService: SidebarService,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
   ) { 
     // Subscribe to router events to update active menu item
@@ -34,7 +35,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     const userInfoString = localStorage.getItem('userInformation');
     if (userInfoString) {
-      const userInfo = JSON.parse(userInfoString); // Convert JSON string → object
+      const userInfo = JSON.parse(userInfoString);
       this.userId = userInfo.id;
       this.role = userInfo.roles[0];
       console.log('User ID1:', this.userId);
@@ -62,15 +63,20 @@ export class SidebarComponent implements OnInit {
     }
     else if (window.innerWidth >= 768 && this.sidebarService.isMobile) {
       this.switchMobile();
-      if (this.sidebarService.isCollapsed) {
-        // No need to auto-expand on desktop, let the user decide
-        // this.toggleSidebar();
-      }
     }
   }
 
   public toggleSidebar(): void {
+    // Prevent multiple rapid clicks during animation
+    if (this.isAnimating) return;
+    
+    this.isAnimating = true;
     this.sidebarService.toggleSidebar();
+    
+    // Reset animation flag after animation completes
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 300); // Match with CSS transition duration
   }
 
   public switchMobile(): void {
@@ -82,92 +88,110 @@ export class SidebarComponent implements OnInit {
     return this.activeMenuItem === menuPath;
   }
 
-  // Set the active menu item based on current URL
+  // Set the active menu item based on current URL with smooth transition
   private setActiveMenuItem(url: string): void {
+    let newActiveItem = '';
+    
     if (url.includes('/admin/house/')) {
-      this.activeMenuItem = 'house';
+      newActiveItem = 'house';
     } else if (url.includes('/admin/roomAll/')) {
-      this.activeMenuItem = 'room';
+      newActiveItem = 'room';
     } else if (url.includes('/admin/tenant/user/')) {
-      this.activeMenuItem = 'tenant';
+      newActiveItem = 'tenant';
     } else if (url.includes('/admin/invoice')) {
-      this.activeMenuItem = 'invoice';
+      newActiveItem = 'invoice';
     } else if (url.includes('/admin/support')) {
-      this.activeMenuItem = 'support';
+      newActiveItem = 'support';
     } else if (url.includes('/admin/advertisement')) {
-      this.activeMenuItem = 'advertisement';
-    } else if (url === '/') {
-      this.activeMenuItem = 'dashboard';
+      newActiveItem = 'advertisement';
+    } else if (url === '/' || url.includes('/admin/dashboard')) {
+      newActiveItem = 'dashboard';
     } else if (url.includes('/webadmin/home')) {
-      this.activeMenuItem = 'webadmin-home';
+      newActiveItem = 'webadmin-home';
     } else if (url.includes('/webadmin/user-management')) {
-      this.activeMenuItem = 'webadmin-users';
+      newActiveItem = 'webadmin-users';
     } else if (url.includes('/webadmin/advertisement-management')) {
-      this.activeMenuItem = 'webadmin-ads';
+      newActiveItem = 'webadmin-ads';
     } else if (url.includes('/webadmin/servicepackage')) {
-      this.activeMenuItem = 'webadmin-service';
+      newActiveItem = 'webadmin-service';
     } else if (url.includes('/webadmin/supportrequest')) {
-      this.activeMenuItem = 'webadmin-support';
+      newActiveItem = 'webadmin-support';
+    }
+    
+    // Add smooth transition when changing active menu item
+    if (this.activeMenuItem !== newActiveItem) {
+      this.activeMenuItem = newActiveItem;
     }
   }
   
+  // Navigation methods with smooth transitions
   navigateToDashboard() {
-    const path = `/admin/dashboard`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'dashboard';
+    this.navigateWithTransition('/admin/dashboard', 'dashboard');
   }
 
   navigateToHouse() {
-    const path = `/admin/house/${this.userId}`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'house';
+    this.navigateWithTransition(`/admin/house/${this.userId}`, 'house');
   }
 
   navigateToRoom() {
-    const path = `/admin/roomAll/${this.userId}`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'room';
+    this.navigateWithTransition(`/admin/roomAll/${this.userId}`, 'room');
   }
 
   navigateToTenant() {
-    const path = `/admin/tenant/user/${this.userId}`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'tenant';
+    this.navigateWithTransition(`/admin/tenant/user/${this.userId}`, 'tenant');
   }
   
   navigateToInvoice() {
-    const path = `/admin/invoice`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'invoice';
+    this.navigateWithTransition('/admin/invoice', 'invoice');
   }
   
   navigateToSupport() {
-    const path = `/admin/support`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'support';
+    this.navigateWithTransition('/admin/support', 'support');
   }
   
   navigateToAdvertisement() {
-    const path = `/admin/advertisement`;
-    this.router.navigate([path]);
-    this.activeMenuItem = 'advertisement';
+    this.navigateWithTransition('/admin/advertisement', 'advertisement');
   }
 
-  // Webadmin
+  // Webadmin navigation
   navigateTo(path: string) {
-    this.router.navigate([path]);
+    let menuItem = '';
     
-    // Update the active menu item based on the path
     if (path.includes('/webadmin/home')) {
-      this.activeMenuItem = 'webadmin-home';
+      menuItem = 'webadmin-home';
     } else if (path.includes('/webadmin/user-management')) {
-      this.activeMenuItem = 'webadmin-users';
+      menuItem = 'webadmin-users';
     } else if (path.includes('/webadmin/advertisement-management')) {
-      this.activeMenuItem = 'webadmin-ads';
+      menuItem = 'webadmin-ads';
     } else if (path.includes('/webadmin/servicepackage')) {
-      this.activeMenuItem = 'webadmin-service';
+      menuItem = 'webadmin-service';
     } else if (path.includes('/webadmin/supportrequest')) {
-      this.activeMenuItem = 'webadmin-support';
+      menuItem = 'webadmin-support';
     }
+    
+    this.navigateWithTransition(path, menuItem);
+  }
+
+  // Helper method for smooth navigation transitions
+  private navigateWithTransition(path: string, menuItem: string): void {
+    // Update active menu item immediately for visual feedback
+    this.activeMenuItem = menuItem;
+    
+    // Navigate to the new route
+    this.router.navigate([path]).catch(error => {
+      console.error('Navigation error:', error);
+    });
+    
+    // Auto-collapse sidebar on mobile after navigation
+    if (this.sidebarService.isMobile && !this.sidebarService.isCollapsed) {
+      setTimeout(() => {
+        this.toggleSidebar();
+      }, 150);
+    }
+  }
+
+  // Method to get current sidebar state for animations
+  public getSidebarState(): string {
+    return this.sidebarService.isCollapsed ? 'collapsed' : 'expanded';
   }
 }

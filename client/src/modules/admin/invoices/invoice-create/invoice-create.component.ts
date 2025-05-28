@@ -13,6 +13,7 @@ import { ITenantService } from '../../../../services/tenant/tenant.service.inter
 import { IEmailService } from '../../../../services/email/email.service.interface';
 import { EmailModel } from '../../../../models/email/email.model';
 import { InvoicePaymentModel } from '../../../../models/invoice/invoicepayment.model';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
 
 @Component({
   selector: 'app-invoice-create',
@@ -22,7 +23,7 @@ import { InvoicePaymentModel } from '../../../../models/invoice/invoicepayment.m
 })
 export class InvoiceCreateComponent {
   roomId!: number;
-  roomserviceServices: RoomServiceModel[] = [];
+  roomserviceServices: PaginatedResult<RoomServiceModel> | null = null;
   room!: RoomModel;
   emailModel!: EmailModel;
   tenantCount: number = 0;
@@ -58,7 +59,7 @@ export class InvoiceCreateComponent {
     });
 
     this.tenantService.getByRoomId(this.roomId).subscribe(tenants => {
-      this.tenantCount = tenants.length;
+      this.tenantCount = tenants.items.length;
       console.log("tenantCount: ",this.tenantCount);
     });
 
@@ -78,13 +79,18 @@ export class InvoiceCreateComponent {
   }
 
   calculateTotal(): void {
-    this.totalAmount = this.room.price + this.roomserviceServices.reduce((acc, service) => acc + this.calculateAmount(service), 0);
-    this.isFormValid = this.roomserviceServices.every(service => {
-      if (service.unit === 2) {
-        return this.serviceInputs[service.id] != null && this.serviceInputs[service.id]! >= 0;
-      }
-      return true;
-    });
+    if (this.room && this.roomserviceServices && this.roomserviceServices.items) {
+      this.totalAmount = this.room.price + this.roomserviceServices.items.reduce((acc, service) => acc + this.calculateAmount(service), 0);
+      this.isFormValid = this.roomserviceServices.items.every(service => {
+        if (service.unit === 2) {
+          return this.serviceInputs[service.id] != null && this.serviceInputs[service.id]! >= 0;
+        }
+        return true;
+      });
+    } else {
+      this.totalAmount = 0;
+      this.isFormValid = false;
+    }
   }
 
   async createInvoice(): Promise<void> {
@@ -119,11 +125,10 @@ export class InvoiceCreateComponent {
           console.log('Payment invoice URL:', response);
           this.paymentUrl = response.paymentUrl;
 
-          // ✅ Gửi email sau khi có link thanh toán
+          // Gửi email sau khi có link thanh toán
           this.sendInvoiceEmail(this.paymentUrl);
 
-          // ✅ Thực hiện các xử lý khác sau khi có payment URL
-          console.log('Payment URL:', this.paymentUrl);
+          this.toastr.success("Tạo hóa đơn thành công");
         },
         error: () => {
           this.toastr.error('Lỗi khi lấy link thanh toán.');
@@ -142,15 +147,15 @@ export class InvoiceCreateComponent {
   sendInvoiceEmail(paymentUrl: string): void {
     // Giả định người đại diện là người đầu tiên trong danh sách (nên được xác định rõ hơn từ backend)
     this.tenantService.getByRoomId(this.roomId).subscribe(tenants => {
-      if (tenants.length === 0) return;
+      if (tenants.items.length === 0) return;
 
-      const representative = tenants.find(t => t.isRepresentative === true); // bạn có thể kiểm tra `isRepresentative` nếu có field này
+      const representative = tenants.items.find(t => t.isRepresentative === true); // bạn có thể kiểm tra `isRepresentative` nếu có field này
       const email = representative?.email;
 
-      const serviceDetails = this.roomserviceServices.map(service => {
+      const serviceDetails = this.roomserviceServices?.items.map(service => {
         const amount = this.calculateAmount(service);
         return `${service.name}: ${amount.toLocaleString()} VND`;
-      }).join('\n');
+      }).join('\n') ?? '';
 
       const message = `
         <p>Xin chào <b>${representative?.fullName}</b>,</p>

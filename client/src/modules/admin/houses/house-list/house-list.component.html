@@ -32,7 +32,7 @@
 
     <!-- Property Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let house of houses" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition relative">
+        <div *ngFor="let house of houses.items" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition relative">
 
             <div class="p-5 cursor-pointer" (click)="goToRoom(house.id)">
                 <div class="flex items-center justify-between mb-4">
@@ -72,3 +72,9 @@
         </div>
     </div>
 </div>
+<app-pagination
+    *ngIf="houses && houses.totalCount > 0"
+    [paginatedData]="houses"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

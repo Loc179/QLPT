@@ -62,9 +62,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-room/{id}")]
-        public async Task<IActionResult> GetByRoomId(int id)
+        public async Task<IActionResult> GetByRoomId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantGetByIdRoomQuery { RoomId = id });
+            var result = await _mediator.Send(new TenantGetByIdRoomQuery { RoomId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -75,9 +75,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-house/{id}")]
-        public async Task<IActionResult> GetByHouseId(int id)
+        public async Task<IActionResult> GetByHouseId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantGetByIdHouseQuery { HouseId = id });
+            var result = await _mediator.Send(new TenantGetByIdHouseQuery { HouseId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -88,9 +88,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id)
+        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantGetByIdUserQuery { UserId = id });
+            var result = await _mediator.Send(new TenantGetByIdUserQuery { UserId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -101,17 +101,17 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("search/{id}")]
-        public async Task<IActionResult> GetSearch(int id, [FromQuery] string? keyword = "")
+        public async Task<IActionResult> GetSearch(int id, [FromQuery] string? keyword = "", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantSearchCommand { UserId = id, keyword = keyword });
+            var result = await _mediator.Send(new TenantSearchCommand { UserId = id, keyword = keyword, PageNumber = page, PageSize = pageSize });
 
             return Ok(result);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantGetAllQuery());
+            var result = await _mediator.Send(new TenantGetAllQuery{ PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
     }

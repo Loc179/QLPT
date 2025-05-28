@@ -4,17 +4,22 @@ import { SUPPORTREQUEST_SERVICE } from '../../../constants/injection/injection.c
 import { ISupportrequestService } from '../../../services/supportrequest/supportrequest.service.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PaginatedResult } from '../../../models/paginated-result.model';
+import { PaginationComponent } from "../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-supportrequestreply',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './supportrequestreply.component.html',
   styleUrl: './supportrequestreply.component.css'
 })
 export class SupportrequestreplyComponent {
-  requests: SupportRequestModel[] = [];
+  requests: PaginatedResult<SupportRequestModel> | null = null;
   selectedRequest: SupportRequestModel | null = null;
   replyContent: string = '';
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     @Inject(SUPPORTREQUEST_SERVICE) private readonly supportRequestService: ISupportrequestService,
@@ -23,7 +28,7 @@ export class SupportrequestreplyComponent {
   }
 
   loadRequests() {
-    this.supportRequestService.getAll().subscribe((data) => {
+    this.supportRequestService.getAll(this.currentPage, this.pageSize).subscribe((data) => {
       this.requests = data;
     });
   }
@@ -47,5 +52,18 @@ export class SupportrequestreplyComponent {
   cancel() {
     this.selectedRequest = null;
     this.replyContent = '';
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadRequests();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadRequests();
   }
 }

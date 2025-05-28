@@ -10,17 +10,22 @@ import { PhotoLayoutComponent } from "../../../shared/photo-layout/photo-layout.
 import { FilterComponent } from "../filter/filter.component";
 import { AdvertisementFilter } from '../../../../models/advertisement/advertisement-filter.model';
 import { min } from 'rxjs';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-advertisement-home',
-  imports: [HeaderComponent, RouterLink, CommonModule, FooterComponent, PhotoLayoutComponent, FilterComponent],
+  imports: [HeaderComponent, RouterLink, CommonModule, FooterComponent, PhotoLayoutComponent, FilterComponent, PaginationComponent],
   templateUrl: './advertisement-home.component.html',
   styleUrl: './advertisement-home.component.css'
 })
 export class AdvertisementHomeComponent {
   showFilter = false;
-  public advertisements!: AdvertisementResponseModel[];
+  public advertisements!: PaginatedResult<AdvertisementResponseModel>;
   public advertisementsFilter!: AdvertisementFilter;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   priceRanges = [
   { label: 'Dưới 1 triệu', min: 0, max: 1000000 },
@@ -45,7 +50,11 @@ export class AdvertisementHomeComponent {
   constructor(
     @Inject(ADVERTISEMENT_SERVICE) private readonly advertisementService : IAdvertisementService,
   ){
-    this.advertisementService.getByStatus(1).subscribe(data => {
+    this.loadAdvertisement();
+  }
+
+  loadAdvertisement(){
+    this.advertisementService.getByStatus(1, this.currentPage, this.pageSize).subscribe(data => {
       this.advertisements = data;
     })
   }
@@ -53,7 +62,7 @@ export class AdvertisementHomeComponent {
 
   onApplyFilter(filterData: AdvertisementFilter) {
     console.log("Filter data: ", filterData)
-    this.advertisementService.getByFilter(filterData).subscribe(data => {
+    this.advertisementService.getByFilter(filterData, this.currentPage, this.pageSize).subscribe(data => {
       this.advertisements = data;
     })
     this.showFilter = false; // đóng modal sau khi áp dụng
@@ -67,7 +76,7 @@ export class AdvertisementHomeComponent {
       priceMin: range.min,
       priceMax: range.max,
     };
-    this.advertisementService.getByFilter(this.advertisementsFilter).subscribe(data => {
+    this.advertisementService.getByFilter(this.advertisementsFilter, this.currentPage, this.pageSize).subscribe(data => {
       this.advertisements = data;
     })
   }
@@ -83,6 +92,19 @@ export class AdvertisementHomeComponent {
     this.advertisementService.getByFilter(this.advertisementsFilter).subscribe(data => {
       this.advertisements = data;
     })
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadAdvertisement();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadAdvertisement();
   }
 
 }

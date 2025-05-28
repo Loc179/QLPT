@@ -48,7 +48,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let req of requests; index as i" class="hover:bg-gray-50 border-b border-gray-100">
+          <tr *ngFor="let req of requests?.items; index as i" class="hover:bg-gray-50 border-b border-gray-100">
             <td class="py-3 px-4">{{ i + 1 }}</td>
             <td class="py-3 px-4 max-w-[300px] break-words whitespace-normal">
               {{ req.content }}
@@ -107,3 +107,9 @@
     </div>
   </div>
 </div>
+<app-pagination
+    *ngIf="requests && requests.totalCount > 0"
+    [paginatedData]="requests"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

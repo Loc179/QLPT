@@ -75,9 +75,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id)
+        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new AdvertisementGetByUserIdQuery { UserId = id });
+            var result = await _mediator.Send(new AdvertisementGetByUserIdQuery { UserId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -88,9 +88,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-status/{status}")]
-        public async Task<IActionResult> GetByStatus(int status)
+        public async Task<IActionResult> GetByStatus(int status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new AdvertisementGetByStatusQuery { Status = status });
+            var result = await _mediator.Send(new AdvertisementGetByStatusQuery { Status = status, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -109,9 +109,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new AdvertisementGetAllQuery());
+            var result = await _mediator.Send(new AdvertisementGetAllQuery{ PageNumber = page, PageSize = pageSize});
             return Ok(result);
         }
     }

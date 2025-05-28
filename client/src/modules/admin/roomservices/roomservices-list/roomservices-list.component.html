@@ -46,7 +46,7 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let service of roomServices" class="hover:bg-gray-50">
+        <tr *ngFor="let service of roomServices?.items" class="hover:bg-gray-50">
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
             {{ service.name }}
           </td>
@@ -71,7 +71,7 @@
             </button>
           </td>
         </tr>
-        <tr *ngIf="roomServices.length === 0 && !isLoading">
+        <tr *ngIf="!roomServices?.items">
           <td [colSpan]="displayedColumns.length" class="px-6 py-4 text-center text-sm text-gray-500">
             No room services found
           </td>
@@ -80,3 +80,10 @@
     </table>
   </div>
 </div>
+
+<app-pagination
+    *ngIf="roomServices && roomServices.totalCount > 0"
+    [paginatedData]="roomServices"
+    (pageChanged)="onPageChanged($event)"
+    (pageSizeChanged)="onPageSizeChanged($event)">
+</app-pagination>

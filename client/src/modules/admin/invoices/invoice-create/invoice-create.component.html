@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let service of roomserviceServices" class="border-t">
+        <tr *ngFor="let service of roomserviceServices?.items" class="border-t">
           <td class="px-4 py-2 border">{{ service.name }}</td>
           <td class="px-4 py-2 border">{{ service.cost | number }} VNĐ</td>
           <td class="px-4 py-2 border">

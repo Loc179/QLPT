@@ -7,12 +7,12 @@ using QLPT.Data.UnitOfWorks;
 
 namespace QLPT.Business.Handlers;
 
-public class TenantGetByIdRoomQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<TenantGetByIdRoomQuery, IEnumerable<TenantViewModel>>
+public class TenantGetByIdRoomQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<TenantGetByIdRoomQuery, PaginatedResult<TenantViewModel>>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
 
-    public async Task<IEnumerable<TenantViewModel>> Handle(TenantGetByIdRoomQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<TenantViewModel>> Handle(TenantGetByIdRoomQuery request, CancellationToken cancellationToken)
     {
         var queryRoom = await _unitOfWork.RoomRepository.GetByIdAsync(request.RoomId);
         if(queryRoom == null)
@@ -26,8 +26,11 @@ public class TenantGetByIdRoomQueryHandler(IMapper mapper, IUnitOfWorks unitOfWo
             .AsNoTracking()
             .AsQueryable();
         
-        var result = await queryTenant.ToListAsync();
+        int total = await queryTenant.CountAsync(cancellationToken);
+        var result = await queryTenant.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
 
-        return _mapper.Map<IEnumerable<TenantViewModel>>(result);
+        var viewmodels = _mapper.Map<IEnumerable<TenantViewModel>>(result);
+
+        return new PaginatedResult<TenantViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

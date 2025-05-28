@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { IRoomserviceService } from './roomservice.service.interface';
 import { Observable } from 'rxjs';
 import { RoomServiceModel } from '../../models/roomservice/roomservice.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedResult } from '../../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,28 @@ export class RoomserviceService implements IRoomserviceService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getByRoomId(roomId: number): Observable<RoomServiceModel[]> {
-    return this.httpClient.get<RoomServiceModel[]>(`${this.apiUrl}/by-room/${roomId}`);
+  getByRoomId(roomId: number, page?: number, pageSize?: number): Observable<PaginatedResult<RoomServiceModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<RoomServiceModel>>(`${this.apiUrl}/by-room/${roomId}`, {params});
   }
   
-  getAll(): Observable<RoomServiceModel[]> {
-    return this.httpClient.get<RoomServiceModel[]>(this.apiUrl);
+  getAll(page?: number, pageSize?: number): Observable<PaginatedResult<RoomServiceModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<RoomServiceModel>>(this.apiUrl, {params});
   }
 
   getById(id: number): Observable<RoomServiceModel> {

@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class TenantGetByIdRoomQuery : IRequest<IEnumerable<TenantViewModel>>
+public class TenantGetByIdRoomQuery : BaseGetAllQuery<TenantViewModel>
 {
     public int RoomId { get; set; }
 }

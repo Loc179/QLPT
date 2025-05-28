@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdvertisementResponseModel } from '../../models/advertisement/advertisement-response.model';
 import { AdvertisementFilter } from '../../models/advertisement/advertisement-filter.model';
+import { PaginatedResult } from '../../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AdvertisementService implements IAdvertisementService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getByFilter(filter: AdvertisementFilter): Observable<AdvertisementResponseModel[]> {
+  getByFilter(filter: AdvertisementFilter, page?: number, pageSize?: number): Observable<PaginatedResult<AdvertisementResponseModel>> {
     let params = new HttpParams();
 
     if (filter.address) params = params.set('address', filter.address);
@@ -22,22 +23,53 @@ export class AdvertisementService implements IAdvertisementService {
     if (filter.priceMin !== undefined) params = params.set('priceMin', filter.priceMin.toString());
     if (filter.priceMax !== undefined) params = params.set('priceMax', filter.priceMax.toString());
 
-    return this.httpClient.get<AdvertisementResponseModel[]>(`${this.apiUrl}/filter`, { params });
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<AdvertisementResponseModel>>(`${this.apiUrl}/filter`, { params });
   }
 
   updateStatus(id: number, status: number): Observable<any> {
     return this.httpClient.put<boolean>(`${this.apiUrl}/update-status`, {id, status});
   }
 
-  getByStatus(status: number): Observable<AdvertisementResponseModel[]> {
-    return this.httpClient.get<AdvertisementResponseModel[]>(`${this.apiUrl}/by-status/${status}`);
+  getByStatus(status: number, page?: number, pageSize?: number): Observable<PaginatedResult<AdvertisementResponseModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<AdvertisementResponseModel>>(`${this.apiUrl}/by-status/${status}`, {params});
   }
-  getByUserId(id: number): Observable<AdvertisementResponseModel[]> {
-    return this.httpClient.get<AdvertisementResponseModel[]>(`${this.apiUrl}/by-user/${id}`);
+  getByUserId(id: number, page?: number, pageSize?: number): Observable<PaginatedResult<AdvertisementResponseModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<AdvertisementResponseModel>>(`${this.apiUrl}/by-user/${id}`, {params});
   }
   
-  getAll(): Observable<AdvertisementResponseModel[]> {
-    return this.httpClient.get<AdvertisementResponseModel[]>(this.apiUrl);
+  getAll(page?: number, pageSize?: number): Observable<PaginatedResult<AdvertisementResponseModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<AdvertisementResponseModel>>(this.apiUrl, {params});
   }
   
   getById(id: number): Observable<AdvertisementResponseModel> {

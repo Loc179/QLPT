@@ -7,12 +7,12 @@ using QLPT.Data.UnitOfWorks;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementFilterQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<AdvertisementFilterQuery, IEnumerable<AdvertisementViewModel>>
+public class AdvertisementFilterQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<AdvertisementFilterQuery, PaginatedResult<AdvertisementViewModel>>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
 
-    public async Task<IEnumerable<AdvertisementViewModel>> Handle(AdvertisementFilterQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<AdvertisementViewModel>> Handle(AdvertisementFilterQuery request, CancellationToken cancellationToken)
     {
         var query = _unitOfWork.AdvertisementRepository.GetQuery(ad => ad.Status == 1);
 
@@ -41,10 +41,15 @@ public class AdvertisementFilterQueryHandler(IMapper mapper, IUnitOfWorks unitOf
             query = query.Where(ad => ad.Cost <= request.PriceMax);
         }
 
-        var result = await query
+        var queryAd = query
             .Include(ad => ad.User)
-            .Include(i => i.Images).ToListAsync();
+            .Include(i => i.Images);
 
-        return _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+        int total = await queryAd.CountAsync(cancellationToken);
+        var result = await queryAd.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
+
+        var viewmodels = _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+
+        return new PaginatedResult<AdvertisementViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

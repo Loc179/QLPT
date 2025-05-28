@@ -9,10 +9,12 @@ import { HouseModel } from '../../../../models/house/house.model';
 import { RoomModel } from '../../../../models/room/room.model';
 import { IHouseService } from '../../../../services/house/house.service.interface';
 import { IRoomService } from '../../../../services/room/room.service.interface';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-invoice-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.css'
 })
@@ -24,11 +26,14 @@ export class InvoiceListComponent {
   fromDate: Date | null = null;
   toDate: Date | null = null;
   
-  houses: HouseModel[] = [];
-  rooms: RoomModel[] = [];
+  houses: PaginatedResult<HouseModel> | null = null;
+  rooms: PaginatedResult<RoomModel> | null = null;
   
   public userId: number | null = null;
-  invoices: InvoiceListModel[] = [];
+  invoices: PaginatedResult<InvoiceListModel> | null = null;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -45,7 +50,14 @@ export class InvoiceListComponent {
       const userInfo = JSON.parse(userInfoString); // Convert JSON string → object
       this.userId = userInfo.id;
     }
-    this.invoiceService.getByUserId(this.userId!).subscribe({
+    
+    this.loadInvoices();
+
+    this.loadHouses();
+  }
+
+  loadInvoices(){
+    this.invoiceService.getByUserId(this.userId!, this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         this.invoices = data;
       },
@@ -53,16 +65,13 @@ export class InvoiceListComponent {
         console.error('Failed to fetch invoices', err);
       }
     });
-
-    this.loadHouses();
-
   }
 
   
   deleteInvoice(invoiceId: number) {
     this.invoiceService.delete(invoiceId).subscribe({
       next: () => {
-        this.invoices = this.invoices.filter((invoice) => invoice.id !== invoiceId);
+        this.loadInvoices();
       },
       error: (err) => {
         console.error('Failed to delete invoice', err);
@@ -84,8 +93,6 @@ export class InvoiceListComponent {
     this.selectedRoomId = null;
     if (this.selectedHouseId) {
       this.loadRoomsByHouse(this.selectedHouseId);
-    } else {
-      this.rooms = [];
     }
   }
 
@@ -135,5 +142,18 @@ export class InvoiceListComponent {
         console.error('Export failed:', err);
       }
     });
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadInvoices();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadInvoices();
   }
 }

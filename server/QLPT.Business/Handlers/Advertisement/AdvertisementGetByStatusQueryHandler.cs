@@ -7,19 +7,22 @@ using QLPT.Data.UnitOfWorks;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementGetByStatusQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<AdvertisementGetByStatusQuery, IEnumerable<AdvertisementViewModel>>
+public class AdvertisementGetByStatusQueryHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<AdvertisementGetByStatusQuery, PaginatedResult<AdvertisementViewModel>>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
 
-    public async Task<IEnumerable<AdvertisementViewModel>> Handle(AdvertisementGetByStatusQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<AdvertisementViewModel>> Handle(AdvertisementGetByStatusQuery request, CancellationToken cancellationToken)
     {
         var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Status == request.Status)
             .Include(ad => ad.User)
             .Include(i => i.Images);
 
-        var result = await query.ToListAsync();
+        int total = await query.CountAsync(cancellationToken);
+        var result = await query.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();
 
-        return _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+        var viewmodels = _mapper.Map<IEnumerable<AdvertisementViewModel>>(result);
+
+        return new PaginatedResult<AdvertisementViewModel>(request.PageNumber, request.PageSize, total, viewmodels);
     }
 }

@@ -62,9 +62,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-room/{id}")]
-        public async Task<IActionResult> GetByRoomId(int id)
+        public async Task<IActionResult> GetByRoomId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new InvoiceGetByRoomIdQuery { RoomId = id });
+            var result = await _mediator.Send(new InvoiceGetByRoomIdQuery { RoomId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -75,9 +75,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-house/{id}")]
-        public async Task<IActionResult> GetByHouseId(int id)
+        public async Task<IActionResult> GetByHouseId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new InvoiceGetByHouseIdQuery { HouseId = id });
+            var result = await _mediator.Send(new InvoiceGetByHouseIdQuery { HouseId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -88,9 +88,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        public async Task<IActionResult> GetByUserId(int id)
+        public async Task<IActionResult> GetByUserId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new InvoiceGetByUserIdQuery { UserId = id });
+            var result = await _mediator.Send(new InvoiceGetByUserIdQuery { UserId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -114,9 +114,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new InvoiceGetAllQuery());
+            var result = await _mediator.Send(new InvoiceGetAllQuery { PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
 
@@ -166,7 +166,8 @@ namespace QLPT.API.Controllers
             [FromQuery] int? houseId,
             [FromQuery] DateTime? fromDate,
             [FromQuery] DateTime? toDate,
-            [FromQuery] int? roomId)
+            [FromQuery] int? roomId,
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 10 )
         {
             var result = await _mediator.Send(new InvoiceSearchCommand
             {
@@ -176,7 +177,9 @@ namespace QLPT.API.Controllers
                 HouseId = houseId,
                 RoomId = roomId,
                 FromDate = fromDate,
-                ToDate = toDate
+                ToDate = toDate,
+                PageNumber = page,
+                PageSize = pageSize
             });
 
             return Ok(result);

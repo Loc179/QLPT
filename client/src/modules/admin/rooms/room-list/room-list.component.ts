@@ -7,10 +7,12 @@ import { IRoomService } from '../../../../services/room/room.service.interface';
 import { FormsModule } from '@angular/forms';
 import { HouseModel } from '../../../../models/house/house.model';
 import { IHouseService } from '../../../../services/house/house.service.interface';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-room-list',
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PaginationComponent],
   templateUrl: './room-list.component.html',
   styleUrl: './room-list.component.css'
 })
@@ -19,11 +21,14 @@ export class RoomListComponent {
   selectedHouseId: number | null = null;
   selectedRoomId: number | null = null;
   
-  houseList: HouseModel[] = [];
-  public roomsList: RoomModel[] = [];
-  public rooms: RoomModel[] = [];
+  houseList: PaginatedResult<HouseModel> | null = null;
+  public roomsList: PaginatedResult<RoomModel> | null = null;
+  public rooms: PaginatedResult<RoomModel> | null = null;
   public houseId: number | null = null;
   public userId!: number;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
   
   constructor(
     private readonly route: ActivatedRoute,
@@ -56,14 +61,14 @@ export class RoomListComponent {
   }
 
   loadRoomsByUser(userId: number) {
-    this.roomService.getByUserId(+userId).subscribe((rooms: RoomModel[]) => {
+    this.roomService.getByUserId(+userId, this.currentPage, this.pageSize).subscribe((rooms) => {
       this.rooms = rooms;
       console.log("Rooms by user Id: ", this.rooms);
     });
   }
 
   loadRoomsByHouse(houseId: number) {
-    this.roomService.getByHouseId(houseId).subscribe((rooms: RoomModel[]) => {
+    this.roomService.getByHouseId(houseId, this.currentPage, this.pageSize).subscribe((rooms) => {
       this.rooms = rooms;
       this.roomsList = rooms;
     });
@@ -83,8 +88,7 @@ export class RoomListComponent {
   deleteRoom(roomId: number) {
     if(confirm("Are you sure you want to delete this room?")) {
       this.roomService.delete(roomId).subscribe(() => {
-        this.rooms = this.rooms.filter(room => room.id !== roomId);
-        console.log("Room deleted: ", roomId);
+        this.loadRoomsByUser(this.userId);
       });
     }
   }
@@ -109,10 +113,25 @@ export class RoomListComponent {
   
   getByRoomId(id: number|null) {
     if (id !== null) {
-    this.roomService.getById(id).subscribe((room: RoomModel) => {
-      this.rooms = [room]; // Gán lại thành mảng 1 phần tử
-    });
+      this.roomService.getById(id).subscribe((room: RoomModel) => {
+        if (this.rooms) {
+          this.rooms.items = [room]; // Gán lại thành mảng 1 phần tử
+        }
+      });
+    }
   }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadRoomsByUser(this.userId);
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadRoomsByUser(this.userId);
   }
 
 }

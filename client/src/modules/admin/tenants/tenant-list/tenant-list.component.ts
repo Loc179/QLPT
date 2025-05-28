@@ -9,24 +9,29 @@ import { HouseModel } from '../../../../models/house/house.model';
 import { RoomModel } from '../../../../models/room/room.model';
 import { IHouseService } from '../../../../services/house/house.service.interface';
 import { IRoomService } from '../../../../services/room/room.service.interface';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-tenant-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './tenant-list.component.html',
   styleUrl: './tenant-list.component.css'
 })
 export class TenantListComponent {
-  public tenants: TenantModel[] = [];
+  public tenants: PaginatedResult<TenantModel> | null = null;
   selectedRoomId: number | null = null;
   selectedHouseId: number | null = null;
   public roomId: number | null = null;
   public houseId: number | null = null;
   public userId: number | null = null;
-  houses: HouseModel[] = [];
-  rooms: RoomModel[] = [];
+  houses: PaginatedResult<HouseModel> | null = null;
+  rooms: PaginatedResult<RoomModel> | null = null;
   filteredRooms: RoomModel[] = [];
   searchText?: string;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -62,21 +67,21 @@ export class TenantListComponent {
   }
 
   loadTenantsByRoom(roomId: number) {
-    this.tenantService.getByRoomId(roomId).subscribe((tenants: TenantModel[]) => {
+    this.tenantService.getByRoomId(roomId).subscribe((tenants) => {
       this.tenants = tenants;
       console.log("Tenants by room Id: ", this.tenants);
     });
   }
 
   loadTenantsByHouse(houseId: number) {
-    this.tenantService.getByHouseId(houseId).subscribe((tenants: TenantModel[]) => {
+    this.tenantService.getByHouseId(houseId, this.currentPage, this.pageSize).subscribe((tenants) => {
       this.tenants = tenants;
       console.log("Tenants by house Id: ", this.tenants);
     });
   }
 
   loadTenantsByUser(userId: number) {
-    this.tenantService.getByUserId(userId).subscribe((tenants: TenantModel[]) => {
+    this.tenantService.getByUserId(userId, this.currentPage, this.pageSize).subscribe((tenants) => {
       this.tenants = tenants;
       console.log("Tenants by user Id: ", this.tenants);
     });
@@ -94,8 +99,7 @@ export class TenantListComponent {
     console.log("Deleting tenant with ID: ", tenantId);
     if(confirm("Are you sure you want to delete this tenant?")) {
       this.tenantService.delete(tenantId).subscribe(() => {
-        this.tenants = this.tenants.filter(tenant => tenant.id !== tenantId);
-        console.log("Tenant deleted: ", tenantId);
+        this.loadTenantsByUser(this.userId!)
       });
     }
   }
@@ -105,7 +109,7 @@ export class TenantListComponent {
   }
 
   onHouseChange(houseId: number) {
-    this.filteredRooms = this.rooms.filter(room => room.houseId === +this.selectedHouseId!);
+    this.filteredRooms = (this.rooms?.items ?? []).filter(room => room.houseId === +this.selectedHouseId!);
     this.loadTenantsByHouse(houseId);
     this.selectedRoomId = null;
   }
@@ -117,8 +121,21 @@ export class TenantListComponent {
   }
   
   searchTenants() {
-    this.tenantService.search(this.userId!, this.searchText ?? '').subscribe((tenants: TenantModel[]) => {
+    this.tenantService.search(this.userId!, this.searchText ?? '').subscribe((tenants) => {
       this.tenants = tenants;
     })
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadTenantsByUser(this.userId!);
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadTenantsByUser(this.userId!);
   }
 }

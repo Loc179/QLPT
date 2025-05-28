@@ -6,6 +6,7 @@ import { AUTH_SERVICE } from '../../../constants/injection/injection.constant';
 import { CommonModule } from '@angular/common';
 import { LoginRequest } from '../../../models/auth/login-request.model';
 import { HeaderComponent } from "../../public/home/header/header.component";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -22,11 +23,12 @@ export class LoginComponent {
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
     private readonly router: Router,
     private readonly fb: FormBuilder,
+    private readonly toastr: ToastrService,
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      rememberMe: [false]
+      rememberMe: [true]
     });
   }
 
@@ -55,11 +57,12 @@ export class LoginComponent {
         {
           this.router.navigate(['/webadmin/home']);
         }
-        
+        this.toastr.success("Đăng nhập thành công.")
       },
       error: err => {
         this.isSubmitting = false;
         this.errorMessage = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+        this.toastr.warning("Đăng nhập thất bại");
         console.error('Login error', err);
       }
     });

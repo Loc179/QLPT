@@ -4,7 +4,7 @@ using QLPT.Business.ViewModels;
 
 namespace QLPT.Business.Handlers;
 
-public class AdvertisementGetByStatusQuery : IRequest<IEnumerable<AdvertisementViewModel>>
+public class AdvertisementGetByStatusQuery : BaseGetAllQuery<AdvertisementViewModel>
 {
     public int Status { get; set; }
 }

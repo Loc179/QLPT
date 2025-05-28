@@ -5,6 +5,7 @@ import { InvoiceModel } from '../../models/invoice/invoice.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { InvoicePaymentModel } from '../../models/invoice/invoicepayment.model';
 import { InvoiceListModel } from '../../models/invoice/invoicelist.model';
+import { PaginatedResult } from '../../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,16 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
 
   constructor(private readonly httpClient: HttpClient) { }
   
-  getByUserId(userId: number): Observable<InvoiceListModel[]> {
-    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/by-user/${userId}`);
+  getByUserId(userId: number, page?: number, pageSize?: number): Observable<PaginatedResult<InvoiceListModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<InvoiceListModel>>(`${this.apiUrl}/by-user/${userId}`, {params});
   }
   
   getPaymentUrl(invoice: InvoicePaymentModel): Observable<{ paymentUrl: string; }> {
@@ -26,20 +35,44 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     return this.httpClient.post<any>(`${this.apiUrl}/vnpay-return`, queryParams);
   }
 
-  getAll(): Observable<InvoiceListModel[]> {
-    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}`);
+  getAll(page?: number, pageSize?: number): Observable<PaginatedResult<InvoiceListModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<InvoiceListModel>>(`${this.apiUrl}`, {params});
   }
   
   getById(id: number): Observable<InvoiceListModel> {
     return this.httpClient.get<InvoiceListModel>(`${this.apiUrl}/${id}`);
   }
   
-  getByRoomId(roomId: number): Observable<InvoiceListModel[]> {
-    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/by-room/${roomId}`);
+  getByRoomId(roomId: number, page?: number, pageSize?: number): Observable<PaginatedResult<InvoiceListModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<InvoiceListModel>>(`${this.apiUrl}/by-room/${roomId}`,{params});
   }
 
-  getByHouseId(houseId: number): Observable<InvoiceListModel[]> {
-    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/by-house/${houseId}`);
+  getByHouseId(houseId: number, page?: number, pageSize?: number): Observable<PaginatedResult<InvoiceListModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.httpClient.get<PaginatedResult<InvoiceListModel>>(`${this.apiUrl}/by-house/${houseId}`, {params});
   }
 
   create(invoice: InvoiceModel): Observable<InvoiceModel> {
@@ -62,7 +95,7 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     fromDate?: number | null;
     toDate?: number | null;
     roomId?: number | null;
-  }): Observable<InvoiceListModel[]> {
+  }, page?: number, pageSize?: number): Observable<PaginatedResult<InvoiceListModel>> {
     let params = new HttpParams()
       .set('userId', filter.userId.toString());
 
@@ -84,8 +117,13 @@ private readonly apiUrl: string = 'http://localhost:5297/api/invoice';
     if (filter.toDate) {
       params = params.set('toDate', filter.toDate.toString());
     }
-
-    return this.httpClient.get<InvoiceListModel[]>(`${this.apiUrl}/search`, { params });
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<InvoiceListModel>>(`${this.apiUrl}/search`, { params });
   }
 
   // Gọi API xuất Excel

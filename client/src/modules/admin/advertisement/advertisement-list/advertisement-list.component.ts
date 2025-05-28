@@ -6,16 +6,21 @@ import { ADVERTISEMENT_SERVICE, AUTH_SERVICE } from '../../../../constants/injec
 import { IAdvertisementService } from '../../../../services/advertisement/advertisement.service.interface';
 import { FormsModule } from '@angular/forms';
 import { IAuthService } from '../../../../services/auth/auth.service.interface';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { PaginationComponent } from "../../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-advertisement-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './advertisement-list.component.html',
   styleUrl: './advertisement-list.component.css'
 })
 export class AdvertisementListComponent {
-  advertisements: AdvertisementResponseModel[] = [];
+  advertisements: PaginatedResult<AdvertisementResponseModel> | null = null;
   selectedStatus: number | null = null;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private readonly router: Router,
@@ -28,7 +33,7 @@ export class AdvertisementListComponent {
   }
 
   loadAdvertisement() {
-    this.advertisementService.getByUserId(this.authService.getUserId()).subscribe(data => {
+    this.advertisementService.getByUserId(this.authService.getUserId(), this.currentPage, this.pageSize).subscribe(data => {
       this.advertisements = data;
     })
   }
@@ -43,7 +48,7 @@ export class AdvertisementListComponent {
 
   delete(id: number) {
     this.advertisementService.delete(id).subscribe(() => {
-      this.advertisements = this.advertisements.filter(req => req.id !== id);
+      this.loadAdvertisement();
     })
   }
   
@@ -69,5 +74,18 @@ export class AdvertisementListComponent {
         this.advertisements = data;
       })
     }
+  }
+
+  // Xử lý khi user click chuyển trang
+  onPageChanged(page: number) {
+    this.currentPage = page;
+    this.loadAdvertisement();
+  }
+
+  // Xử lý khi user thay đổi page size
+  onPageSizeChanged(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1; // Reset về trang 1 khi thay đổi page size
+    this.loadAdvertisement();
   }
 }

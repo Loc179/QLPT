@@ -62,9 +62,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-room/{id}")]
-        public async Task<IActionResult> GetByRoomId(int id)
+        public async Task<IActionResult> GetByRoomId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new RoomServiceGetByRoomIdQuery { RoomId = id });
+            var result = await _mediator.Send(new RoomServiceGetByRoomIdQuery { RoomId = id, PageNumber = page, PageSize = pageSize });
 
             if (result == null)
             {
@@ -75,9 +75,9 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new RoomServiceGetAllQuery());
+            var result = await _mediator.Send(new RoomServiceGetAllQuery{ PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
     }

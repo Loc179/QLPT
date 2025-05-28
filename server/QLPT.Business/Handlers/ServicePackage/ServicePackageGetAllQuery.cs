@@ -1,9 +1,10 @@
 using System;
+using MediatR;
 using QLPT.Business.ViewModels.ServicePackage;
 
 namespace QLPT.Business.Handlers;
 
-public class ServicePackageGetAllQuery : BaseGetAllQuery<ServicePackageViewModel>
+public class ServicePackageGetAllQuery : IRequest<IEnumerable<ServicePackageViewModel>>
 {
     
 }
