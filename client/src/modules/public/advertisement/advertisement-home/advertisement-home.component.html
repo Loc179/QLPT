@@ -30,7 +30,7 @@
 
         <!-- Danh sách quảng cáo -->
         <div
-          *ngFor="let advertisement of advertisements.items"
+          *ngFor="let advertisement of advertisements?.items"
           class="bg-white rounded shadow p-4 mt-4 border border-gray-100"
           routerLink="/advertisement/{{advertisement.id}}"
         >
@@ -70,7 +70,7 @@
                 />
                 <div>
                   <div class="font-medium text-sm">{{ advertisement.fullname }}</div>
-                  <div class="text-xs text-gray-400">{{ advertisement.createAt }}</div>
+                  <div class="text-xs text-gray-400">{{ advertisement.createAt?.toString() | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
                 </div>
               </div>
 

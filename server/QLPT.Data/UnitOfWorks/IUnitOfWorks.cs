@@ -30,6 +30,8 @@ public interface IUnitOfWorks : IDisposable
     IGenericRepository<SupportRequest> SupportRequestRepository { get; }
 
     IGenericRepository<Tenant> TenantRepository { get; }
+    IGenericRepository<Contract> ContractRepository { get; }
+    IGenericRepository<ContractTenant> ContractTenantRepository { get; }
 
     IGenericRepository<RefreshToken> RefreshTokenRepository { get; }
 

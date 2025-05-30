@@ -94,6 +94,8 @@ export class SidebarComponent implements OnInit {
     
     if (url.includes('/admin/house/')) {
       newActiveItem = 'house';
+    } else if (url.includes('/admin/contract') || url.startsWith('/admin/contract')) {
+      newActiveItem = 'contract';
     } else if (url.includes('/admin/roomAll/')) {
       newActiveItem = 'room';
     } else if (url.includes('/admin/tenant/user/')) {
@@ -151,6 +153,10 @@ export class SidebarComponent implements OnInit {
   
   navigateToAdvertisement() {
     this.navigateWithTransition('/admin/advertisement', 'advertisement');
+  }
+
+  navigateToContract() {
+    this.navigateWithTransition(`/admin/contract`, 'contract');
   }
 
   // Webadmin navigation

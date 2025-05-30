@@ -12,6 +12,7 @@ import { IUserService } from "../../services/user/user.service.interface";
 import { IAdvertisementService } from "../../services/advertisement/advertisement.service.interface";
 import { IPermissionService } from "../../services/permission/permission.service.interface";
 import { IDashboardService } from "../../services/dashboard/dashboard.service.interface";
+import { IContractService } from "../../services/contract/contract.service.interface";
 
 export const AUTH_SERVICE = new InjectionToken<IAuthService>('AUTH_SERVICE');
 export const PERMISSION_SERVICE = new InjectionToken<IPermissionService>('PERMISSON_SERVICE');
@@ -25,4 +26,5 @@ export const SERVICEPACKAGE_SERVICE = new InjectionToken<IServicepackageService>
 export const EMAIL_SERVICE = new InjectionToken<IEmailService>('EMAIL_SERVICE');
 export const USER_SERVICE = new InjectionToken<IUserService>('USER_SERVICE');
 export const ADVERTISEMENT_SERVICE = new InjectionToken<IAdvertisementService>('ADVERTISEMENT_SERVICE');
+export const CONTRACT_SERVICE = new InjectionToken<IContractService>('CONTRACT_SERVICE');
 export const DASHBOARD_SERVICE = new InjectionToken<IDashboardService>('DASHBOARD_SERVICE');

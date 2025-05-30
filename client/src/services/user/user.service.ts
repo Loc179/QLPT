@@ -31,7 +31,7 @@ export class UserService implements IUserService {
     return this.httpClient.put<UserModel>(`${this.apiUrl}`, user);
   }
 
-  banUser(userId: number, isBanned: number): Observable<any> {
-    return this.httpClient.put(`${this.apiUrl}/ban`, { id: userId, isBanned });
+  banUser(userId: number, status: number): Observable<any> {
+    return this.httpClient.put(`${this.apiUrl}/ban`, { id: userId, status });
   }
 }

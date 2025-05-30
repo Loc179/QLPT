@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AuthService } from '../services/auth/auth.service';
-import { ADVERTISEMENT_SERVICE, AUTH_SERVICE, DASHBOARD_SERVICE, EMAIL_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, PERMISSION_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SERVICEPACKAGE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE, USER_SERVICE } from '../constants/injection/injection.constant';
+import { ADVERTISEMENT_SERVICE, AUTH_SERVICE, CONTRACT_SERVICE, DASHBOARD_SERVICE, EMAIL_SERVICE, HOUSE_SERVICE, INVOICE_SERVICE, PERMISSION_SERVICE, ROOM_SERVICE, ROOMSERVICE_SERVICE, SERVICEPACKAGE_SERVICE, SUPPORTREQUEST_SERVICE, TENANT_SERVICE, USER_SERVICE } from '../constants/injection/injection.constant';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { HouseService } from '../services/house/house.service';
 import { InvoiceService } from '../services/invoice/invoice.service';
@@ -21,6 +21,7 @@ import { AdvertisementService } from '../services/advertisement/advertisement.se
 import { authInterceptor } from '../interceptors/auth.interceptor';
 import { PermissionService } from '../services/permission/permission.service';
 import { DashboardService } from '../services/dashboard/dashboard.service';
+import { ContractService } from '../services/contract/contract.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -69,6 +70,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ADVERTISEMENT_SERVICE,
       useClass: AdvertisementService,
+    },
+    {
+      provide: CONTRACT_SERVICE,
+      useClass: ContractService,
     },
     {
       provide: DASHBOARD_SERVICE,

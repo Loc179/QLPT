@@ -30,6 +30,21 @@ public class QlptDbContext : IdentityDbContext<
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(x => x.RoleId);
         });
+
+        builder.Entity<ContractTenant>(ct =>
+        {
+            ct.HasKey(ct => new { ct.ContractId, ct.TenantId });
+
+            ct.HasOne(ct => ct.Contract)
+                .WithMany(c => c.ContractTenants)
+                .HasForeignKey(ct => ct.ContractId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            ct.HasOne(ct => ct.Tenant)
+                .WithMany(t => t.ContractTenants)
+                .HasForeignKey(ct => ct.TenantId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 
 
@@ -43,6 +58,8 @@ public class QlptDbContext : IdentityDbContext<
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<RoomService> RoomServices { get; set; }
     public DbSet<ServicePackageInvoice> ServicePackageInvoices { get; set; }
+    public DbSet<Contract> Contracts { get; set; }
+    public DbSet<ContractTenant> ContractTenants { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 

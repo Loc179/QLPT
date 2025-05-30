@@ -15,4 +15,6 @@ public class Tenant
 
     public int RoomId { get; set; }
     public Room Room { get; set; } = default!;
+
+    public List<ContractTenant> ContractTenants { get; set; } = new List<ContractTenant>();
 }

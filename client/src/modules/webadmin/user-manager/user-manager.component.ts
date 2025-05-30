@@ -49,16 +49,30 @@ export class UserManagerComponent {
     this.router.navigate(['/webadmin/user-detail/' + id]);
   }
 
+  // Hàm khóa user (status từ 1 -> 0)
   onLock(id: number) {
     this.userService.banUser(id, 0).subscribe({
       next: () => {
-        this.toastr.success('Ban user thành công.');
+        this.toastr.success('Khóa user thành công.');
+        this.loadUser();
       },
       error: (err) => {
-        this.toastr.error('Ban user bị lỗi.');
+        this.toastr.error('Khóa user bị lỗi.');
       }
     });
+  }
 
+  // Hàm mở khóa user (status từ 0 -> 1)
+  onUnlock(id: number) {
+    this.userService.banUser(id, 1).subscribe({
+      next: () => {
+        this.toastr.success('Mở khóa user thành công.');
+        this.loadUser();
+      },
+      error: (err) => {
+        this.toastr.error('Mở khóa user bị lỗi.');
+      }
+    });
   }
 
   // Xử lý khi user click chuyển trang

@@ -194,7 +194,7 @@ export const routes: Routes = [
         data: { breadcrumb: 'Danh sách phòng' }
       },
 
-      // Other Admin Routes
+      
       { 
         path: 'roomservice/:roomId', 
         loadComponent: () => import('./admin/roomservices/roomservices-list/roomservices-list.component').then(m => m.RoomservicesListComponent),
@@ -259,6 +259,26 @@ export const routes: Routes = [
         path: 'support/edit/:id', 
         loadComponent: () => import('./admin/supportrequest/supportrequest-edit/supportrequest-edit.component').then(m => m.SupportrequestEditComponent),
         data: { breadcrumb: 'Chỉnh sửa yêu cầu hỗ trợ' }
+      },
+      { 
+        path: 'contract', 
+        loadComponent: () => import('./admin/contract/contract-list/contract-list.component').then(m => m.ContractListComponent),
+        data: { breadcrumb: 'Danh sách hợp đồng' }
+      },
+      { 
+        path: 'contract/create', 
+        loadComponent: () => import('./admin/contract/contract-create/contract-create.component').then(m => m.ContractCreateComponent),
+        data: { breadcrumb: 'Tạo hợp đồng' }
+      },
+      { 
+        path: 'contract/edit/:id',
+        loadComponent: () => import('./admin/contract/contract-update/contract-update.component').then(m => m.ContractUpdateComponent),
+        data: { breadcrumb: 'Chỉnh sửa hợp đồng' }
+      },
+      { 
+        path: 'contract/detail/:id',
+        loadComponent: () => import('./admin/contract/contract-detail/contract-detail.component').then(m => m.ContractDetailComponent),
+        data: { breadcrumb: 'Chi tiết hợp đồng' }
       }
     ]
   }

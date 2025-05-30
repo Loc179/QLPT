@@ -42,6 +42,12 @@ public class UnitOfWorks(QlptDbContext context) : IUnitOfWorks
     private IGenericRepository<Tenant>? _tenant;
     public IGenericRepository<Tenant> TenantRepository => _tenant ??= new GenericRepository<Tenant>(_context);
 
+    private IGenericRepository<Contract>? _contract;
+    public IGenericRepository<Contract> ContractRepository => _contract ??= new GenericRepository<Contract>(_context);
+
+    private IGenericRepository<ContractTenant>? _contractTenant;
+    public IGenericRepository<ContractTenant> ContractTenantRepository => _contractTenant ??= new GenericRepository<ContractTenant>(_context);
+
     private IGenericRepository<ServicePackageInvoice>? _servicePackageInvoice;
     public IGenericRepository<ServicePackageInvoice> ServicePackageInvoiceRepository => _servicePackageInvoice ??= new GenericRepository<ServicePackageInvoice>(_context);
 

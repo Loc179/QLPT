@@ -13,6 +13,17 @@ export class TenantService implements ITenantService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
+  getWithoutContract(userId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
+    let params = new HttpParams();
+    if (page !== undefined) {
+      params = params.set('page', page.toString());
+    }
+    if (pageSize !== undefined) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+    return this.httpClient.get<PaginatedResult<TenantModel>>(`${this.apiUrl}/without-contract/${userId}`, {params});
+  }
+
   search(id: number, keyword: string, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
     let params = new HttpParams().set('keyword', keyword);
     if (page !== undefined) {

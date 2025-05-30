@@ -15,7 +15,7 @@ public class UserGetAllQueryHandler(UserManager<User> userManager, IMapper mappe
 
     public async Task<PaginatedResult<UserViewModel>> Handle(UserGetAllQuery request, CancellationToken cancellationToken)
     {
-        var users = _userManager.Users.AsQueryable();
+        var users = _userManager.Users.AsQueryable().Where(u => u.UserRoles.Any(ur => ur.Role.Name == "User"));
 
         int total = await users.CountAsync(cancellationToken);
         var result = await users.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();

@@ -1,0 +1,272 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex items-center justify-center py-12">
+      <div class="text-center">
+        <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-gray-600">Đang tải thông tin hợp đồng...</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!isLoading">
+      <!-- Header -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">Cập nhật hợp đồng</h1>
+              <p class="text-sm text-gray-600 mt-1">Chỉnh sửa thông tin hợp đồng thuê nhà</p>
+            </div>
+            <div class="text-sm text-gray-500" *ngIf="originalContract">
+              ID: #{{ originalContract.id }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+        <div class="space-y-6">
+          <!-- Tenant Selection Section -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Chọn người thuê</h2>
+              <p class="text-sm text-gray-600 mt-1">Có thể chọn nhiều người thuê cho một hợp đồng</p>
+            </div>
+            
+            <div class="p-6">
+              <!-- Search Input -->
+              <div class="mb-4">
+                <div class="relative">
+                  <input
+                    type="text"
+                    [(ngModel)]="searchTenant"
+                    [ngModelOptions]="{standalone: true}"
+                    (input)="filterTenants()"
+                    placeholder="Tìm kiếm người thuê..."
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                  <svg class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Selected Tenants -->
+              <div class="mb-4" *ngIf="selectedTenants.length > 0">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Đã chọn ({{ selectedTenants.length }})
+                </label>
+                <div class="flex flex-wrap gap-2">
+                  <div *ngFor="let tenant of selectedTenants" 
+                       class="inline-flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+                      {{ getInitials(tenant.fullName) }}
+                    </div>
+                    <span class="mr-2">{{ tenant.fullName }}</span>
+                    <button type="button" 
+                            (click)="removeTenant(tenant)"
+                            class="text-blue-600 hover:text-blue-800 transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Available Tenants Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div *ngFor="let tenant of filteredTenants" 
+                     [class.ring-2]="isSelected(tenant)"
+                     [class.ring-blue-500]="isSelected(tenant)"
+                     [class.bg-blue-50]="isSelected(tenant)"
+                     class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:shadow-md hover:border-gray-300 transition-all"
+                     (click)="toggleTenant(tenant)">
+                  <div class="flex items-start space-x-3">
+                    <!-- Avatar -->
+                    <div class="flex-shrink-0">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                        <span class="text-white font-medium text-sm">{{ getInitials(tenant.fullName) }}</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Info -->
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-900 truncate">{{ tenant.fullName }}</p>
+                        <div class="flex-shrink-0 ml-2">
+                          <div *ngIf="isSelected(tenant)" 
+                               class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-xs text-gray-500 mt-1" *ngIf="tenant.email">{{ tenant.email }}</p>
+                      <p class="text-xs text-gray-500" *ngIf="tenant.phoneNumber">{{ tenant.phoneNumber }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- No Results -->
+              <div *ngIf="filteredTenants.length === 0" class="text-center py-8">
+                <div class="text-gray-400 text-4xl mb-2">👥</div>
+                <p class="text-gray-500">Không tìm thấy người thuê nào</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contract Details Section -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Thông tin hợp đồng</h2>
+            </div>
+            
+            <div class="p-6 space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Start Date -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Ngày bắt đầu <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="startDate"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    [class.border-red-500]="contractForm.get('startDate')?.invalid && contractForm.get('startDate')?.touched"
+                  >
+                  <div *ngIf="contractForm.get('startDate')?.invalid && contractForm.get('startDate')?.touched" 
+                       class="text-red-500 text-sm mt-1">
+                    Vui lòng chọn ngày bắt đầu
+                  </div>
+                </div>
+
+                <!-- End Date -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Ngày kết thúc <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="endDate"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    [class.border-red-500]="contractForm.get('endDate')?.invalid && contractForm.get('endDate')?.touched"
+                  >
+                  <div *ngIf="contractForm.get('endDate')?.invalid && contractForm.get('endDate')?.touched" 
+                       class="text-red-500 text-sm mt-1">
+                    Vui lòng chọn ngày kết thúc
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Deposit Amount -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Tiền đặt cọc (VND) <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="number"
+                      formControlName="depositAmount"
+                      min="0"
+                      step="100000"
+                      placeholder="0"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                      [class.border-red-500]="contractForm.get('depositAmount')?.invalid && contractForm.get('depositAmount')?.touched"
+                    >
+                    <span class="absolute right-3 top-2.5 text-gray-500 text-sm">VND</span>
+                  </div>
+                  <div *ngIf="contractForm.get('depositAmount')?.invalid && contractForm.get('depositAmount')?.touched" 
+                       class="text-red-500 text-sm mt-1">
+                    Vui lòng nhập số tiền đặt cọc
+                  </div>
+                </div>
+
+                <!-- Status -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Trạng thái <span class="text-red-500">*</span>
+                  </label>
+                  <select
+                    formControlName="status"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="1">Đang hoạt động</option>
+                    <option value="0">Đã hết hạn</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Notes -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Ghi chú
+                </label>
+                <textarea
+                  formControlName="notes"
+                  rows="4"
+                  placeholder="Nhập ghi chú về hợp đồng..."
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between">
+              <button
+                type="button"
+                (click)="resetForm()"
+                class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                [disabled]="isSubmitting"
+              >
+                Khôi phục
+              </button>
+              
+              <div class="flex space-x-3">
+                <button
+                  type="button"
+                  (click)="onCancel()"
+                  class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                  [disabled]="isSubmitting"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  [disabled]="contractForm.invalid || selectedTenants.length === 0 || isSubmitting || !hasChanges()"
+                  class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <span *ngIf="!isSubmitting">Cập nhật hợp đồng</span>
+                  <span *ngIf="isSubmitting" class="flex items-center">
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Đang cập nhật...
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Changes indicator -->
+            <div *ngIf="hasChanges()" class="mt-3 text-sm text-amber-600 flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+              </svg>
+              Bạn có thay đổi chưa được lưu
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

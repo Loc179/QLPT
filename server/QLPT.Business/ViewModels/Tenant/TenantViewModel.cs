@@ -12,7 +12,7 @@ public class TenantViewModel
     public bool IsRepresentative { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public int Status { get; set; } // 0: Inactive, 1: Active, 2: Deleted
+    public int Status { get; set; }
 
     public int RoomId { get; set; }
     public int RoomNumber { get; set; }

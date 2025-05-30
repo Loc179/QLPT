@@ -185,6 +185,57 @@ namespace QLPT.Data.Migrations
                     b.ToTable("AdvertisementImages");
                 });
 
+            modelBuilder.Entity("QLPT.Models.Entities.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DepositAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.ContractTenant", b =>
+                {
+                    b.Property<int>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContractId", "TenantId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("ContractTenants");
+                });
+
             modelBuilder.Entity("QLPT.Models.Entities.House", b =>
                 {
                     b.Property<int>("Id")
@@ -668,6 +719,36 @@ namespace QLPT.Data.Migrations
                     b.Navigation("Advertisement");
                 });
 
+            modelBuilder.Entity("QLPT.Models.Entities.Contract", b =>
+                {
+                    b.HasOne("QLPT.Models.Entities.User", "User")
+                        .WithMany("Contracts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("QLPT.Models.Entities.ContractTenant", b =>
+                {
+                    b.HasOne("QLPT.Models.Entities.Contract", "Contract")
+                        .WithMany("ContractTenants")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QLPT.Models.Entities.Tenant", "Tenant")
+                        .WithMany("ContractTenants")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("QLPT.Models.Entities.House", b =>
                 {
                     b.HasOne("QLPT.Models.Entities.User", "User")
@@ -778,6 +859,11 @@ namespace QLPT.Data.Migrations
                     b.Navigation("Images");
                 });
 
+            modelBuilder.Entity("QLPT.Models.Entities.Contract", b =>
+                {
+                    b.Navigation("ContractTenants");
+                });
+
             modelBuilder.Entity("QLPT.Models.Entities.House", b =>
                 {
                     b.Navigation("Rooms");
@@ -802,9 +888,16 @@ namespace QLPT.Data.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("QLPT.Models.Entities.Tenant", b =>
+                {
+                    b.Navigation("ContractTenants");
+                });
+
             modelBuilder.Entity("QLPT.Models.Entities.User", b =>
                 {
                     b.Navigation("Advertisements");
+
+                    b.Navigation("Contracts");
 
                     b.Navigation("Houses");
 

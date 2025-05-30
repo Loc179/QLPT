@@ -21,7 +21,7 @@ import { PaginationComponent } from "../../../shared/pagination/pagination.compo
 })
 export class AdvertisementHomeComponent {
   showFilter = false;
-  public advertisements!: PaginatedResult<AdvertisementResponseModel>;
+  public advertisements: PaginatedResult<AdvertisementResponseModel> = new PaginatedResult<AdvertisementResponseModel>();
   public advertisementsFilter!: AdvertisementFilter;
 
   currentPage: number = 1;

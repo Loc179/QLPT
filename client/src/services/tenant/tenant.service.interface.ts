@@ -4,6 +4,7 @@ import { PaginatedResult } from "../../models/paginated-result.model";
 
 export interface ITenantService {
     getAll(page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>>;
+    getWithoutContract(userId: number ,page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>>;
     getById(id: number): Observable<TenantModel>;
     getByRoomId(roomId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>>;
     getByHouseId(houseId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>>;

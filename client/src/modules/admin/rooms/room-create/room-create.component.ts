@@ -8,6 +8,8 @@ import { IRoomService } from '../../../../services/room/room.service.interface';
 import { HouseModel } from '../../../../models/house/house.model';
 import { IHouseService } from '../../../../services/house/house.service.interface';
 import { IAuthService } from '../../../../services/auth/auth.service.interface';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-room-create',
@@ -18,17 +20,18 @@ import { IAuthService } from '../../../../services/auth/auth.service.interface';
 })
 export class RoomCreateComponent {
   public roomForm!: FormGroup;
-  public houses: HouseModel[] = [];
+  public houses: PaginatedResult<HouseModel> = new PaginatedResult<HouseModel>();
   public userId: number = 0;
   public occupancyStatuses = [
-    { value: 0, display: 'Available' },
-    { value: 1, display: 'Occupied' },
-    { value: 2, display: 'Under Maintenance' }
+    { value: 0, display: 'Đang trống' },
+    { value: 1, display: 'Đang sử dụng' },
+    { value: 2, display: 'Đang bảo trì' }
   ];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly router: Router,
+    private readonly toastr: ToastrService,
     @Inject(ROOM_SERVICE) private readonly roomService: IRoomService,
     @Inject(HOUSE_SERVICE) private readonly houseService: IHouseService,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
@@ -48,7 +51,7 @@ export class RoomCreateComponent {
       this.userId = user.id;
     });
     this.houseService.getByUserId(this.userId).subscribe(houses => {
-      // this.houses = houses;
+      this.houses = houses;
     });
   }
 
@@ -74,11 +77,12 @@ export class RoomCreateComponent {
       console.log('Submitting room:', newRoom);
       this.roomService.create(newRoom).subscribe(
         (response) => {
-          console.log('Room created successfully:', response);
+          this.toastr.success('Tạo phòng thành công');
           this.router.navigate(['/admin/room', response.houseId]);
         },
         (error) => {
           console.error('Error creating room:', error);
+          this.toastr.warning('Tạo phòng thất bại');
         }
       );
     }

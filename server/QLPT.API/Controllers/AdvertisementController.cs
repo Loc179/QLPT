@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QLPT.Business.Handlers;
@@ -12,6 +13,7 @@ namespace QLPT.API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Create([FromForm] AdvertisementCreateUpdateCommand command)
         {
             if (!ModelState.IsValid)
@@ -24,6 +26,7 @@ namespace QLPT.API.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Update(int id, [FromForm] AdvertisementCreateUpdateCommand command)
         {
             command.Id = id;
@@ -39,6 +42,7 @@ namespace QLPT.API.Controllers
         }
 
         [HttpPut("update-status")]
+        [Authorize]
         public async Task<IActionResult> UpdateStatus([FromBody] AdvertisementUpdateStatusCommand command)
         {
             if (!ModelState.IsValid)
@@ -51,17 +55,19 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var request = new AdvertisementDeleteById{ Id = id};
+            var request = new AdvertisementDeleteById { Id = id };
             var result = await _mediator.Send(request);
             return Ok(result);
         }
 
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _mediator.Send(new AdvertisementGetByIdQuery { Id = id });
@@ -75,6 +81,7 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetByUserId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _mediator.Send(new AdvertisementGetByUserIdQuery { UserId = id, PageNumber = page, PageSize = pageSize });
@@ -88,6 +95,7 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-status/{status}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByStatus(int status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _mediator.Send(new AdvertisementGetByStatusQuery { Status = status, PageNumber = page, PageSize = pageSize });
@@ -101,6 +109,7 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("filter")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByFilter([FromQuery] AdvertisementFilterQuery command)
         {
             var result = await _mediator.Send(command);
@@ -109,9 +118,10 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new AdvertisementGetAllQuery{ PageNumber = page, PageSize = pageSize});
+            var result = await _mediator.Send(new AdvertisementGetAllQuery { PageNumber = page, PageSize = pageSize });
             return Ok(result);
         }
     }

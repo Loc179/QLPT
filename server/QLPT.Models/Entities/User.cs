@@ -16,4 +16,5 @@ public class User : IdentityUser<int>
     public ICollection<Advertisement> Advertisements { get; set; } = new List<Advertisement>();
     public ICollection<House> Houses { get; set; } = new List<House>();
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
 }

@@ -38,11 +38,11 @@ namespace QLPT.API.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var request = new TenantDeleteByIdCommand{ Id = id};
+            var request = new TenantDeleteByIdCommand { Id = id };
             var result = await _mediator.Send(request);
             return Ok(result);
         }
@@ -111,7 +111,14 @@ namespace QLPT.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new TenantGetAllQuery{ PageNumber = page, PageSize = pageSize });
+            var result = await _mediator.Send(new TenantGetAllQuery { PageNumber = page, PageSize = pageSize });
+            return Ok(result);
+        }
+
+        [HttpGet("without-contract/{userId}")]
+        public async Task<IActionResult> GetWithoutContract(int userId)
+        {
+            var result = await _mediator.Send(new TenantGetWithoutContract { UserId = userId });
             return Ok(result);
         }
     }

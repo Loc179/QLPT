@@ -21,9 +21,21 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Email, otp => otp.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.Phonenumber, otp => otp.MapFrom(src => src.User.PhoneNumber))
             .ForMember(dest => dest.imagesPath, opt => opt.MapFrom(src => src.Images.Select(img => img.ImagePath)));
+        CreateMap<Contract, ContractViewModel>()
+            .AfterMap((src, dest) =>
+            {
+                var rep = src.ContractTenants?.FirstOrDefault(ct => ct.Tenant != null && ct.Tenant.IsRepresentative);
+                if (rep != null)
+                {
+                    dest.TenantId = rep.TenantId;
+                    dest.TenantName = rep.Tenant.FullName;
+                }
+            });
+        CreateMap<ContractRequestViewModel, Contract>().ReverseMap();
         CreateMap<UserViewModel, User>().ReverseMap();
         CreateMap<HouseViewModel, House>().ReverseMap();
         CreateMap<HouseCreateUpdateCommand, House>().ReverseMap();
+        CreateMap<ContractViewModel, Contract>().ReverseMap();
         CreateMap<RoomViewModel, Room>().ReverseMap();
         CreateMap<RoomCreateUpdateCommand, Room>().ReverseMap();
         CreateMap<RoomServiceViewModel, RoomService>().ReverseMap();
