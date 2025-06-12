@@ -39,7 +39,7 @@ namespace QLPT.API.Controllers
 
             string paymentUrl = await _mediator.Send(command);
             return Ok(new { paymentUrl });
-            
+
         }
 
         [HttpPost("vnpay-return")]
@@ -48,10 +48,53 @@ namespace QLPT.API.Controllers
             var result = await _mediator.Send(new VnPayReturnCommand(vnpayData));
 
             if (!result) return BadRequest(false);
-            
+
             return Ok(true);
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            await _mediator.Send(request);
+
+            return Ok(new { message = "Password reset email has been sent" });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _mediator.Send(request);
+
+            if (result.Length > 0)
+            {
+                return BadRequest(new { message = $"[FAILED] {result}" });
+            }
+
+            return Ok(new { message = "[SUCCESS] Your password has been reset." });
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
+        {
+            try
+            {
+                var accessToken = await _mediator.Send(command);
+                return Ok(new { accessToken });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+        }
     }
 }

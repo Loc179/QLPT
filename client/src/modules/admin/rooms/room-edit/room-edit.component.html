@@ -68,7 +68,7 @@
       <label for="houseId" class="block text-sm font-medium text-gray-700">House</label>
       <select id="houseId" formControlName="houseId"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
-        <option *ngFor="let house of houses" [value]="house.id">{{house.name}}</option>
+        <option *ngFor="let house of houses?.items" [value]="house.id">{{house.name}}</option>
       </select>
       <div *ngIf="roomForm.get('houseId')?.invalid && (roomForm.get('houseId')?.dirty || roomForm.get('houseId')?.touched)"
            class="text-red-500 text-sm mt-1">

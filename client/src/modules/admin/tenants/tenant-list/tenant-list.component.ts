@@ -119,11 +119,33 @@ export class TenantListComponent {
       this.loadTenantsByRoom(this.selectedRoomId);
     }
   }
+
+  resetFilters() {
+    this.selectedHouseId = null;
+    this.selectedRoomId = null;
+    this.filteredRooms = [];
+    this.loadTenantsByUser(this.userId!);
+  }
   
   searchTenants() {
     this.tenantService.search(this.userId!, this.searchText ?? '').subscribe((tenants) => {
       this.tenants = tenants;
     })
+  }
+  
+  exportData() {
+    this.tenantService.exportToExcel({ userId: this.userId!, keyword: this.searchText, roomId: this.selectedRoomId, houseId: this.selectedHouseId }).subscribe((response) => {
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'tenants.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }, (error) => {
+      console.error('Error exporting data:', error);
+      alert('Failed to export data. Please try again later.');
+    });
   }
 
   // Xử lý khi user click chuyển trang

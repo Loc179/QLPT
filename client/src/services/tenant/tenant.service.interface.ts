@@ -13,4 +13,5 @@ export interface ITenantService {
     create(data: TenantModel): Observable<any>;
     update(id: number, data: TenantModel): Observable<any>;
     delete(id: number): Observable<any>;
+    exportToExcel(command: any): Observable<Blob>;
 }

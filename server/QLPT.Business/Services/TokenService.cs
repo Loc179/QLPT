@@ -69,4 +69,46 @@ public class TokenService(IConfiguration configuration, IUnitOfWorks unitOfWorks
 
         return refreshToken;
     }
+
+    public async Task<ResetPasswordToken> GenerateResetPasswordTokenAsync(int userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var resetToken = new ResetPasswordToken
+        {
+            Token = token,
+            UserId = user.Id,
+            ExpiryDate = DateTime.UtcNow.AddDays(1),
+        };
+        
+        _unitOfWorks.ResetPasswordTokenRepository.Add(resetToken);
+        await _unitOfWorks.SaveChangesAsync();
+
+        return resetToken;
+    }
+
+    public async Task<bool> MarkUsedResetPasswordTokenAsync(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            throw new ArgumentException("Invalid token");
+        }
+
+        var tokens = await _unitOfWorks.ResetPasswordTokenRepository.GetAllAsync();
+
+        var revokeToken = tokens.FirstOrDefault(x => x.Token == token);
+
+        if (revokeToken == null)
+        {
+            throw new ArgumentException("Token not found");
+        }
+
+        revokeToken.IsUsed = true;
+
+        _unitOfWorks.ResetPasswordTokenRepository.Update(revokeToken);
+
+        return true;
+    }
 }

@@ -7,6 +7,8 @@ import { UserInformation } from '../../models/auth/user-information.model';
 import { HttpClient } from '@angular/common/http';
 import { RegisterRequest } from '../../models/auth/register-request.model';
 import { RegisterResponse } from '../../models/auth/register-response.model';
+import { ForgotPasswordRequest } from '../../models/auth/forgot-password-request.model';
+import { ResetPasswordRequest } from '../../models/auth/reset-password-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +49,25 @@ export class AuthService implements IAuthService {
     }
 
 
+  }
+  
+  refreshToken(refreshToken: string): Observable<string> {
+    return this.httpClient.post<{ accessToken: string }>(`${this.apiUrl}/refresh-token`, { refreshToken })
+      .pipe(
+        map(response => {
+          const accessToken = response.accessToken;
+          localStorage.setItem('accessToken', accessToken);
+          return accessToken;
+        })
+      );
+  }
+
+  forgotPassword(forgotPasswordRequest: ForgotPasswordRequest): Observable<void> {
+    return this.httpClient.post<void>(`${this.apiUrl}/forgot-password`, forgotPasswordRequest);
+  }
+
+  resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${this.apiUrl}/reset-password`, resetPasswordRequest);
   }
   getUserId(): number {
     const userInfo = this._userInformation.getValue();

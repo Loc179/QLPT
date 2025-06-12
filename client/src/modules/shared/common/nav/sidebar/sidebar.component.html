@@ -1,10 +1,11 @@
 <!-- Updated sidebar.component.html -->
-<aside class="sidebar-container hidden md:flex md:flex-shrink-0" 
+<aside class="sidebar-container hidden md:flex md:flex-shrink-0"
+[class.hidden]="!isSidebarVisible"
        [ngClass]="{
-         'w-20': sidebarService.isCollapsed, 
-         'w-68': !sidebarService.isCollapsed,
-         'sidebar-collapsed': sidebarService.isCollapsed,
-         'sidebar-expanded': !sidebarService.isCollapsed
+         'w-20': (sidebarService.isCollapsed$ | async), 
+         'w-68': !(sidebarService.isCollapsed$ | async),
+         'sidebar-collapsed': (sidebarService.isCollapsed$ | async),
+         'sidebar-expanded': !(sidebarService.isCollapsed$ | async)
        }">
     <div class="flex flex-col w-full bg-white border-r border-gray-200">
       <!-- Header với toggle button được cải thiện -->
@@ -13,7 +14,7 @@
         <button 
           class="toggle-button flex items-center justify-center p-2 rounded hover:bg-blue-400 transition-colors duration-200" 
           (click)="toggleSidebar()"
-          [attr.aria-label]="sidebarService.isCollapsed ? 'Mở sidebar' : 'Đóng sidebar'">
+          [attr.aria-label]="(sidebarService.isCollapsed$ | async) ? 'Mở sidebar' : 'Đóng sidebar'">
           <i class="fas fa-bars text-lg"></i>
         </button>
         

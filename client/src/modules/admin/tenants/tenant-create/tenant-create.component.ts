@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TENANT_SERVICE } from '../../../../constants/injection/injection.constant';
+import { AUTH_SERVICE, TENANT_SERVICE } from '../../../../constants/injection/injection.constant';
 import { ITenantService } from '../../../../services/tenant/tenant.service.interface';
 import { CommonModule } from '@angular/common';
+import { IAuthService } from '../../../../services/auth/auth.service.interface';
 
 @Component({
   selector: 'app-tenant-create',
@@ -18,6 +19,7 @@ export class TenantCreateComponent {
     private readonly fb: FormBuilder,
     private readonly route: ActivatedRoute,
     @Inject(TENANT_SERVICE) private readonly tenantService: ITenantService,
+    @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
     private readonly router: Router
   ) {
     this.tenantForm = this.fb.group({
@@ -49,6 +51,6 @@ export class TenantCreateComponent {
   }
 
   onCancel(): void {
-    this.router.navigate(['/tenants']);
+    this.router.navigate(['admin/tenant/user', this.authService.getUserId]);
   }
 }

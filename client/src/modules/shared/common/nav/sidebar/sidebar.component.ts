@@ -17,6 +17,7 @@ export class SidebarComponent implements OnInit {
   public role: string | null = null;
   public activeMenuItem: string = '';
   public isAnimating: boolean = false;
+  public isSidebarVisible: boolean = false;
 
   constructor(
     private readonly router: Router,
@@ -47,6 +48,10 @@ export class SidebarComponent implements OnInit {
     
     // Set initial active menu item based on current URL
     this.setActiveMenuItem(this.router.url);
+
+    this.sidebarService.sidebarVisible$.subscribe((visible) => {
+    this.isSidebarVisible = visible;
+  });
   }
 
   @HostListener('window:resize', ['$event'])

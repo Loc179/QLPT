@@ -8,10 +8,12 @@ import { BehaviorSubject } from 'rxjs';
 export class SidebarService {
   private readonly _isCollapsed = new BehaviorSubject<boolean>(false);
   private readonly _isMobile = new BehaviorSubject<boolean>(false);
+  private sidebarVisibleSubject = new BehaviorSubject<boolean>(false);
 
   // Observable streams
   public isCollapsed$ = this._isCollapsed.asObservable();
   public isMobile$ = this._isMobile.asObservable();
+  public sidebarVisible$ = this.sidebarVisibleSubject.asObservable();
 
   constructor() {
     // Initialize based on screen size
@@ -51,6 +53,12 @@ export class SidebarService {
   public toggleSidebar(): void {
     const newState = !this._isCollapsed.value;
     this.setCollapsed(newState);
+    const current = this.sidebarVisibleSubject.value;
+    this.sidebarVisibleSubject.next(!current);
+  }
+
+  setSidebarVisible(visible: boolean): void {
+    this.sidebarVisibleSubject.next(visible);
   }
 
   // Set collapsed state explicitly

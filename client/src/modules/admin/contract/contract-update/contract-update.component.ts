@@ -186,10 +186,10 @@ export class ContractUpdateComponent implements OnInit {
   onCancel() {
     if (this.hasChanges()) {
       if (confirm('Bạn có chắc chắn muốn hủy? Các thay đổi sẽ không được lưu.')) {
-        this.router.navigate(['/contracts']);
+        this.router.navigate(['admin/contract']);
       }
     } else {
-      this.router.navigate(['/contracts']);
+      this.router.navigate(['admin/contract']);
     }
   }
 

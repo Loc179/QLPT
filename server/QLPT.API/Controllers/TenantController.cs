@@ -121,5 +121,16 @@ namespace QLPT.API.Controllers
             var result = await _mediator.Send(new TenantGetWithoutContract { UserId = userId });
             return Ok(result);
         }
+
+        [HttpPost("export")]
+        public async Task<IActionResult> ExportToExcel([FromBody] TenantExportExcelCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            // Trả về file Excel dạng byte[]
+            return File(result,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: $"tenants_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
     }
 }

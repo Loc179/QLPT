@@ -7,6 +7,7 @@ import { IContractService } from '../../../../services/contract/contract.service
 import { ITenantService } from '../../../../services/tenant/tenant.service.interface';
 import { IAuthService } from '../../../../services/auth/auth.service.interface';
 import { TenantModel } from '../../../../models/tenant/tenant.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contract-detail',
@@ -23,6 +24,7 @@ export class ContractDetailComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly toastr: ToastrService,
     @Inject(CONTRACT_SERVICE) private readonly contractService: IContractService,
     @Inject(TENANT_SERVICE) private readonly tenantService: ITenantService,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
@@ -103,25 +105,25 @@ export class ContractDetailComponent implements OnInit {
   }
 
   onEdit() {
-    this.router.navigate(['/contracts', this.contractId, 'edit']);
+    this.router.navigate(['admin/contract/edit', this.contractId]);
   }
 
   onDelete() {
     if (confirm('Bạn có chắc chắn muốn xóa hợp đồng này? Hành động này không thể hoàn tác.')) {
       this.contractService.delete(this.contractId).subscribe({
         next: () => {
-          alert('Hợp đồng đã được xóa thành công!');
-          this.router.navigate(['/contracts']);
+          this.toastr.success('Hợp đồng đã được xóa thành công!');
+          this.router.navigate(['admin/contract']);
         },
         error: (error) => {
           console.error('Error deleting contract:', error);
-          alert('Có lỗi xảy ra khi xóa hợp đồng. Vui lòng thử lại sau.');
+          this.toastr.error('Có lỗi xảy ra khi xóa hợp đồng. Vui lòng thử lại sau.');
         }
       });
     }
   }
 
   onBack() {
-    this.router.navigate(['/contracts']);
+    this.router.navigate(['admin/contract']);
   }
 }

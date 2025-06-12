@@ -31,7 +31,10 @@ public class MappingProfile : Profile
                     dest.TenantName = rep.Tenant.FullName;
                 }
             });
-        CreateMap<ContractRequestViewModel, Contract>().ReverseMap();
+        CreateMap<ContractRequestViewModel, Contract>();
+        CreateMap<Contract, ContractRequestViewModel>()
+            .ForMember(dest => dest.TenantIds, opt => opt.MapFrom(src => src.ContractTenants.Select(ct => ct.TenantId)))
+            .ForMember(dest => dest.TenantNames, opt => opt.MapFrom(src => src.ContractTenants.Select(ct => ct.Tenant.FullName)));
         CreateMap<UserViewModel, User>().ReverseMap();
         CreateMap<HouseViewModel, House>().ReverseMap();
         CreateMap<HouseCreateUpdateCommand, House>().ReverseMap();

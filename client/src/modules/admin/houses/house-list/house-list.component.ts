@@ -18,7 +18,7 @@ import { PaginationComponent } from "../../../shared/pagination/pagination.compo
 export class HouseListComponent {
   searchKeyword?: string;
   userId!: number;
-  public houses!: PaginatedResult<HouseModel>;
+  public houses: PaginatedResult<HouseModel> | null = null;
 
   currentPage: number = 1;
   pageSize: number = 10;

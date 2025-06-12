@@ -13,6 +13,12 @@ export class TenantService implements ITenantService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
+  exportToExcel(command: any): Observable<Blob> {
+    return this.httpClient.post(`${this.apiUrl}/export`, command, {
+      responseType: 'blob'
+    });
+  }
+
   getWithoutContract(userId: number, page?: number, pageSize?: number): Observable<PaginatedResult<TenantModel>> {
     let params = new HttpParams();
     if (page !== undefined) {

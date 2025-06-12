@@ -50,7 +50,7 @@
             <img src="assets/images/default-avatar-icon.jpg" alt="" class="w-16 h-16 rounded-full mx-auto" />
             <div>
               <div class="font-semibold">{{ data.fullname }}</div>
-              <div class="text-sm text-gray-500">Đăng lúc: {{ data.createAt | date:'short' }}</div>
+              <div class="text-sm text-gray-500">Đăng lúc: {{ data.createdAt | date:'short' }}</div>
             </div>
             <a class="block bg-green-500 text-white text-center py-3 rounded font-medium" [href]="'tel:' + data.phonenumber">
               <i class="fas fa-phone mr-2"></i>{{ data.phonenumber }}

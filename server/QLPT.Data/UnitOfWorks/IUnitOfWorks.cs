@@ -34,6 +34,7 @@ public interface IUnitOfWorks : IDisposable
     IGenericRepository<ContractTenant> ContractTenantRepository { get; }
 
     IGenericRepository<RefreshToken> RefreshTokenRepository { get; }
+    IGenericRepository<ResetPasswordToken> ResetPasswordTokenRepository { get; }
 
     IGenericRepository<T> GenericRepository<T>() where T:class;
 

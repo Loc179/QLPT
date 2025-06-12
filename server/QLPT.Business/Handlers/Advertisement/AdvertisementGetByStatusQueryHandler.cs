@@ -16,7 +16,10 @@ public class AdvertisementGetByStatusQueryHandler(IMapper mapper, IUnitOfWorks u
     {
         var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Status == request.Status)
             .Include(ad => ad.User)
-            .Include(i => i.Images);
+            .Include(i => i.Images)
+            .OrderByDescending(ad => ad.Type == 2)
+            .ThenByDescending(ad => ad.Type)
+            .ThenByDescending(ad => ad.CreatedAt);
 
         int total = await query.CountAsync(cancellationToken);
         var result = await query.Skip(request.PageSize * (request.PageNumber - 1)).Take(request.PageSize).ToListAsync();

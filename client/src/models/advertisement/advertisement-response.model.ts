@@ -15,6 +15,6 @@ export interface AdvertisementResponseModel {
     type: number;
     status: number;
     maxOccupants: number;
-    createAt?: Date;
+    createdAt?: Date;
     imagesPath?: string[];
 }

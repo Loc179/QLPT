@@ -3,6 +3,7 @@ import { IPermissionService } from './permission.service.interface';
 import { AUTH_SERVICE } from '../../constants/injection/injection.constant';
 import { Router } from '@angular/router';
 import { IAuthService } from '../auth/auth.service.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class PermissionService implements IPermissionService {
     private readonly router: Router,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
   ) {}
+  refreshToken(refreshToken: string): Observable<string> {
+    return this.authService.refreshToken(refreshToken);
+  }
 
   canActivate(): boolean {
     if (this.authService.isAuthenticated()) {
@@ -36,6 +40,10 @@ export class PermissionService implements IPermissionService {
 
   getAccessToken(): string {
     return this.authService.getAccessToken();
+  }
+
+  getRefreshToken(): string {
+    return this.authService.getRefreshToken();
   }
 
   hasRole(roles: string[]): boolean {

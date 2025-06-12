@@ -70,7 +70,7 @@
                 />
                 <div>
                   <div class="font-medium text-sm">{{ advertisement.fullname }}</div>
-                  <div class="text-xs text-gray-400">{{ advertisement.createAt?.toString() | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
+                  <div class="text-xs text-gray-400">{{ advertisement.createdAt?.toString() | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
                 </div>
               </div>
 
@@ -137,7 +137,7 @@
             <div class="flex-1">
               <p class="text-xs font-medium line-clamp-2">{{ post.title }}</p>
               <div class="text-green-600 text-xs font-semibold">{{ post.cost }} triệu/tháng</div>
-              <div class="text-gray-400 text-xs">{{ post.createAt }}</div>
+              <div class="text-gray-400 text-xs">{{ post.createdAt }}</div>
             </div>
           </div>
         </div>

@@ -57,6 +57,9 @@ public class UnitOfWorks(QlptDbContext context) : IUnitOfWorks
     private IGenericRepository<Role>? _roleRepository;
     public IGenericRepository<Role> RoleRepository => _roleRepository ??= new GenericRepository<Role>(_context);
 
+    private IGenericRepository<ResetPasswordToken>? _resetPasswordTokenRepository;
+    public IGenericRepository<ResetPasswordToken> ResetPasswordTokenRepository => _resetPasswordTokenRepository ??= new GenericRepository<ResetPasswordToken>(_context);
+
     public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
         return await _context.Database.BeginTransactionAsync();

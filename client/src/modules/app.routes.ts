@@ -1,6 +1,3 @@
-import { AdminDashboardComponent } from './webadmin/admin-dashboard/admin-dashboard.component';
-import { AdvertisementDetailComponent } from './public/advertisement/advertisement-detail/advertisement-detail.component';
-import { DetailComponent } from './advertisement/detail/detail.component';
 import { Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { SimpleLayoutComponent } from './shared/simple-layout/simple-layout.component';
@@ -67,6 +64,16 @@ export const routes: Routes = [
         path: 'normalcard', 
         loadComponent: () => import('./shared/cards/normal-card/normal-card.component').then(m => m.NormalCardComponent),
         data: { breadcrumb: 'Thẻ Thường' }
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () => import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+        data: { breadcrumb: 'Đặt lại mật khẩu' }
+      },
+      {
+        path: 'forgot-password',
+        loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+        data: { breadcrumb: 'Quên mật khẩu' }
       }
     ]
   },

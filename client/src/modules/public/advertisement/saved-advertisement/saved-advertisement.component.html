@@ -47,7 +47,7 @@
                   />
                   <div>
                     <div class="font-medium text-sm">{{ advertisement.fullname }}</div>
-                    <div class="text-xs text-gray-400">{{ advertisement.createAt | date:'dd/MM/yyyy' }}</div>
+                    <div class="text-xs text-gray-400">{{ advertisement.createdAt | date:'dd/MM/yyyy' }}</div>
                   </div>
                 </div>
 
@@ -85,7 +85,7 @@
               <div class="flex-1">
                 <p class="text-xs font-medium line-clamp-2 text-gray-900">{{ post.title }}</p>
                 <div class="text-green-600 text-xs font-semibold">{{ post.cost }} triệu/tháng</div>
-                <div class="text-gray-400 text-xs">{{ post.createAt | date:'dd/MM/yyyy' }}</div>
+                <div class="text-gray-400 text-xs">{{ post.createdAt | date:'dd/MM/yyyy' }}</div>
               </div>
             </a>
           </ng-container>

@@ -62,5 +62,6 @@ public class QlptDbContext : IdentityDbContext<
     public DbSet<ContractTenant> ContractTenants { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; }
 
 }

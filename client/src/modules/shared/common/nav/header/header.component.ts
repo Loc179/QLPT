@@ -4,6 +4,7 @@ import { Component, Inject, OnInit, ElementRef, ViewChild, HostListener } from '
 import { AUTH_SERVICE } from '../../../../../constants/injection/injection.constant';
 import { IAuthService } from '../../../../../services/auth/auth.service.interface';
 import { Router, RouterModule } from '@angular/router';
+import { SidebarService } from '../../../../../services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private readonly router: Router,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
+    private readonly sidebarService: SidebarService,
   ) { }
 
   ngOnInit() {
@@ -52,13 +54,14 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  changePassword() {
-    this.closeDropdown();
-    this.router.navigate(['/change-password']);
-  }
-
   // Ngăn chặn event bubbling khi click vào dropdown
   onDropdownClick(event: Event) {
     event.stopPropagation();
   }
+
+  toggleSidebar() {
+    console.log('Toggling sidebar');
+    this.sidebarService.toggleSidebar();
+  }
+
 }

@@ -9,4 +9,8 @@ public interface ITokenService
     Task<JwtSecurityToken> GenerateAccessTokenAsync(int userId);
 
     Task<RefreshToken> GenerateRefreshTokenAsync(int userId);
+
+    Task<ResetPasswordToken> GenerateResetPasswordTokenAsync(int userId);
+
+    Task<bool> MarkUsedResetPasswordTokenAsync(string token);
 }

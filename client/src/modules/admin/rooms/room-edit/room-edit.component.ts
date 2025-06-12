@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HouseModel } from '../../../../models/house/house.model';
 import { RoomModel } from '../../../../models/room/room.model';
 import { CommonModule } from '@angular/common';
+import { PaginatedResult } from '../../../../models/paginated-result.model';
 
 @Component({
   selector: 'app-room-edit',
@@ -17,7 +18,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RoomEditComponent {
   public roomForm!: FormGroup;
-  public houses: HouseModel[] = [];
+  public houses: PaginatedResult<HouseModel> | null = null;
   public roomId!: number;
   public userId!: number;
   public occupancyStatuses = [
@@ -51,7 +52,7 @@ export class RoomEditComponent {
       this.userId = user.id;
     });
     this.houseService.getByUserId(this.userId).subscribe(houses => {
-      // this.houses = houses;
+      this.houses = houses;
     });
   }
 
