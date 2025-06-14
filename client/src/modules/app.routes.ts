@@ -74,6 +74,11 @@ export const routes: Routes = [
         path: 'forgot-password',
         loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
         data: { breadcrumb: 'Quên mật khẩu' }
+      },
+      { 
+        path: 'servicepackageinvoice',
+        loadComponent: () => import('./auth/servicepackageinvoice/servicepackageinvoice.component').then(m => m.ServicepackageinvoiceComponent),
+        data: { breadcrumb: 'Hóa đơn gói dịch vụ' }
       }
     ]
   },

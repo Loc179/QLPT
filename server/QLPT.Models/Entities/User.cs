@@ -15,6 +15,7 @@ public class User : IdentityUser<int>
     public ICollection<SupportRequest> SupportRequests { get; set; } = new List<SupportRequest>();
     public ICollection<Advertisement> Advertisements { get; set; } = new List<Advertisement>();
     public ICollection<House> Houses { get; set; } = new List<House>();
+    public ICollection<ServicePackageInvoice> ServicePackageInvoices { get; set; } = new List<ServicePackageInvoice>();
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
 }

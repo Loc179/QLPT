@@ -89,7 +89,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
-
+builder.Services.AddHostedService<ServicePackageExpiryNotification>();
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
