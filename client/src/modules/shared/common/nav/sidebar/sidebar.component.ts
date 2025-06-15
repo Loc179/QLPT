@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators';
 })
 export class SidebarComponent implements OnInit {
   public userId: number | null = null;
+  public servicePackageId: number | null = null;
   public role: string | null = null;
   public activeMenuItem: string = '';
   public isAnimating: boolean = false;
@@ -39,8 +40,6 @@ export class SidebarComponent implements OnInit {
       const userInfo = JSON.parse(userInfoString);
       this.userId = userInfo.id;
       this.role = userInfo.roles[0];
-      console.log('User ID1:', this.userId);
-      console.log('User Role1:', this.role);
     }
     
     // Initialize sidebar state based on screen size
