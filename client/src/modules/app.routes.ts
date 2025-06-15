@@ -4,14 +4,14 @@ import { SimpleLayoutComponent } from './shared/simple-layout/simple-layout.comp
 import { AdminLayoutComponent } from './shared/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: '', pathMatch: 'full' },
 
   {
     path: '',
     component: SimpleLayoutComponent,
     children: [
       { 
-        path: 'home', 
+        path: '', 
         loadComponent: () => import('./public/home/home/home.component').then(m => m.HomeComponent),
         data: { breadcrumb: 'Trang chủ' }
       },

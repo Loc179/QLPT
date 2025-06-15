@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.closeDropdown();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   // Ngăn chặn event bubbling khi click vào dropdown
