@@ -34,7 +34,7 @@ public class InvoicePaymentUrlCommandHandler(IUnitOfWorks unitOfWorks, IVnPaySer
             OrderInfo = base64Data,
         };
 
-        string paymentUrl = _vnPayService.CreatePaymentUrl(httpContext, paymentModel, request.Total, "https://qlpt-eqiq1fanm-qlpts-projects.vercel.app/invoice/vnpay-return", request.InvoiceCode);
+        string paymentUrl = _vnPayService.CreatePaymentUrl(httpContext, paymentModel, request.Total, "https://qlpt-six.vercel.app/invoice/vnpay-return", request.InvoiceCode);
 
         return paymentUrl;
     }

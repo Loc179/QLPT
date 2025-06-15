@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
+        policy.WithOrigins("http://qlpt-six.vercel.app/", "https://qlpt-six.vercel.app/")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -120,7 +120,7 @@ builder.Services.AddAuthentication(options =>
                 ?? throw new InvalidOperationException("JWT:Secret is not configured.")),
         };
     });
-
+builder.WebHost.UseUrls($"http://0.0.0.0:{Environment.GetEnvironmentVariable("PORT") ?? "5000"}");
 
 var app = builder.Build();
 
