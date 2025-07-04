@@ -1,10 +1,11 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
-import { AUTH_SERVICE } from '../../../../../constants/injection/injection.constant';
+import { AUTH_SERVICE, USER_SERVICE } from '../../../../../constants/injection/injection.constant';
 import { IAuthService } from '../../../../../services/auth/auth.service.interface';
 import { CommonModule } from '@angular/common';
 import { SidebarService } from '../../../../../services/sidebar/sidebar.service';
 import { filter } from 'rxjs/operators';
+import { IUserService } from '../../../../../services/user/user.service.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +15,7 @@ import { filter } from 'rxjs/operators';
 })
 export class SidebarComponent implements OnInit {
   public userId: number | null = null;
-  public servicePackageId: number | null = null;
+  public servicePackageId: number = 0;
   public role: string | null = null;
   public activeMenuItem: string = '';
   public isAnimating: boolean = false;
@@ -25,6 +26,7 @@ export class SidebarComponent implements OnInit {
     private readonly route: ActivatedRoute,
     public readonly sidebarService: SidebarService,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
+    @Inject(USER_SERVICE) private readonly userService: IUserService,
   ) { 
     // Subscribe to router events to update active menu item
     this.router.events.pipe(
@@ -41,7 +43,11 @@ export class SidebarComponent implements OnInit {
       this.userId = userInfo.id;
       this.role = userInfo.roles[0];
     }
-    
+
+    this.userService.getById(this.userId!).subscribe((user) => {
+      this.servicePackageId = user.servicePackageId || 0;
+    });
+
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
     

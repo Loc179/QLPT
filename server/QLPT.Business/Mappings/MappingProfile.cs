@@ -35,7 +35,8 @@ public class MappingProfile : Profile
         CreateMap<Contract, ContractRequestViewModel>()
             .ForMember(dest => dest.TenantIds, opt => opt.MapFrom(src => src.ContractTenants.Select(ct => ct.TenantId)))
             .ForMember(dest => dest.TenantNames, opt => opt.MapFrom(src => src.ContractTenants.Select(ct => ct.Tenant.FullName)));
-        CreateMap<UserViewModel, User>().ReverseMap();
+        CreateMap<User, UserViewModel>()
+            .ForMember(dest => dest.ServicePackageName, opt => opt.MapFrom(src => src.ServicePackage.Name));
         CreateMap<HouseViewModel, House>().ReverseMap();
         CreateMap<HouseCreateUpdateCommand, House>().ReverseMap();
         CreateMap<ContractViewModel, Contract>().ReverseMap();
@@ -45,7 +46,10 @@ public class MappingProfile : Profile
         CreateMap<RoomServiceCreateUpdateCommand, RoomService>().ReverseMap();
         CreateMap<ServicePackageViewModel, ServicePackage>().ReverseMap();
         CreateMap<ServicePackageCreateUpdateCommand, ServicePackage>().ReverseMap();
-        CreateMap<SupportRequestViewModel, SupportRequest>().ReverseMap();
+        CreateMap<SupportRequestViewModel, SupportRequest>();
+        CreateMap<SupportRequest, SupportRequestViewModel>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+            .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FullName));
         CreateMap<SupportRequestCreateUpdateCommand, SupportRequest>().ReverseMap();
         CreateMap<InvoiceViewModel, Invoice>().ReverseMap();
         CreateMap<Invoice, InvoiceListViewModel>()

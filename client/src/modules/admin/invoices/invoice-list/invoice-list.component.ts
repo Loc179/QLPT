@@ -127,7 +127,7 @@ export class InvoiceListComponent {
       roomId: this.selectedRoomId,
       fromDate: this.fromDate,
       toDate: this.toDate,
-      isPad: this.selectedIsPad === null ? null : this.selectedIsPad
+      isPad: this.selectedIsPad === null ? null : Boolean(this.selectedIsPad)
     };
     this.invoiceService.exportToExcel(filter).subscribe({
       next: (blob: Blob) => {

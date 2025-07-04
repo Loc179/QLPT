@@ -5,4 +5,6 @@ export class SupportRequestModel {
     status?: number;
     createdAt?: Date;
     userId!: number;
+    userName?: string;
+    userFullName?: string;
 }

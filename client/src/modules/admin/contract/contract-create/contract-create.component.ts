@@ -8,6 +8,8 @@ import { ITenantService } from '../../../../services/tenant/tenant.service.inter
 import { IAuthService } from '../../../../services/auth/auth.service.interface';
 import { PaginatedResult } from '../../../../models/paginated-result.model';
 import { TenantModel } from '../../../../models/tenant/tenant.model';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contract-create',
@@ -25,6 +27,8 @@ export class ContractCreateComponent {
 
   constructor(
     private readonly fb: FormBuilder,
+    private readonly toastr: ToastrService,
+    private readonly router: Router,
     @Inject(CONTRACT_SERVICE) private readonly contractService: IContractService,
     @Inject(TENANT_SERVICE) private readonly tenantService: ITenantService,
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
@@ -51,7 +55,7 @@ export class ContractCreateComponent {
       },
       error: (error) => {
         console.error('Error loading tenants:', error);
-        alert('Không thể tải danh sách người thuê. Vui lòng thử lại sau.');
+        this.toastr.warning('Không thể tải danh sách người thuê. Vui lòng thử lại sau.');
       }
     });
     this.filteredTenants = [...this.allTenants?.items ?? []];
@@ -122,9 +126,10 @@ export class ContractCreateComponent {
           setTimeout(() => {
             console.log('Creating contract:', contractData);
             this.isSubmitting = false;
-            alert('Hợp đồng đã được tạo thành công!');
+            this.toastr.success('Hợp đồng đã được tạo thành công!');
             // Navigate back or reset form
             this.resetForm();
+            this.router.navigate(['admin/contract']);
           }, 2000);
         }
       });
@@ -135,7 +140,7 @@ export class ContractCreateComponent {
       });
       
       if (this.selectedTenants.length === 0) {
-        alert('Vui lòng chọn ít nhất một người thuê!');
+        this.toastr.warning('Vui lòng chọn ít nhất một người thuê!');
       }
     }
   }

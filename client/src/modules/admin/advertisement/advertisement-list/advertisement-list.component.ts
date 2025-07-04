@@ -59,8 +59,8 @@ export class AdvertisementListComponent {
   getStatusLabel(status: number): string {
     switch (status) {
       case 1: return 'Đã duyệt';
-      case 0: return 'Chờ duyệt';
-      case -1: return 'Đã ẩn';
+      case -1: return 'Chờ duyệt';
+      case 0: return 'Đã ẩn';
       default: return 'Không xác định';
     }
   }

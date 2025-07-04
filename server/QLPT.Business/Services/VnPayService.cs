@@ -23,7 +23,7 @@ public class VnPayService(IOptions<VNPayConfig> config) : IVnPayService
         pay.AddRequestData("vnp_CurrCode", "VND");
         pay.AddRequestData("vnp_IpAddr", httpContext.Connection.RemoteIpAddress.ToString());
         pay.AddRequestData("vnp_Locale", "vn");
-        pay.AddRequestData("vnp_BankCode", "NCB");
+        // pay.AddRequestData("vnp_BankCode", "NCB");
         pay.AddRequestData("vnp_OrderInfo", model.OrderInfo);
         pay.AddRequestData("vnp_OrderType", "other");
         if(returnUrl == null)

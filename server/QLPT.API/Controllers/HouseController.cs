@@ -8,7 +8,6 @@ namespace QLPT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class HouseController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;

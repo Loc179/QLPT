@@ -31,4 +31,18 @@ export class UserDetailComponent {
       error: (err) => console.error('Lỗi khi lấy thông tin người dùng:', err)
     });
   }
+
+  getServicePackageName(servicePackageId: number): string {
+    if(servicePackageId === 3) {
+      return 'Gói cơ bản';
+    }
+    if(servicePackageId === 4) {
+      return 'Gói cấp cao';
+    }
+    if(servicePackageId === 1002) {
+      return 'Gói vip';
+    }
+
+    return '';
+  }
 }

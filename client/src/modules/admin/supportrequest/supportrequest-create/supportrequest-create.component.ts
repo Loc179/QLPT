@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SUPPORTREQUEST_SERVICE } from '../../../../constants/injection/injection.constant';
 import { ISupportrequestService } from '../../../../services/supportrequest/supportrequest.service.interface';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-supportrequest-create',
@@ -16,6 +17,7 @@ export class SupportrequestCreateComponent {
 
   constructor(
     private readonly fb: FormBuilder,
+    private readonly router: Router,
     @Inject(SUPPORTREQUEST_SERVICE) private readonly supportRequestService: ISupportrequestService,
     private readonly toastr: ToastrService
   ) {}
@@ -44,6 +46,7 @@ export class SupportrequestCreateComponent {
       next: () => {
         this.toastr.success('Gửi yêu cầu thành công!');
         this.form.reset();
+        this.router.navigate(['admin/support']);
       },
       error: () => {
         this.toastr.error('Đã xảy ra lỗi khi gửi yêu cầu');

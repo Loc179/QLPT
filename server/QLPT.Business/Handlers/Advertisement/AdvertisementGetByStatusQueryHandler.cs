@@ -17,7 +17,7 @@ public class AdvertisementGetByStatusQueryHandler(IMapper mapper, IUnitOfWorks u
         var query = _unitOfWork.AdvertisementRepository.GetQuery(r => r.Status == request.Status)
             .Include(ad => ad.User)
             .Include(i => i.Images)
-            .OrderByDescending(ad => ad.Type == 2)
+            .OrderByDescending(ad => ad.Type == 1002)
             .ThenByDescending(ad => ad.Type)
             .ThenByDescending(ad => ad.CreatedAt);
 

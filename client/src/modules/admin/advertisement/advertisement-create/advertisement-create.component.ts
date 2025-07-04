@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AdvertisementCreateComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   
-  form: FormGroup;
+  form!: FormGroup;
   map!: mapboxgl.Map;
   marker!: mapboxgl.Marker;
   isLoading = false;
@@ -49,10 +49,6 @@ export class AdvertisementCreateComponent implements OnInit, OnDestroy {
     @Inject(ADVERTISEMENT_SERVICE) private readonly advertisementService: IAdvertisementService,
     
   ) {
-    this.userService.getById(this.authService.getUserId()).subscribe(user => {
-      this.servicePackageId = user.servicePackageId;
-    });
-
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
       description: ['', Validators.maxLength(1000)],
@@ -68,9 +64,17 @@ export class AdvertisementCreateComponent implements OnInit, OnDestroy {
       latitude: ['', Validators.required],
       longitude: ['', Validators.required],
       images: [[], [Validators.required, Validators.minLength(1)]],
-      type: [this.servicePackageId === 3 ? 1 : 2],
+      type: [null, Validators.required], // Gán tạm null
       userId: [this.authService.getUserId()]
     });
+
+    this.userService.getById(this.authService.getUserId()).subscribe(user => {
+      this.servicePackageId = user.servicePackageId;
+      this.form.patchValue({
+        type: this.servicePackageId
+      });
+    });
+
   }
 
   ngOnInit(): void {

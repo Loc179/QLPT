@@ -12,4 +12,5 @@ public class UserViewModel
     public DateTime CreatedAt { get; set; }
     public int Status { get; set; }
     public int ServicePackageId { get; set; }
+    public string ServicePackageName { get; set; } = string.Empty;
 }

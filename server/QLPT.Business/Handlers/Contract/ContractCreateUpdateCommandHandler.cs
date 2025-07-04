@@ -7,19 +7,19 @@ using QLPT.Models.Entities;
 
 namespace QLPT.Business.Handlers;
 
-public class ContractCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<ContractCreateUpdateCommand, ContractRequestViewModel>
+public class ContractCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks unitOfWork) : IRequestHandler<ContractCreateUpdateCommand, bool>
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWorks _unitOfWork = unitOfWork;
 
-    public Task<ContractRequestViewModel> Handle(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
+    public Task<bool> Handle(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
     {
         return request.Id.HasValue
             ? Update(request, cancellationToken)
             : Create(request, cancellationToken);
     }
 
-    private async Task<ContractRequestViewModel> Create(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
+    private async Task<bool> Create(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
     {
         var entity = new Contract
         {
@@ -45,19 +45,10 @@ public class ContractCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks uni
             _unitOfWork.ContractTenantRepository.Add(contractTenant);
         }
 
-        await _unitOfWork.SaveChangesAsync();
-
-        if (result <= 0)
-        {
-            throw new Exception("Failed to create contract");
-        }
-
-        var createdEntity = await _unitOfWork.ContractRepository.GetByIdAsync(entity.Id);
-
-        return _mapper.Map<ContractRequestViewModel>(createdEntity);
+        return await _unitOfWork.SaveChangesAsync() > 0;
     }
 
-    private async Task<ContractRequestViewModel> Update(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
+    private async Task<bool> Update(ContractCreateUpdateCommand request, CancellationToken cancellationToken)
     {
         var entity = await _unitOfWork.ContractRepository.GetByIdAsync(request.Id.Value);
         if (entity == null)
@@ -96,13 +87,6 @@ public class ContractCreateUpdateCommandHandler(IMapper mapper, IUnitOfWorks uni
             _unitOfWork.ContractTenantRepository.Add(contractTenant);
         }
 
-        await _unitOfWork.SaveChangesAsync();
-
-        if (result <= 0)
-        {
-            throw new Exception("Failed to update contract");
-        }
-
-        return _mapper.Map<ContractRequestViewModel>(entity);
+        return await _unitOfWork.SaveChangesAsync() > 0;
     }
 }

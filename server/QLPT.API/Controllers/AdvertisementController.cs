@@ -13,7 +13,6 @@ namespace QLPT.API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> Create([FromForm] AdvertisementCreateUpdateCommand command)
         {
             if (!ModelState.IsValid)
@@ -26,7 +25,6 @@ namespace QLPT.API.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> Update(int id, [FromForm] AdvertisementCreateUpdateCommand command)
         {
             command.Id = id;
@@ -42,7 +40,6 @@ namespace QLPT.API.Controllers
         }
 
         [HttpPut("update-status")]
-        [Authorize]
         public async Task<IActionResult> UpdateStatus([FromBody] AdvertisementUpdateStatusCommand command)
         {
             if (!ModelState.IsValid)
@@ -57,7 +54,6 @@ namespace QLPT.API.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var request = new AdvertisementDeleteById { Id = id };
@@ -67,7 +63,6 @@ namespace QLPT.API.Controllers
 
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _mediator.Send(new AdvertisementGetByIdQuery { Id = id });
@@ -81,7 +76,6 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("by-user/{id}")]
-        [Authorize]
         public async Task<IActionResult> GetByUserId(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _mediator.Send(new AdvertisementGetByUserIdQuery { UserId = id, PageNumber = page, PageSize = pageSize });

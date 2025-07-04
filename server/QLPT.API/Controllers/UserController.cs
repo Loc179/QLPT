@@ -7,14 +7,12 @@ using QLPT.Business.Handlers;
 namespace QLPT.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
     [ApiController]
     public class UserController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
 
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> Update([FromBody] UserUpdateCommand command)
         {
             if (!ModelState.IsValid)
@@ -37,7 +35,6 @@ namespace QLPT.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _mediator.Send(new UserGetByIdQuery { Id = id });

@@ -19,6 +19,7 @@
       </div>
       <h3 class="text-xl font-semibold">{{ ad.title }}</h3>
       <div class="mt-2 text-sm">
+        <p><strong>Người đăng: </strong>{{ ad.fullname }}</p>
         <p><strong>Địa chỉ: </strong>{{ ad.address }}</p>
         <p><strong>Mô tả: </strong>{{ ad.description }}</p>
         <p><strong>Giá: </strong> {{ ad.cost | number }} VND</p>
@@ -28,13 +29,13 @@
       <div class="mt-4 flex justify-end">
         <button
         class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
-        (click)="approveAd(ad.id)"
+        (click)="approveAd(ad.id); $event.stopPropagation()"
         >
         Duyệt
         </button>
         <button
         class="px-4 py-2 ml-2 bg-red-400 text-white rounded-lg hover:bg-red-500 transition"
-        (click)="rejectAd(ad.id)"
+        (click)="rejectAd(ad.id); $event.stopPropagation()"
         >
         Từ chối
         </button>

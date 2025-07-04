@@ -4,6 +4,7 @@
   <!-- Danh sách yêu cầu -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
     <div *ngFor="let req of requests?.items" class="border rounded-lg p-4 shadow bg-white">
+      <p class="mb-2"><strong>Người gửi:</strong> {{ req.userFullName }}</p>
       <p class="mb-2"><strong>Nội dung:</strong> {{ req.content }}</p>
       <p class="mb-2 text-gray-600">
         <strong>Ngày tạo:</strong> {{ req.createdAt | date:'short' }}
